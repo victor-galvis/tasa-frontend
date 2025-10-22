@@ -1,0 +1,225 @@
+<app-header></app-header>
+
+<div class="registro-container">
+  <h2>Cómo registrarme</h2>
+  <div class="steps">
+    <div class="circle" [class.active]="step >= 1">1</div>
+    <div class="line"></div>
+    <div class="circle" [class.active]="step >= 4">2</div>
+  </div>
+  <div class="steps-decriptions">
+    <span>Verificar correo electrónico</span>
+    <span>Ingresar información personal</span>
+  </div>
+
+  <!-- Paso 1 -->
+  @if (step === 1) {
+  <div>
+    <div class="text-validate-email">Validar correo electrónico</div>
+    <div class="text-info-email">Digita tu correo electrónico para validarlo</div>
+
+    <div class="input-group">
+      <input
+        type="email"
+        placeholder="Correo electrónico"
+        [value]="email"
+        (input)="validateEmail($event.target.value)"
+        autocomplete="off"
+      />
+      <span class="bar"></span>
+    </div>
+    @if (loading) {
+    <div class="loading-container">
+      <ng-lottie [options]="loadingOptions" width="100px" height="100px"></ng-lottie>
+    </div>
+    }
+    <div class="input-group center">
+      <button
+        type="submit"
+        (click)="siguiente()"
+        class="btn-continuar"
+        [disabled]="btnDisabled || loading"
+      >
+        Siguiente
+        <span class="icono">
+          <img src="/images/flecha.png" alt="Flecha" />
+        </span>
+      </button>
+    </div>
+
+    <!--<button (click)="siguiente()" [disabled]="!form.controls['email'].valid">Siguiente ➡️</button> -->
+  </div>
+  }
+
+  <!-- Paso 2 -->
+  @if (step === 2) {
+
+  <div class="validate-email-container">
+    <div class="title">Digita el código</div>
+    <div class="subtitle">Te enviamos un código de verificación al correo</div>
+    <div class="otp-container">
+      <input
+        *ngFor="let ctrl of inputs; let i = index"
+        type="text"
+        maxlength="1"
+        class="otp-input"
+        [(ngModel)]="codigo[i]"
+        (input)="onInput($event, i)"
+      />
+    </div>
+
+    <div class="buttons">
+      <button class="outline-button" (click)="reenviarOtp()">Reenviar</button>
+      <button class="filled-button" (click)="verificarOtp()">Verificar</button>
+    </div>
+  </div>
+  } @if (step === 3) {
+  <div class="verification-success-container">
+    <div class="checkmark">
+      <img src="/images/checkmark.png" alt="Checkmark" width="48" />
+    </div>
+    <div class="success-message">¡Verificación exitosa!</div>
+    <div class="input-group center">
+      <button type="submit" class="btn-continuar" (click)="siguiente()">
+        Continuar
+        <span class="icono">
+          <img src="/images/flecha.png" alt="Flecha" />
+        </span>
+      </button>
+    </div>
+  </div>
+
+  } @if (step === 4) {
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <div class="input-group">
+      <input
+        placeholder="Correo electrónico"
+        type="text"
+        id="email"
+        name="email"
+        formControlName="email"
+        required
+        autocomplete="off"
+        readonly
+      />
+      <span class="bar"></span>
+    </div>
+
+    <div class="input-group">
+      <select
+        id="province_id"
+        formControlName="province_id"
+        class="form-control"
+        (change)="onProvinceChange($event)"
+      >
+        <option value="" disabled selected>Departamento</option>
+        <option *ngFor="let doc of provinces" [value]="doc.id">
+          {{ doc.name }}
+        </option>
+      </select>
+      <span class="bar"></span>
+    </div>
+
+    <div class="input-group">
+      <select id="cityId" formControlName="cityId" class="form-control">
+        <option value="" disabled selected>Ciudad</option>
+        <option *ngFor="let doc of cities" [value]="doc.id">
+          {{ doc.name }}
+        </option>
+      </select>
+      <span class="bar"></span>
+    </div>
+
+    <div class="input-group">
+      <select id="documentTypeId" formControlName="documentTypeId" class="form-control">
+        <option value="" disabled selected>Tipo de documento</option>
+        <option *ngFor="let doc of documentTypes" [value]="doc.id">
+          {{ doc.name }}
+        </option>
+      </select>
+      <span class="bar"></span>
+    </div>
+
+    <div class="input-group">
+      <input
+        placeholder="Número de identificación"
+        type="text"
+        id="identificationNumber"
+        name="identificationNumber"
+        formControlName="identificationNumber"
+        required
+        autocomplete="off"
+      />
+      <span class="bar"></span>
+    </div>
+
+    <div class="input-group">
+      <input
+        placeholder="Nombres"
+        type="text"
+        id="name"
+        name="name"
+        formControlName="name"
+        required
+        autocomplete="off"
+      />
+      <span class="bar"></span>
+    </div>
+
+    <div class="input-group">
+      <input
+        placeholder="Apellidos"
+        type="text"
+        id="lastname"
+        name="lastname"
+        formControlName="lastname"
+        required
+        autocomplete="off"
+      />
+      <span class="bar"></span>
+    </div>
+
+    <div class="input-group">
+      <input
+        placeholder="Contraseña"
+        type="password"
+        id="password"
+        name="password"
+        formControlName="password"
+        required
+        autocomplete="off"
+      />
+      <span class="bar"></span>
+    </div>
+
+    <div class="input-group">
+      <input
+        placeholder="Confirmar contraseña"
+        type="password"
+        id="confirmPassword"
+        name="confirmPassword"
+        formControlName="confirmPassword"
+        required
+        autocomplete="off"
+      />
+      <span class="bar"></span>
+    </div>
+
+    <label class="custom-checkbox">
+      <input type="checkbox" (change)="toggleTerminos()" />
+      <span class="check"></span>
+      <span class="label-text">Aceptar términos y políticas de privacidad</span>
+    </label>
+    <div class="input-group center">
+      <button type="submit" class="btn-continuar">
+        Continuar
+        <span class="icono">
+          <img src="/images/flecha.png" alt="Flecha" />
+        </span>
+      </button>
+    </div>
+
+    <a routerLink="/login">Iniciar sesión</a>
+  </form>
+  }
+</div>

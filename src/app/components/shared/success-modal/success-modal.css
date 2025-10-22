@@ -1,0 +1,99 @@
+/* Fondo oscuro del modal */
+.success-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000; /* encima de todo */
+}
+
+/* Caja blanca centrada */
+.success-modal {
+  background: #fff;
+  width: 360px;
+  max-width: 90%;
+  border-radius: 12px;
+  padding: 24px 20px 32px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Botón X arriba a la derecha */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  color: #555;
+  cursor: pointer;
+}
+
+/* Círculo con el check */
+.icon-container {
+  background-color: #e6f4ea;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto 16px;
+}
+
+.checkmark {
+  color: #1b8e3f;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Texto */
+h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+  font-weight: 700;
+}
+
+p {
+  margin: 8px 0 20px;
+  color: #555;
+  font-size: 15px;
+}
+
+/* Botón de cerrar verde */
+.btn-close {
+  background-color: #1b8e3f;
+  color: #fff;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-close:hover {
+  background-color: #156e32;
+}

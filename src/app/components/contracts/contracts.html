@@ -1,0 +1,126 @@
+<app-header></app-header>
+<div class="content">
+  <div class="volver">
+    <a href="/dashboard">Volver a la pagina principal</a>
+  </div>
+  <span class="title">Pagar servicios públicos</span>
+  <div class="center">
+    <div class="left">
+      <div class="submenu">
+        <div class="item">
+          <div class="icon green">
+            <img src="/images/setting.svg" />
+          </div>
+          <div class="text">Administrar <b>Contratos</b></div>
+        </div>
+        <div class="item">
+          <div class="icon green">
+            <img src="/images/plus.svg" />
+          </div>
+          <div class="text">Inscribir <b>Facturas</b></div>
+        </div>
+        <div class="item">
+          <div class="vista-container" [class.active]="isGridView" (click)="toggleView()">
+            <span class="vista-label">Vista</span>
+
+            <div class="vista-icon">
+              <div class="lines">
+                <span class="line line-1"></span>
+                <span class="line line-2"></span>
+              </div>
+
+              <div class="dots" aria-hidden="true">
+                <span *ngFor="let d of dots; index as i" class="dot" [attr.data-i]="i"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pay-contracts">
+        <div class="info">¡</div>
+        <span>Seleccione aquellos contractos que deseas pagar.</span>
+      </div>
+
+      @if (!loading && contracts.length === 0) {
+      <div class="error">No hay contratos disponibles.</div>
+      }
+      <div class="info-contracts">
+        @for (c of contracts; track c.id) { @if (isGridView) {
+        <div class="contract-card">
+          <div class="contract-header">
+            <label class="custom-checkbox">
+              <input type="checkbox" (change)="actualizarTotal()" />
+              <span class="checkmark" aria-hidden="true"></span>
+              <span class="nombre">{{ c.name }}</span>
+            </label>
+          </div>
+          <div class="contract-detalle">
+            <table>
+              <tr>
+                <td><span>Contrato:</span></td>
+                <td class="text">1056228</td>
+              </tr>
+              <tr>
+                <td><span>Referente:</span></td>
+                <td class="text">{{ c.number }}</td>
+              </tr>
+            </table>
+
+            <p class="monto">$ 413.186</p>
+            <div class="estado">
+              <span>Contrato no disponible para pago</span>
+              <div class="descargar-container">
+                <button class="descargar">
+                  <img src="/images/download.svg" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        } @else {
+        <div class="contract-list">
+          <div class="header">
+            <label class="custom-checkbox">
+              <input type="checkbox" (change)="actualizarTotal()" />
+              <span class="checkmark" aria-hidden="true"></span>
+              <span class="nombre">{{ c.name }}</span>
+            </label>
+          </div>
+          <div class="detail">
+            <div class="line-detail">
+              <span>Contrato:</span>
+              <div class="text">1056228</div>
+            </div>
+            <div class="line-detail">
+              <span>Referente:</span>
+              <div class="text">{{ c.number }}</div>
+            </div>
+          </div>
+          <div class="totals">
+            <div class="monto">$ 413.186</div>
+            <div class="estado">
+              <span>Contrato no disponible para pago</span>
+            </div>
+          </div>
+          <div class="descargar-container">
+            <button class="descargar">
+              <img src="/images/download.svg" />
+            </button>
+          </div>
+        </div>
+        } }
+      </div>
+    </div>
+    <div class="right">
+      <div class="sum-contract-card">
+        <div class="header">Suma de factura <br />seleccionadas</div>
+        <div class="content">Número de contratos seleccionados</div>
+        <div class="total">$ 0</div>
+        <div class="button">
+          <button class="filled-button w100">Pagar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

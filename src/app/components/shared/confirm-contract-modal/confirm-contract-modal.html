@@ -1,0 +1,31 @@
+<div
+  class="modal-overlay"
+  *ngIf="visible"
+  [ngClass]="{ 'fade-in': !fadeOut, 'fade-out': fadeOut }"
+  (click)="closeModal()"
+>
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeModal()">×</button>
+
+    <h2>Validación para<br />la inscripción</h2>
+    <p>Confirma el número del contrato</p>
+
+    <div class="input-group">
+      <input
+        id="contract"
+        type="text"
+        [(ngModel)]="contractNumber"
+        autocomplete="off"
+        placeholder=""
+        disabled
+      />
+      <label for="contract">Contrato*</label>
+      <span class="bar"></span>
+    </div>
+
+    <div class="actions">
+      <button class="btn cancel" (click)="closeModal()">Cancelar</button>
+      <button class="btn validate" (click)="confirm()">Validar</button>
+    </div>
+  </div>
+</div>

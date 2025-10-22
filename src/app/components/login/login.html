@@ -1,0 +1,44 @@
+<app-header></app-header>
+
+<div class="login-container">
+    <div class="login-box">
+        <h2>Iniciar sesión</h2>
+        <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+
+
+            <div class="input-group">
+                <input placeholder="Correo electrónico" type="email" id="email" name="email" [(ngModel)]="email" autocomplete="off" />
+                <span class="bar"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <input placeholder="Contraseña" type="password" id="password" name="password" [(ngModel)]="password" autocomplete="off" />
+                <span class="bar"></span>
+            </div>
+
+
+            <!--
+            <div class="g-recaptcha" data-sitekey="6LdZv9UrAAAAAAMqu95t_dohnkWflvdwh60Qzd5D-CWlcBX
+"></div>
+            -->
+            <div class="input-group center">
+                <button type="submit" class="btn-continuar" [disabled]="!loginForm.form.valid">
+                    Continuar
+                    <span class="icono">
+                        <img src="/images/flecha.png" alt="Flecha" />
+                    </span>
+                </button>
+            </div>
+
+            <a routerLink="/register">¿No tienes una cuenta? Regístrate</a>
+
+        </form>
+        @if (errorMessage) {
+        <div class="error-message">{{ errorMessage }}</div>
+        }
+        @if (successMessage) {
+        <div class="success-message">{{ successMessage }}</div>
+        }
+    </div>
+</div>

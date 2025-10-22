@@ -1,0 +1,81 @@
+<app-header></app-header>
+<div class="container">
+  <a href="/dashboard" class="volver">Volver a la página principal</a>
+
+  <h2>Ver mis históricos</h2>
+
+  <div class="filtros-container">
+    <div class="filtro-box">
+      <div class="select-wrapper" [class.open]="openSelect">
+        <label for="grado" class="md-label">Grado</label>
+
+        <!-- no uses (click) aquí -->
+        <select id="grado" (focus)="onFocus()" (blur)="onBlur()" aria-label="Grado">
+          <option *ngFor="let o of opciones" [value]="o.value">{{ o.label }}</option>
+        </select>
+
+        <!-- flecha independiente (pointer-events: none para no bloquear el select) -->
+        <span class="arrow" aria-hidden="true"></span>
+      </div>
+    </div>
+
+    <div class="filtro-box">
+      <label>Seleccionar factura</label>
+      <div class="factura-select">
+        <select>
+          <option>{{ facturaSeleccionada }}</option>
+        </select>
+        <button class="consultar-btn">Consultar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="facturas-table">
+      <thead>
+        <tr>
+          <th>Año/mes</th>
+          <th>Número factura</th>
+          <th>Valor factura</th>
+          <th>Pago sin recargo</th>
+          <th>Pagado en</th>
+          <th>Fecha de pago</th>
+          <th>Descargar PDF</th>
+          <th>Factura electrónica</th>
+          <th>Ver comprobante de pago</th>
+          <th>Número de aprobación (CUS)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let factura of paginatedInvoices">
+          <td>{{ factura.createdAt | date : 'yyyy/MMM' | uppercase }}</td>
+          <td>{{ factura.payment.reference }}</td>
+          <td>{{ factura.payment.amount.total | currency : 'COP' }}</td>
+          <td>—</td>
+          <td>BANCOLOMBIA</td>
+          <td>{{ factura.expirationDate | date : 'dd/MM/yyyy' }}</td>
+          <td style="text-align: center">
+            <img src="/images/descargar.png" alt="Descargar" (click)="generarPdf()" />
+          </td>
+          <td style="text-align: center"><img src="/images/descargar.png" alt="Descargar" /></td>
+          <td>No disponible</td>
+          <td>No disponible</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="paginacion">
+      <a href="#" [class.disabled]="currentPage === 1" (click)="goToFirst($event)"
+        >← Ir al primero</a
+      >
+      <a href="#" [class.disabled]="currentPage === 1" (click)="prevPage($event)">Anterior</a>
+      <span class="page-number">{{ currentPage }} / {{ totalPages }}</span>
+      <a href="#" [class.disabled]="currentPage === totalPages" (click)="nextPage($event)"
+        >Siguiente</a
+      >
+      <a href="#" [class.disabled]="currentPage === totalPages" (click)="goToLast($event)"
+        >Ir al último →</a
+      >
+    </div>
+  </div>
+</div>

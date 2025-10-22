@@ -1,0 +1,14 @@
+<div class="success-overlay" *ngIf="visible" (click)="close()">
+  <div class="success-modal" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="close()" aria-label="Cerrar">✕</button>
+
+    <div class="icon-container">
+      <div class="checkmark">&#10003;</div>
+    </div>
+
+    <h2>Todo salió bien</h2>
+    <p>Tu factura se inscribió de forma correcta.</p>
+
+    <button class="btn-close" (click)="close()">Cerrar</button>
+  </div>
+</div>

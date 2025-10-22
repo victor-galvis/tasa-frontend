@@ -1,0 +1,33 @@
+<div class="header">
+  <div class="logo">
+    <img src="/images/gobernacion.png" alt="Logo" width="200" />
+  </div>
+  <div class="banner">
+    <span class="text-tasa">Tasa de</span>
+    <span class="text-seguridad">Seguridad</span>
+
+    <div class="user" (click)="toggleSesionContainer()">{{ initials }}</div>
+
+    @if (showSesionContainer) {
+    <div class="session_user_container">
+      <div class="body">
+        <div class="close_session">
+          <div class="logout">
+            <a (click)="logout()" style="cursor: pointer">Cerrar sesión</a>
+          </div>
+        </div>
+        <div class="info_user_contaier">
+          <div class="left">
+            <div class="user-icon">{{ initials }}</div>
+          </div>
+          <div class="right">
+            <div class="name">{{ user?.name }} {{ user?.lastname }}</div>
+            <div class="email">{{ user.email }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="footer"></div>
+    </div>
+    }
+  </div>
+</div>

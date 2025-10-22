@@ -1,0 +1,23 @@
+<div *ngIf="visible" class="modal-overlay" (click)="onBackdropClick()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="close.emit()">✕</button>
+
+    <div class="modal-content">
+      <div class="icon-circle">
+        <span>i</span>
+      </div>
+
+      <h2>Contratos no encontradas</h2>
+      <p class="message">
+        No se encontraron facturas relacionadas al usuario. Tal vez no tengas ninguna factura
+        inscrita hasta el momento, te invitamos a hacerlo. O ir a la opción <b>Ver facturas</b> si
+        quieres validar otras.
+      </p>
+
+      <div class="actions">
+        <!--<button class="btn secondary" (click)="viewInvoices.emit()">Ver Facturas</button>-->
+        <button class="btn primary" (click)="onRegisterInvoices()">Inscribir contrato</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<div class="modal-overlay" *ngIf="visible" [ngClass]="{ 'fade-in': !fadeOut, 'fade-out': fadeOut }">
+  <div class="modal-container" [ngClass]="type">
+    <button class="close-btn" (click)="closeModal()">×</button>
+
+    <div class="icon" [ngClass]="type">
+      <span *ngIf="type === 'success'">✔</span>
+      <span *ngIf="type === 'error'">✖</span>
+    </div>
+
+    <h2>{{ title }}</h2>
+    <p [innerHTML]="message"></p>
+
+    <button class="action-btn" [ngClass]="type" (click)="confirmAction()">
+      {{ buttonText }}
+    </button>
+  </div>
+</div>

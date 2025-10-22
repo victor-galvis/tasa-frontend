@@ -1,0 +1,63 @@
+.banner {
+  display: block;
+  background-image: url('/images/home.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  height: 400px;
+  position: relative;
+}
+
+.menu {
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+}
+.menu-item {
+  width: 160px;
+  border-radius: 10px;
+  margin: 10px;
+}
+.logo-container {
+  width: 250px;
+  height: 120px;
+  background-color: white;
+  border-bottom-right-radius: 50px;
+  position: absolute;
+  background-image: url('/images/gobernacion.png');
+  background-repeat: no-repeat;
+  top: 0;
+  left: 0;
+}
+.tasa-container {
+  width: 350px;
+  height: 120px;
+  background-color: #075c48;
+  border-top-right-radius: 120px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-image: url('/images/tasa-text-home.png');
+  background-repeat: no-repeat;
+  background-position: 20px 20px;
+}
+
+.btn-wrapper {
+  width: 160px;
+  height: 50px;
+  position: absolute;
+  top: 190px;
+  left: 120px;
+  padding: 0;
+}
+.btn-wrapper:hover {
+  cursor: pointer;
+}
+.btn-registro-login {
+  width: 160px;
+  height: 50px;
+
+  background-image: url('/images/btn.png');
+  background-repeat: no-repeat;
+}

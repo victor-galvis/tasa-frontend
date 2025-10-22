@@ -1,0 +1,141 @@
+.header {
+  width: 100%;
+  height: 120px;
+  background-color: #075c48;
+  display: flex;
+}
+
+.logo {
+  width: 300px;
+  height: 120px;
+  background-color: white;
+  float: left;
+  border-bottom-right-radius: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner {
+  height: 120px;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user,
+.user-icon {
+  width: 48px;
+  height: 48px;
+  border: 1px solid white;
+  color: white;
+  font-weight: normal;
+  font-size: 20px;
+  border-radius: 50%;
+  right: 0;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+}
+.user:hover {
+  background-color: white;
+  color: #075c48;
+  cursor: pointer;
+}
+.user-icon {
+  border: 1px solid black;
+  color: black;
+  font-weight: normal;
+  font-size: 24px;
+  width: 64px;
+  height: 64px;
+  position: relative;
+}
+.name {
+  font-weight: bold;
+}
+.email {
+  font-size: 12px;
+}
+.session_user_container {
+  position: relative;
+  width: 300px;
+  height: 160px;
+  background-color: white;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+  top: 120px;
+  box-shadow: 0 24px 54px rgba(0, 0, 0, 0.15), 0 4.5px 13.5px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+.session_user_container .body {
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+}
+.close_session {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  display: flex;
+  justify-content: flex-end;
+  font-weight: normal;
+}
+.logout {
+  width: max-content;
+  height: 100%;
+  padding-right: 24px;
+  padding-left: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.logout:hover {
+  cursor: pointer;
+  background-color: #e0e0e0;
+}
+.session_user_container .footer {
+  width: 100%;
+  height: 30px;
+  background-color: #eeeeee;
+}
+.info_user_contaier {
+  width: 100%;
+  height: 105px;
+  display: flex;
+}
+.info_user_contaier .left {
+  height: 100%;
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.info_user_contaier .right {
+  height: 100%;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.text-tasa {
+  font-size: 36px;
+  color: white;
+  font-weight: lighter;
+  display: block;
+}
+
+.text-seguridad {
+  font-size: clamp(26px, 34px, 50px);
+  font-size: 50px;
+  color: white;
+  font-weight: bolder;
+  display: block;
+  margin-left: 10px;
+}

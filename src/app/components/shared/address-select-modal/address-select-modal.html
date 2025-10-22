@@ -1,0 +1,23 @@
+<div *ngIf="visible" class="modal-overlay" (click)="close()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Confirmar dirección del contrato</h3>
+      <button type="button" class="btn-close" (click)="close()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div *ngFor="let address of addresses" class="radio-container">
+        <label class="custom-radio">
+          <input type="radio" name="direccion" [value]="address" [(ngModel)]="selectedAddress" />
+          <span class="radio-mark"></span>
+          <span class="radio-label">{{ address }}</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn ghost" (click)="close()">Cancelar</button>
+      <button type="button" class="btn-continuar" (click)="confirm()">Confirmar</button>
+    </div>
+  </div>
+</div>

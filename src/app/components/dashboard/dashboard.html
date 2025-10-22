@@ -1,0 +1,86 @@
+<app-header></app-header>
+
+<app-contract-modal
+  [(visible)]="showContractModal"
+  (saved)="onContractSaved($event)"
+></app-contract-modal>
+
+<app-custom-modal
+  [visible]="showCustomModal"
+  title="{{ customModalTitle }}"
+  message="{{ customModalMessage }}"
+  type="{{ customModalType }}"
+  buttonText="{{ customModalButtonText }}"
+  (confirmed)="onRetry()"
+  (closed)="onClose()"
+></app-custom-modal>
+
+<app-no-contracts-modal
+  [visible]="showNoContracts"
+  (close)="onNoContractsClosed()"
+  (viewInvoices)="onViewContracts()"
+  (registerInvoices)="onRegisterInvoices()"
+></app-no-contracts-modal>
+
+<div class="home-container">
+  <div class="logout"></div>
+  <div class="home-box">
+    <div class="welcome">Hola, {{ user?.name }} {{ user?.lastname }}</div>
+    <p>Bienvenido a la plataforma de pagos</p>
+  </div>
+
+  <div class="home-items">
+    <div class="item">
+      <img src="/images/notificaciones.png" alt="Icono Pagos" />
+    </div>
+    <div class="item">
+      <img src="/images/historial de pagos.png" alt="Icono Pagos" />
+    </div>
+    <div class="item">
+      <a routerLink="/contracts">
+        <img src="/images/facturas.png" alt="Icono Pagos" />
+      </a>
+    </div>
+    <div class="item">
+      <a routerLink="/invoices">
+        <img src="/images/descargar factura.png" alt="Icono Pagos" />
+      </a>
+    </div>
+    <div class="item" (click)="openContractModal(); $event.preventDefault()">
+      <img src="/images/inscribir-contratos.png" alt="Inscribir contratos" />
+    </div>
+    <div class="item">
+      <a routerLink="/contracts">
+        <img src="/images/ver-contratos.png" alt="Icono Pagos" />
+      </a>
+    </div>
+  </div>
+
+  <!--
+  <div class="submenu">
+    <h3>Administrar contratos</h3>
+    <div class="submenu-items">
+      <div class="submenu-item">
+        <div class="icon green">
+          <img src="/images/plus.png" alt="Agregar Contratos" />
+        </div>
+        <a href="" class="submenu-link" (click)="openContractModal(); $event.preventDefault()">
+          <span class="title">Inscribir</span> <br />
+          <span class="subtitle">Contratos</span>
+        </a>
+        
+      </div>
+      <div class="submenu-item">
+        <div class="icon green">
+          <img src="/images/eye.png" alt="Ver Contratos" />
+        </div>
+        <a routerLink="/contracts" class="submenu-link">
+          <span class="title">Ver</span> <br />
+          <span class="subtitle">Contratos</span>
+        </a>
+      </div>
+    </div>
+    
+  </div>
+  -->
+</div>

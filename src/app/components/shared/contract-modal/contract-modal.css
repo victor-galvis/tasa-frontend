@@ -1,0 +1,290 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+
+.modal {
+  width: 480px;
+  max-width: calc(100% - 40px);
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+
+  display: flex;
+  flex-direction: column;
+
+  /* importante: que el modal no supere la ventana y permita que el body crezca */
+  max-height: calc(100vh - 40px);
+}
+
+.modal-header {
+  background: #075c48;
+  color: #fff;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.error-message-container {
+  width: 100%;
+  left: 0;
+  top: 40px;
+  position: absolute;
+  display: flex;
+}
+.error-message-circle {
+  width: 16px;
+  height: 16px;
+  background-color: #e53935;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  border-radius: 50%;
+  margin-right: 5px;
+  font-size: 10px;
+}
+.error-message-input {
+  color: #e53935;
+  font-size: 10px;
+  margin-top: 4px;
+  width: 100%;
+  font-weight: bold;
+}
+.modal-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.btn-close {
+  background: #fff;
+  color: #0b7a36;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+
+  /* permite que el body crezca y empuje el footer al final */
+  flex: 1 1 auto;
+
+  /* imprescindible para que los hijos flexibles hagan scroll correctamente en algunos navegadores */
+  min-height: 0;
+
+  overflow-y: auto;
+}
+.up {
+  display: flex;
+  width: 100%;
+}
+.up .left {
+  width: 50%;
+  padding: 5px;
+}
+.up .right {
+  width: 50%;
+  height: 100%;
+  padding: 5px;
+}
+.info-text-container {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  border: 1px solid #075c48;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+}
+.info-text-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background-color: #075c48;
+  color: black;
+  font-weight: bold;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+}
+.up .right .info-text-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #075c48;
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+}
+
+.info-text {
+  max-width: 90%;
+  color: #075c48;
+  font-size: 10px;
+  font-weight: bolder;
+}
+.address-container {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: gray;
+  background-color: #e5e5e5;
+  font-weight: bold;
+}
+.contrat-container-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+.verify-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+}
+
+.contract-container {
+  width: 100%;
+  font-size: 12px;
+  color: gray;
+  font-weight: bold;
+}
+.verified {
+  border-radius: 10px;
+  margin: 5px;
+  padding: 5px;
+  background-color: #e5e5e5;
+}
+.location-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+  gap: 10px;
+}
+.modal-footer {
+  display: flex;
+  justify-content: flex-end; /* botones alineados a la derecha */
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+.modal-footer .input-group {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+}
+.modal-footer .input-group.center {
+  justify-content: flex-start;
+}
+.down {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 50%;
+}
+.text-retrieve-info {
+  color: gray;
+  font-weight: bold;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+.down .left {
+  width: 50%;
+  height: 100%;
+}
+.down .right {
+  width: 50%;
+  height: 100%;
+}
+.radios-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 480px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.custom-radio {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-size: 16px;
+  margin: 6px 0;
+}
+
+.custom-radio input {
+  display: none;
+}
+
+.radio-mark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #2e7d32;
+  border-radius: 50%;
+  position: relative;
+  margin-right: 8px;
+  transition: all 0.2s ease;
+}
+
+.custom-radio input:checked + .radio-mark::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #2e7d32;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.radio-label {
+  color: #555;
+  font-size: 12px;
+}
+.font-18 {
+  font-size: 18px;
+}
+.font-12 {
+  font-size: 12px;
+}
+.info-text-gray {
+  color: gray;
+}
