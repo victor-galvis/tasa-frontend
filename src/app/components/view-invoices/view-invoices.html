@@ -7,25 +7,23 @@
   <div class="filtros-container">
     <div class="filtro-box">
       <div class="select-wrapper" [class.open]="openSelect">
-        <label for="grado" class="md-label">Grado</label>
+        <label for="grado" class="md-label">Contrato</label>
 
-        <!-- no uses (click) aquí -->
-        <select id="grado" (focus)="onFocus()" (blur)="onBlur()" aria-label="Grado">
-          <option *ngFor="let o of opciones" [value]="o.value">{{ o.label }}</option>
+        <select
+          id="grado"
+          (change)="onChangeContrato($event)"
+          (focus)="onFocus()"
+          (blur)="onBlur()"
+          aria-label="Grado"
+        >
+          <option value="0">Seleccione una opción</option>
+          @for (o of contracts; track o.id) {
+          <option [value]="o.id">{{ o.number }}</option>
+          }
         </select>
 
         <!-- flecha independiente (pointer-events: none para no bloquear el select) -->
         <span class="arrow" aria-hidden="true"></span>
-      </div>
-    </div>
-
-    <div class="filtro-box">
-      <label>Seleccionar factura</label>
-      <div class="factura-select">
-        <select>
-          <option>{{ facturaSeleccionada }}</option>
-        </select>
-        <button class="consultar-btn">Consultar</button>
       </div>
     </div>
   </div>
@@ -34,32 +32,27 @@
     <table class="facturas-table">
       <thead>
         <tr>
-          <th>Año/mes</th>
+          <th>Estado</th>
+          <th>Fecha factura</th>
+
           <th>Número factura</th>
           <th>Valor factura</th>
-          <th>Pago sin recargo</th>
-          <th>Pagado en</th>
-          <th>Fecha de pago</th>
+          <th>Dirección</th>
+          <th>Fecha de vencimiento</th>
           <th>Descargar PDF</th>
-          <th>Factura electrónica</th>
-          <th>Ver comprobante de pago</th>
-          <th>Número de aprobación (CUS)</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let factura of paginatedInvoices">
-          <td>{{ factura.createdAt | date : 'yyyy/MMM' | uppercase }}</td>
-          <td>{{ factura.payment.reference }}</td>
-          <td>{{ factura.payment.amount.total | currency : 'COP' }}</td>
-          <td>—</td>
-          <td>BANCOLOMBIA</td>
-          <td>{{ factura.expirationDate | date : 'dd/MM/yyyy' }}</td>
-          <td style="text-align: center">
-            <img src="/images/descargar.png" alt="Descargar" (click)="generarPdf()" />
-          </td>
+        @for (d of paginatedInvoices; track i; let i = $index) { }
+
+        <tr *ngFor="let invoice of paginatedInvoices">
+          <td>{{ invoice.status }}</td>
+          <td>{{ formatDate(invoice.createdAt) }}</td>
+          <td>{{ invoice.reference }}</td>
+          <td>{{ invoice.total | currency : 'COP ' }}</td>
+          <td>{{ invoice.address }}</td>
+          <td>{{ formatDate(invoice.expirationDate) }}</td>
           <td style="text-align: center"><img src="/images/descargar.png" alt="Descargar" /></td>
-          <td>No disponible</td>
-          <td>No disponible</td>
         </tr>
       </tbody>
     </table>

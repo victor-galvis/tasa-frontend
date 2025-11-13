@@ -1,15 +1,10 @@
 import { Component } from '@angular/core';
 import { ContractService } from '../../services/contracts/contract.service';
 import { S3Service } from '../../services/s3/s3.service';
-
-interface Factura {
-  periodo: string;
-  numero: string;
-  valor: string;
-  pagoSinRecargo: string;
-  pagadoEn: string;
-  fechaPago: string;
-}
+import { AuthService } from '../../services/auth/auth.service';
+import { Contract } from '../../models/contract.model';
+import { InvoiceFilter } from '../../models/invoice/invoice.filter';
+import { Invoice } from '../../models/invoice/invoice.response';
 
 @Component({
   selector: 'app-view-invoices',
@@ -18,29 +13,41 @@ interface Factura {
   styleUrl: './view-invoices.css',
 })
 export class ViewInvoices {
-  invoices: any[] = [];
-  paginatedInvoices: any[] = [];
+  invoices: Invoice[] = [];
+  contracts: Contract[] = [];
 
-  // Paginación
+  paginatedInvoices: Invoice[] = [];
+
   currentPage = 1;
-  itemsPerPage = 5;
+  itemsPerPage = 10;
   totalPages = 0;
-
-  tipoConsulta = 'Facturas Inscritas';
-  facturaSeleccionada = '1056228 - Esmeraldas Víctor Galvis';
-
   openSelect = false;
+  user: any;
+  filters: InvoiceFilter = {
+    company: '',
+    agreement: '',
+    documentType: '',
+    document: '',
+  };
 
-  opciones = [
-    { value: '', label: 'Seleccione...' },
-    { value: '1', label: 'Primero' },
-    { value: '2', label: 'Segundo' },
-    { value: '3', label: 'Tercero' },
-  ];
-
-  constructor(private contractService: ContractService, private s3Service: S3Service) {}
+  constructor(
+    private contractService: ContractService,
+    private s3Service: S3Service,
+    private authService: AuthService
+  ) {}
   ngOnInit() {
+    this.user = this.authService.getUser();
+    console.log('Usuario en facturas', this.user);
+
+    this.filters = {
+      company: '',
+      agreement: '',
+      document: this.user.document,
+      documentType: this.user.documentType,
+    };
+
     this.loadInvoices();
+    this.loadContracts();
   }
 
   generarPdf() {
@@ -51,11 +58,46 @@ export class ViewInvoices {
     });
   }
 
+  onChangeContrato(event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+    console.log('Valor seleccionado:', value);
+    let contratoSeleccionado = this.contracts.find((c) => c.id === Number(value));
+    console.log('Valor seleccionado:', contratoSeleccionado);
+    if (contratoSeleccionado) {
+      this.filters.company = contratoSeleccionado.companyId;
+      this.filters.agreement = value;
+
+      this.loadInvoices();
+    }
+  }
   loadInvoices() {
-    this.contractService.getInvoices().subscribe((response) => {
-      this.invoices = response.data;
+    this.contractService.getInvoices(this.filters).subscribe((response) => {
+      this.invoices = response.data.map((i) => ({
+        ...i,
+        expirationDate: i.expirationDate.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
+        createdAt: i.createdAt.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
+      }));
       this.totalPages = Math.ceil(this.invoices.length / this.itemsPerPage);
       this.updatePaginatedData();
+    });
+  }
+
+  loadContracts() {
+    this.contractService.getByUser(this.user.id).subscribe({
+      next: (data) => {
+        console.log('Contratos', data);
+        this.contracts = data;
+        /*
+        this.contracts = data;
+        this.loading = false;
+        */
+      },
+      error: (err) => {
+        /*
+        this.loading = false;
+        console.error('❌ Error al cargar contratos', err);
+        */
+      },
     });
   }
 
@@ -97,7 +139,6 @@ export class ViewInvoices {
     }
   }
 
-  // Se activan con focus/blur del <select>
   onFocus() {
     this.openSelect = true;
   }
@@ -106,54 +147,8 @@ export class ViewInvoices {
     setTimeout(() => (this.openSelect = false), 0);
   }
 
-  facturas: Factura[] = [
-    {
-      periodo: '2025/ABRIL',
-      numero: '1448664244',
-      valor: '$514,986.11',
-      pagoSinRecargo: '13/05/2025',
-      pagadoEn: 'BANCOLOMBIA',
-      fechaPago: '02/05/2025',
-    },
-    {
-      periodo: '2025/MAYO',
-      numero: '1453275287',
-      valor: '$509,044.00',
-      pagoSinRecargo: '11/06/2025',
-      pagadoEn: 'BANCOLOMBIA',
-      fechaPago: '03/06/2025',
-    },
-    {
-      periodo: '2025/JUNIO',
-      numero: '1457934710',
-      valor: '$423,520.00',
-      pagoSinRecargo: '11/07/2025',
-      pagadoEn: 'BANCOLOMBIA',
-      fechaPago: '01/07/2025',
-    },
-    {
-      periodo: '2025/JULIO',
-      numero: '1462593390',
-      valor: '$412,882.00',
-      pagoSinRecargo: '11/08/2025',
-      pagadoEn: 'BANCOLOMBIA',
-      fechaPago: '29/07/2025',
-    },
-    {
-      periodo: '2025/AGOSTO',
-      numero: '1467354661',
-      valor: '$494,878.00',
-      pagoSinRecargo: '09/09/2025',
-      pagadoEn: 'BANCOLOMBIA',
-      fechaPago: '02/09/2025',
-    },
-    {
-      periodo: '2025/SEPTIEMBRE',
-      numero: '1471997150',
-      valor: '$413,185.73',
-      pagoSinRecargo: '19/09/2025',
-      pagadoEn: 'BANCOLOMBIA',
-      fechaPago: '15/09/2025',
-    },
-  ];
+  formatDate(dateString: string): string {
+    const date = new Date(dateString.replace('-5:00', '-05:00'));
+    return date.toISOString().split('T')[0];
+  }
 }

@@ -17,7 +17,7 @@ export class Header {
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
-    this.getInitials(this.user.name + ' ' + this.user.lastname);
+    if (this.user) this.getInitials(this.user.name + ' ' + this.user.lastname);
   }
   toggleSesionContainer() {
     this.showSesionContainer = !this.showSesionContainer;

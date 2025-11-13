@@ -10,7 +10,7 @@
 }
 
 .modal {
-  width: 480px;
+  width: 560px;
   max-width: calc(100% - 40px);
   background: #fff;
   border-radius: 8px;
@@ -164,13 +164,45 @@
   justify-content: center;
   margin-top: 10px;
 }
+.contract-container-data {
+  width: 50%;
+  height: 100%;
+  padding-right: 15px;
+}
+.contract-container {
+  width: 100px;
+}
 .verify-wrapper {
   width: 100%;
   display: flex;
   justify-content: flex-end;
   margin-top: 5px;
 }
-
+.fields_container {
+  display: flex;
+  height: max-content;
+  margin-top: 5px;
+  margin-right: 3px;
+}
+.companies {
+  width: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 5px;
+}
+.personalized_name {
+  width: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  flex: 0.5;
+  margin: 5px;
+}
+.personalized_name .input-group {
+  width: 100%;
+}
 .contract-container {
   width: 100%;
   font-size: 12px;
@@ -192,7 +224,7 @@
 }
 .modal-footer {
   display: flex;
-  justify-content: flex-end; /* botones alineados a la derecha */
+  justify-content: flex-end;
   align-items: center;
   padding: 1rem 1.5rem;
   border-top: 1px solid rgba(0, 0, 0, 0.06);
@@ -234,7 +266,7 @@
   flex-direction: column;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 560px) {
   .modal-body {
     grid-template-columns: 1fr;
   }

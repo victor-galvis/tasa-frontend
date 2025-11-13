@@ -1,7 +1,6 @@
 export interface Contract {
   id?: number;
   user_id: number;
-  companyId: string;
   number: string;
   name: string;
   deliveryMethod: string;

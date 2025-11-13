@@ -44,61 +44,67 @@
       </div>
 
       <div class="contrat-container-info">
-        <div class="contract-container" [ngClass]="{ verified: contractVerified }">
-          @if (contractVerified) {
-          <div>Contrato *</div>
-          <div>{{ contrato }}</div>
-          <div>Dirección</div>
-          <div>{{ correctAddress }}</div>
+        <div class="contract-container-data">
+          <div class="contract-container" [ngClass]="{ verified: contractVerified }">
+            @if (contractVerified) {
+            <div>Contrato *</div>
+            <div>{{ contrato }}</div>
+            <div>Dirección</div>
+            <div>{{ correctAddress }}</div>
 
-          } @else if (!contractVerified) {
-          <div class="input-group margin-custom">
-            <input
-              placeholder=""
-              type="text"
-              id="contrato"
-              name="contrato"
-              autocomplete="off"
-              formControlName="number"
-            />
-            <label for="name">Contrato *</label>
-            <span class="bar"></span>
+            } @else if (!contractVerified) {
+            <div class="input-group margin-custom">
+              <input
+                placeholder=""
+                type="text"
+                id="contrato"
+                name="contrato"
+                autocomplete="off"
+                formControlName="number"
+              />
+              <label for="name">Contrato *</label>
+              <span class="bar"></span>
+            </div>
+            }
           </div>
-          }
         </div>
 
-        <!--
-        <div class="info-text-icon">
-          <img src="/images/pregunta.png" alt="info" />
+        <div class="companies">
+          <label for="company" class="md-label">Comercializadora</label>
+          <select id="company" formControlName="companyId" (focus)="onFocus()" (blur)="onBlur()">
+            <option *ngFor="let o of companies" [value]="o.id">{{ o.name }}</option>
+          </select>
         </div>
-        -->
+      </div>
+
+      <div class="fields_container">
+        <div class="personalized_name">
+          <div class="input-group error.">
+            <input
+              placeholder=" "
+              type="text"
+              id="name"
+              name="name"
+              formControlName="name"
+              autocomplete="off"
+            />
+            <label for="name">Nombre personalizado *</label>
+            <span class="bar"></span>
+            @if (form.controls['name'].invalid && form.controls['name'].touched) {
+
+            <div class="error-message-container">
+              <span class="error-message-circle">x</span>
+              <span class="error-message-input"> Campo requerido</span>
+            </div>
+            }
+          </div>
+        </div>
       </div>
 
       <div class="verify-wrapper">
         <button type="button" class="outline-button font-12" (click)="verificarContrato()">
           Verificar contrato
         </button>
-      </div>
-
-      <div class="input-group error.">
-        <input
-          placeholder=" "
-          type="text"
-          id="name"
-          name="name"
-          formControlName="name"
-          autocomplete="off"
-        />
-        <label for="name">Nombre personalizado *</label>
-        <span class="bar"></span>
-
-        @if (form.controls['name'].invalid && form.controls['name'].touched) {
-
-        <div class="error-message-container">
-          <span class="error-message-circle">x</span>
-          <span class="error-message-input"> Campo requerido</span>
-        </div>
-        }
       </div>
 
       <div class="location-wrapper">
@@ -108,8 +114,6 @@
           <select id="province" formControlName="provinceId" (focus)="onFocus()" (blur)="onBlur()">
             <option *ngFor="let o of provinces" [value]="o.id">{{ o.name }}</option>
           </select>
-
-          <span class="arrow" aria-hidden="true"></span>
         </div>
 
         <div class="select-wrapper" [class.open]="openSelect">

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ContractService } from '../../services/contracts/contract.service';
 import { AuthService } from '../../services/auth/auth.service';
-import { Contract } from '../../models/contract.model';
+import { Contract } from '../../models/contract/contract.model';
 
 @Component({
   selector: 'app-contracts',

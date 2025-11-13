@@ -98,6 +98,7 @@ body {
 .input-group {
   position: relative;
   width: 100%;
+  margin: 1rem;
 }
 
 .input-group.center {
@@ -107,7 +108,6 @@ body {
 }
 
 .input-group input {
-  width: 100%;
   border: none;
   border-bottom: 1px solid #ccc;
   outline: none;
@@ -238,12 +238,7 @@ a {
   font-weight: bold;
 }
 
-.select-wrapper {
-  position: relative;
-  width: 100%;
-  margin-top: 8px;
-  font-family: 'Segoe UI', sans-serif;
-}
+/*
 
 select {
   width: 100%;
@@ -255,13 +250,11 @@ select {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Efecto Material verde */
 select:focus {
   border-color: #00764b;
   box-shadow: 0 0 4px rgba(0, 118, 75, 0.4);
   outline: none;
 }
-/* label estilo material */
 .md-label {
   display: block;
   font-size: 13px;
@@ -269,8 +262,15 @@ select:focus {
   color: #00764b;
   margin-bottom: 6px;
 }
+*/
 
-/*
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 8px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 select {
   appearance: none;
   -webkit-appearance: none;
@@ -296,7 +296,8 @@ select:focus {
 select:hover {
   border-color: #009688;
 }
- 
+
+/*
 .select-wrapper .arrow {
   position: absolute;
   right: 8px;
@@ -310,28 +311,27 @@ select:hover {
   background-size: contain;
   transition: transform 0.25s ease;
 }
- 
+
 .select-wrapper.open .arrow {
   transform: translateY(-50%) rotate(180deg);
 }
- 
+
 .select-wrapper.open select {
   border-bottom-color: #00764b;
   box-shadow: 0 1px 0 0 rgba(0, 118, 75, 0.18);
-} 
+}
 select option {
-  background-color: #fff; 
+  background-color: #fff;
   color: #333;
 }
 
 select option:hover,
 select option:focus,
 select option:checked {
-  background-color: #e0f2f1; 
+  background-color: #e0f2f1;
   color: #000;
 }
 */
-
 .loading-wrapper {
   position: fixed;
   top: 0;

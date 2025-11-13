@@ -16,6 +16,7 @@ import { CityModel } from '../../../models/city.model';
 import { ProvinceModel } from '../../../models/provice.model';
 import { CityService } from '../../../services/city/city.service';
 import { ProvinceService } from '../../../services/province/province.service';
+import { Company, CompanyService } from '../../../services/company/company.service';
 
 @Component({
   selector: 'app-contract-modal',
@@ -44,6 +45,7 @@ export class ContractModal implements OnInit, OnChanges {
 
   provinces: ProvinceModel[] = [];
   cities: CityModel[] = [];
+  companies: Company[] = [];
   openSelect = false;
 
   constructor(
@@ -51,28 +53,30 @@ export class ContractModal implements OnInit, OnChanges {
     private authService: AuthService,
     private contractService: ContractService,
     private provinceService: ProvinceService,
-    private cityService: CityService
+    private cityService: CityService,
+    private companyService: CompanyService
   ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      number: ['', Validators.required],
+      number: ['6587164', Validators.required],
       name: ['', Validators.required],
       provinceId: [1, Validators.required],
       cityId: [1, Validators.required],
+      companyId: [14, Validators.required],
       deliveryMethod: ['digital', Validators.required],
       address: [this.correctAddress],
     });
     this.form.get('name')?.valueChanges.subscribe((value) => {
-      console.log('Nombre personalizado:', value);
+      //console.log('Nombre personalizado:', value);
     });
     this.loadProvinces();
     this.loadCities(1);
+    this.loadCompanies();
   }
   onFocus() {
     this.openSelect = true;
   }
-
   onBlur() {
     setTimeout(() => (this.openSelect = false), 0);
   }
@@ -80,11 +84,9 @@ export class ContractModal implements OnInit, OnChanges {
     this.showValidationModal = false;
     this.contractVerified = false;
   }
-
   onValidate(contract: string) {
     this.onSaveContract();
   }
-
   verificarContrato() {
     this.contrato = this.form.get('number')?.value;
     if (!this.contrato) {
@@ -95,24 +97,49 @@ export class ContractModal implements OnInit, OnChanges {
     this.errorMessage = '';
 
     this.loading = true;
-    this.contractService.getInvoices().subscribe((response) => {
-      this.loading = false;
 
-      const randomIndex = Math.floor(Math.random() * response.data.length);
-      this.addressFromServerList = response.data.map((data: any) => {
-        return data.debtor.name;
-      });
-
-      this.correctAddress = response.data[randomIndex].debtor.name;
-
-      const randomFakes = Array.from({ length: 4 }, () => this.generateRandomAddress());
-
-      const allAddresses = this.shuffleArray([...randomFakes, this.correctAddress]);
-
-      this.addressList = allAddresses;
-
-      this.showAddressModal = true;
+    console.log('Verificando contrato:', {
+      company: this.form.get('companyId')?.value,
+      agreement: this.form.get('number')?.value,
     });
+
+    this.contractService
+      .validateContract({
+        company: this.form.get('companyId')?.value,
+        agreement: this.form.get('number')?.value,
+      })
+      .subscribe({
+        next: (response) => {
+          this.loading = false;
+          console.log('✅ Response:', response);
+          if (response.status.status === 'OK') {
+            if (response.data.length > 0) {
+              this.correctAddress = response.data[0].address;
+              console.log('Dirección correcta del contrato:', response.data[0].address);
+
+              this.addressFromServerList = response.data.map((data: any) => {
+                return data.address;
+              });
+
+              const randomFakes = Array.from({ length: 4 }, () => this.generateRandomAddress());
+
+              const allAddresses = this.shuffleArray([...randomFakes, this.correctAddress]);
+
+              this.addressList = allAddresses;
+
+              this.showAddressModal = true;
+            }
+          } else {
+            this.errorMessage = `Error al validar el contrato: ${response.status.message}`;
+            console.error('Error al validar el contrato:', response.status.message);
+          }
+        },
+        error: (err) => {
+          this.loading = false;
+          this.errorMessage = `Error en la petición: ${err.message}`;
+          console.error('Error en la petición:', err);
+        },
+      });
   }
   private generateRandomAddress(): string {
     const calle = this.randomInt(1, 100);
@@ -125,7 +152,6 @@ export class ContractModal implements OnInit, OnChanges {
 
     return `CL ${calle}${sufijoCalle} CR ${carrera}${sufijoCarrera} -${numero}${interior}`;
   }
-
   private shuffleArray<T>(array: T[]): T[] {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {
@@ -134,15 +160,12 @@ export class ContractModal implements OnInit, OnChanges {
     }
     return arr;
   }
-
   private randomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-
   private randomItem<T>(arr: T[]): T {
     return arr[Math.floor(Math.random() * arr.length)];
   }
-
   onAddressSelected(address: string) {
     console.log('Dirección seleccionada:', address);
     this.address = address;
@@ -161,7 +184,6 @@ export class ContractModal implements OnInit, OnChanges {
       console.log('❌ Dirección incorrecta:', address);
     }
   }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
       // foco en el input del contrato cuando se abra
@@ -171,16 +193,12 @@ export class ContractModal implements OnInit, OnChanges {
       }, 0);
     }
   }
-
   close() {
     this.visibleChange.emit(false);
   }
-
   backdropClick() {
-    // cerrar al hacer click fuera del modal
     this.close();
   }
-
   onVerifyAddress() {
     if (this.form.get('number')?.invalid) {
       this.form.get('number')?.markAsTouched();
@@ -200,7 +218,6 @@ export class ContractModal implements OnInit, OnChanges {
       this.contractVerified = true;
     }, 1200);
   }
-
   onSubmit() {
     console.log('this.form.invalid', this.form.invalid);
     if (this.form.invalid) {
@@ -248,6 +265,8 @@ export class ContractModal implements OnInit, OnChanges {
 
     const payload = this.form.value;
 
+    console.log('Payload to save:', payload);
+
     let user = this.authService.getUser();
     payload.user_id = user.id;
 
@@ -279,7 +298,6 @@ export class ContractModal implements OnInit, OnChanges {
       },
     });
   }
-
   loadProvinces(): void {
     this.provinceService.getProvinces().subscribe({
       next: (data) => {
@@ -297,6 +315,17 @@ export class ContractModal implements OnInit, OnChanges {
       },
       error: (err) => {
         console.error('Error al cargar las ciudades', err);
+      },
+    });
+  }
+  loadCompanies(): void {
+    this.companyService.getCompanies().subscribe({
+      next: (data) => {
+        this.companies = data;
+        console.log('Companies loaded', data);
+      },
+      error: (err) => {
+        console.error('Error al cargar las compañias', err);
       },
     });
   }

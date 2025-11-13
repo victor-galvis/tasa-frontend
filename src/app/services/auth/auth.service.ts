@@ -33,8 +33,9 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('access_token');
     localStorage.removeItem('user');
+    localStorage.removeItem('access_token');
+    this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
@@ -44,9 +45,11 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
-
   getUser() {
-    const raw = localStorage.getItem('user');
-    return raw ? JSON.parse(raw) : null;
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      const raw = localStorage.getItem('user');
+      return raw ? JSON.parse(raw) : null;
+    }
+    return null;
   }
 }
