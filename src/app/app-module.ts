@@ -22,7 +22,7 @@ import { AddressSelectModal } from './components/shared/address-select-modal/add
 import { SuccessModal } from './components/shared/success-modal/success-modal';
 import { CustomModal } from './components/shared/custom-modal/custom-modal';
 import { ConfirmContractModal } from './components/shared/confirm-contract-modal/confirm-contract-modal';
-import { Contracts } from './components/contracts/contracts';
+import { PendingPayments } from './components/pending-payments/pending-payments';
 
 export function playerFactory() {
   return player;
@@ -43,7 +43,7 @@ export function playerFactory() {
     SuccessModal,
     CustomModal,
     ConfirmContractModal,
-    Contracts,
+    PendingPayments,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, LottieComponent],
   providers: [

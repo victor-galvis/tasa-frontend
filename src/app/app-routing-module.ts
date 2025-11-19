@@ -5,7 +5,7 @@ import { Login } from './components/login/login';
 import { Home } from './components/home/home';
 import { Dashboard } from './components/dashboard/dashboard';
 import { ViewInvoices } from './components/view-invoices/view-invoices';
-import { Contracts } from './components/contracts/contracts';
+import { PendingPayments } from './components/pending-payments/pending-payments';
 
 const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'dashboard', component: Dashboard },
   { path: 'invoices', component: ViewInvoices },
-  { path: 'contracts', component: Contracts },
+  { path: 'pending-payments', component: PendingPayments },
   { path: '**', redirectTo: 'login' },
 ];
 

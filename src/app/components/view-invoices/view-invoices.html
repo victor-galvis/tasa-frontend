@@ -52,7 +52,11 @@
           <td>{{ invoice.total | currency : 'COP ' }}</td>
           <td>{{ invoice.address }}</td>
           <td>{{ formatDate(invoice.expirationDate) }}</td>
-          <td style="text-align: center"><img src="/images/descargar.png" alt="Descargar" /></td>
+          <td style="text-align: center"><img 
+            src="/images/descargar.png" 
+            alt="Descargar" 
+            style="cursor: pointer"
+            (click)="downloadInvoice(invoice)"/></td>
         </tr>
       </tbody>
     </table>

@@ -8,6 +8,8 @@ import { ContractFilter } from '../../models/contract/contract.filter';
 import { ContractResponse } from '../../models/contract/contract.response';
 import { InvoiceFilter } from '../../models/invoice/invoice.filter';
 import { InvoiceResponse } from '../../models/invoice/invoice.response';
+import { PendingPaymentFilter } from '../../models/pending-payments/pending.payment.filter';
+import { PendingPaymentResponse } from '../../models/pending-payments/pending.payment.response';
 
 @Injectable({
   providedIn: 'root',
@@ -41,6 +43,12 @@ export class ContractService {
 
   validateContract(filters: ContractFilter): Observable<ContractResponse> {
     return this.http.post<ContractResponse>(`${this.base}/contract/validate`, {
+      filters: filters,
+    });
+  }
+
+  pendingPayment(filters: PendingPaymentFilter): Observable<PendingPaymentResponse> {
+    return this.http.post<PendingPaymentResponse>(`${this.base}/contract/pending-payments`, {
       filters: filters,
     });
   }

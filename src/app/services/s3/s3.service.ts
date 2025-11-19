@@ -12,7 +12,13 @@ export class S3Service {
 
   constructor(private http: HttpClient) {}
 
-  getPdf(): Observable<PdfResponse> {
-    return this.http.get<PdfResponse>(this.base + '/files/pdf');
-  }
+  getPdf(numeroFactura: string, numeroDocumento: string): Observable<PdfResponse> {
+  const params = {
+    numero_factura: numeroFactura,
+    numero_documento: numeroDocumento
+  };
+
+  return this.http.get<PdfResponse>(`${this.base}/invoices/get-invoice`, { params });
+}
+
 }

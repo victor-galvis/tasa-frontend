@@ -42,32 +42,56 @@
         <span>Seleccione aquellos contractos que deseas pagar.</span>
       </div>
 
-      @if (!loading && contracts.length === 0) {
+        <div class="filtros-container">
+          <div class="filtro-box">
+            <div class="select-wrapper" [class.open]="openSelect">
+              <label for="grado" class="md-label">Contrato</label>
+
+              <select
+                id="contrato"
+                (change)="onChangeContrato($event)"
+                (focus)="onFocus()"
+                (blur)="onBlur()"
+                aria-label="Contrato"
+              >
+                <option value="0">Seleccione una opción</option>
+                @for (o of contracts; track o.id) {
+                <option [value]="o.id">{{ o.number }}</option>
+                }
+              </select>
+
+              <!-- flecha independiente (pointer-events: none para no bloquear el select) -->
+              <span class="arrow" aria-hidden="true"></span>
+            </div>
+          </div>
+      </div>
+
+      @if (!loading && pendingPayments.length === 0) {
       <div class="error">No hay contratos disponibles.</div>
       }
       <div class="info-contracts">
-        @for (c of contracts; track c.id) { @if (isGridView) {
+       @for (c of pendingPayments; track $index)  { @if (isGridView) {
         <div class="contract-card">
           <div class="contract-header">
             <label class="custom-checkbox">
               <input type="checkbox" (change)="actualizarTotal()" />
               <span class="checkmark" aria-hidden="true"></span>
-              <span class="nombre">{{ c.name }}</span>
+              <span class="nombre">{{ c.company }}</span>
             </label>
           </div>
           <div class="contract-detalle">
             <table>
               <tr>
                 <td><span>Contrato:</span></td>
-                <td class="text">1056228</td>
+                <td class="text">{{ c.document }}</td>
               </tr>
               <tr>
                 <td><span>Referente:</span></td>
-                <td class="text">{{ c.number }}</td>
+                <td class="text">{{ c.reference }}</td>
               </tr>
             </table>
 
-            <p class="monto">$ 413.186</p>
+            <p class="monto">{{ c.total | number:'1.0-0' }}</p>
             <div class="estado">
               <span>Contrato no disponible para pago</span>
               <div class="descargar-container">
@@ -84,21 +108,21 @@
             <label class="custom-checkbox">
               <input type="checkbox" (change)="actualizarTotal()" />
               <span class="checkmark" aria-hidden="true"></span>
-              <span class="nombre">{{ c.name }}</span>
+              <span class="nombre">{{ c.company }}</span>
             </label>
           </div>
           <div class="detail">
             <div class="line-detail">
               <span>Contrato:</span>
-              <div class="text">1056228</div>
+              <div class="text">{{c.document}}</div>
             </div>
             <div class="line-detail">
               <span>Referente:</span>
-              <div class="text">{{ c.number }}</div>
+              <div class="text">{{ c.reference }}</div>
             </div>
           </div>
           <div class="totals">
-            <div class="monto">$ 413.186</div>
+            <div class="monto">$ {{ c.total | number:'1.0-0' }}</div>
             <div class="estado">
               <span>Contrato no disponible para pago</span>
             </div>

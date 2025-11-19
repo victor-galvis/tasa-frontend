@@ -46,18 +46,17 @@ export class ViewInvoices {
       documentType: this.user.documentType,
     };
 
+    console.log('******************************');
+    console.log(this.filters);
+    console.log(this.user);
+    console.log('******************************');
+
     this.loadInvoices();
+
     this.loadContracts();
   }
 
-  generarPdf() {
-    this.s3Service.getPdf().subscribe({
-      next: (res) => {
-        window.open(res.url, '_blank');
-      },
-    });
-  }
-
+ 
   onChangeContrato(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
     console.log('Valor seleccionado:', value);
@@ -86,17 +85,25 @@ export class ViewInvoices {
     this.contractService.getByUser(this.user.id).subscribe({
       next: (data) => {
         console.log('Contratos', data);
-        this.contracts = data;
-        /*
-        this.contracts = data;
-        this.loading = false;
-        */
+        this.contracts = data; 
       },
       error: (err) => {
         /*
         this.loading = false;
         console.error('❌ Error al cargar contratos', err);
         */
+      },
+    });
+  }
+
+  downloadInvoice(invoice: any) {
+    console.log('Factura seleccionada:', invoice.reference);
+    console.log('Factura seleccionada:', this.user.document);
+    // Aquí haces la descarga real
+
+     this.s3Service.getPdf(invoice.reference, this.user.document).subscribe({
+      next: (res) => {
+        window.open(res.url, '_blank');
       },
     });
   }
