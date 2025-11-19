@@ -6,9 +6,11 @@
     <span class="text-tasa">Tasa de</span>
     <span class="text-seguridad">Seguridad</span>
 
-    <div class="user" (click)="toggleSesionContainer()">{{ initials }}</div>
+    @if ( user ) {
+      <div class="user" (click)="toggleSesionContainer()">{{ initials }}</div>
+    }
 
-    @if (showSesionContainer) {
+    @if (showSesionContainer && user ) {
     <div class="session_user_container">
       <div class="body">
         <div class="close_session">
