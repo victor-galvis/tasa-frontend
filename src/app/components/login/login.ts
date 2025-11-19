@@ -17,6 +17,7 @@ export class Login {
   constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit(): void {
+    console.log('Intentando iniciar sesión con:', this.email, this.password);
     this.authService.login(this.email, this.password).subscribe({
       next: (res) => {
         console.log('Login exitoso:', res);
