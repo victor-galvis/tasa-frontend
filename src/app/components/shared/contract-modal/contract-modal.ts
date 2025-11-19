@@ -59,7 +59,7 @@ export class ContractModal implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      number: ['6587164', Validators.required],
+      number: ['', Validators.required],
       name: ['', Validators.required],
       provinceId: [1, Validators.required],
       cityId: [1, Validators.required],
