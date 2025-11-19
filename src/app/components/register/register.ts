@@ -26,7 +26,7 @@ export class Register {
   step = 1;
   form: FormGroup;
   aceptaTerminos: boolean = false;
-  email: string = 'nelsonperlaza@gmail.com';
+  email: string = '';
   btnDisabled: boolean = true;
   loading = false;
   documentTypes: DocumentTypes[] = [];
