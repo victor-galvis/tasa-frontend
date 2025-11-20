@@ -1,5 +1,17 @@
 <app-header></app-header>
 
+
+<app-custom-modal
+  [visible]="showCustomModal"
+  title="{{ customModalTitle }}"
+  message="{{ customModalMessage }}"
+  type="{{ customModalType }}"
+  buttonText="{{ customModalButtonText }}"
+  (confirmed)="onRetry()"
+  (closed)="onClose()"
+></app-custom-modal>
+
+
 <div class="registro-container">
   <h2>Cómo registrarme</h2>
   <div class="steps">
@@ -206,7 +218,7 @@
     </div>
 
     <label class="custom-checkbox">
-      <input type="checkbox" (change)="toggleTerminos()" />
+      <input type="checkbox"  (change)="onTerminosChange($event)" formControlName="aceptaTerminos" />
       <span class="check"></span>
       <span class="label-text">Aceptar términos y políticas de privacidad</span>
     </label>

@@ -1,4 +1,16 @@
 <div *ngIf="visible" class="modal-overlay" (click)="backdropClick()">
+
+  <app-custom-modal
+  [visible]="showCustomModal"
+  title="{{ customModalTitle }}"
+  message="{{ customModalMessage }}"
+  type="{{ customModalType }}"
+  buttonText="{{ customModalButtonText }}"
+  (confirmed)="onRetry()"
+  (closed)="onCloseCustomModel()"
+  
+></app-custom-modal>
+
   <app-address-select-modal
     [(visible)]="showAddressModal"
     [addresses]="addressList"

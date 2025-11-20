@@ -18,21 +18,22 @@ export class CustomModal {
 
   fadeOut = false;
 
-  closeModal() {
+  closeModal(event?: MouseEvent) {
+  if (event) event.stopPropagation();
     this.fadeOut = true;
     setTimeout(() => {
-      this.visible = false;
+      // NO cambiar directamente el @Input visible (mejor que el padre lo controle)
       this.fadeOut = false;
       this.closed.emit();
     }, 300);
   }
 
-  confirmAction() {
-    this.fadeOut = true;
-    setTimeout(() => {
-      this.visible = false;
-      this.fadeOut = false;
-      this.confirmed.emit();
-    }, 300);
-  }
+ confirmAction(event?: MouseEvent) {
+  if (event) event.stopPropagation();
+  this.fadeOut = true;
+  setTimeout(() => {
+    this.fadeOut = false;
+    this.confirmed.emit();
+  }, 300);
+}
 }

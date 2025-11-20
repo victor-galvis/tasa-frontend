@@ -48,6 +48,13 @@ export class ContractModal implements OnInit, OnChanges {
   companies: Company[] = [];
   openSelect = false;
 
+
+  showCustomModal = false;
+  customModalTitle = '';
+  customModalMessage = '';
+  customModalType = 'error';
+  customModalButtonText = '';
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -87,6 +94,13 @@ export class ContractModal implements OnInit, OnChanges {
   onValidate(contract: string) {
     this.onSaveContract();
   }
+  onRetry() {
+    this.showCustomModal = false; 
+  }
+
+  onCloseCustomModel() {
+    this.showCustomModal = false;
+  }
   verificarContrato() {
     this.contrato = this.form.get('number')?.value;
     if (!this.contrato) {
@@ -96,12 +110,7 @@ export class ContractModal implements OnInit, OnChanges {
     }
     this.errorMessage = '';
 
-    this.loading = true;
-
-    console.log('Verificando contrato:', {
-      company: this.form.get('companyId')?.value,
-      agreement: this.form.get('number')?.value,
-    });
+    this.loading = true; 
 
     this.contractService
       .validateContract({
@@ -128,6 +137,11 @@ export class ContractModal implements OnInit, OnChanges {
               this.addressList = allAddresses;
 
               this.showAddressModal = true;
+            } else {
+              this.customModalMessage = 'El contrato no existe o no está activo.';
+              this.customModalTitle = 'Contrato inválido';
+              this.customModalButtonText = 'Cerrar';
+              this.showCustomModal = true;  
             }
           } else {
             this.errorMessage = `Error al validar el contrato: ${response.status.message}`;
@@ -219,11 +233,9 @@ export class ContractModal implements OnInit, OnChanges {
     }, 1200);
   }
   onSubmit() {
-    console.log('this.form.invalid', this.form.invalid);
     if (this.form.invalid) {
       this.form.markAllAsTouched();
 
-      // Mostrar qué campos están inválidos y sus errores
       Object.keys(this.form.controls).forEach((key) => {
         const control = this.form.get(key);
         if (control && control.invalid) {
@@ -236,14 +248,12 @@ export class ContractModal implements OnInit, OnChanges {
       this.form.markAllAsTouched();
       return;
     }
-    console.log('this.contractVerified', this.contractVerified);
 
     if (!this.contractVerified) {
       this.errorMessage = 'Por favor verifica la dirección antes de inscribir el contrato.';
       return;
     }
 
-    console.log(this.showValidationModal);
     this.showValidationModal = true;
   }
   onSaveContract() {
@@ -263,9 +273,7 @@ export class ContractModal implements OnInit, OnChanges {
     this.loading = true;
     this.errorMessage = '';
 
-    const payload = this.form.value;
-
-    console.log('Payload to save:', payload);
+    const payload = this.form.value; 
 
     let user = this.authService.getUser();
     payload.user_id = user.id;
@@ -277,7 +285,10 @@ export class ContractModal implements OnInit, OnChanges {
         this.form.reset();
         this.showValidationModal = false;
 
-        console.log('✅ Response:', data);
+        this.form.get('provinceId')?.setValue(1);
+        this.form.get('cityId')?.setValue(1);
+        this.form.get('companyId')?.setValue(14);
+
         if (data) {
           this.saved.emit({
             status: 'success',

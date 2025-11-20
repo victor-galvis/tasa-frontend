@@ -21,6 +21,8 @@ import { CityModel } from '../../models/city.model';
   styleUrl: './register.css',
 })
 export class Register {
+
+  
   registerForm!: FormGroup;
 
   step = 1;
@@ -40,6 +42,41 @@ export class Register {
     path: '/loading.json', // pon aquí tu .json de Lottie
     loop: true,
     autoplay: true,
+  };
+
+  showCustomModal = false;
+  customModalTitle = '';
+  customModalMessage = '';
+  customModalType = 'error';
+  customModalButtonText = '';
+
+
+   validationMessages : any = {
+      email: {
+        required: 'El email es obligatorio',
+        email: 'El email no es válido'
+      },
+      documentTypeId: {
+        required: 'Debe seleccionar el tipo de documento'
+      },
+      identificationNumber: {
+        required: 'Debe ingresar su número de identificación'
+      },
+      name: {
+        required: 'Debe ingresar su nombre'
+      },
+      lastname: {
+        required: 'Debe ingresar su apellido'
+      },
+      password: {
+        required: 'Debe ingresar una contraseña'
+      },
+      confirmPassword: {
+        required: 'Debe confirmar la contraseña'
+      },
+      aceptaTerminos: {
+        required: 'Debe aceptar los términos y condiciones'
+      }
   };
 
   constructor(
@@ -68,14 +105,12 @@ export class Register {
     this.loadDocumentTypes();
     this.loadProvinces();
     this.loadCities(1);
-
+ 
     this.registerForm = this.fb.group({
-      email: [this.email, [Validators.required, Validators.email]],
-
+      email: ['', [Validators.required, Validators.email]], 
       documentTypeId: ['', Validators.required],
       province_id: [1, Validators.required],
-      cityId: [1, Validators.required],
-
+      cityId: [1, Validators.required], 
       identificationNumber: ['', Validators.required],
       name: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -139,10 +174,20 @@ export class Register {
     if (this.step === 1 && this.regex.test(this.email)) {
       this.loading = true;
 
+      this.registerForm.get('email')?.setValue(this.email);
+
       this.otpService.generateOtp(this.email).subscribe({
         next: (res) => {
           this.step++;
         },
+        error: (err) => {
+            this.customModalMessage = err.error.message || err.error || err.message;
+            this.customModalTitle = 'Error de registro';
+            this.customModalButtonText = 'Cerrar';
+            this.showCustomModal = true;  
+            console.error('Error en login:', err.error.message || err.error || err.message);
+             this.loading = false;
+          },
       });
     } else if (this.step === 2 && this.form.controls['nombre'].valid) {
       this.step++;
@@ -162,28 +207,61 @@ export class Register {
       alert('Registro completado con éxito ✅');
     }
   }
-  onSubmit(): void {
+  onSubmit(): void { 
     console.log('Formulario de registro enviado:', this.registerForm.value);
-    if (this.registerForm.value.password == this.registerForm.value.confirmPassword) {
-      this.authService.register(this.registerForm.value).subscribe({
-        next: (res) => {
-          localStorage.setItem('access_token', res.access_token);
-          localStorage.setItem('user', JSON.stringify(res.user || {}));
 
-          this.router.navigate(['/dashboard']);
-        },
-        error: (err) => {
-          console.error('Error en login:', err);
-        },
-      });
+    if (this.registerForm.valid) {
+      if (this.registerForm.value.password == this.registerForm.value.confirmPassword) {
+        this.authService.register(this.registerForm.value).subscribe({
+          next: (res) => {
+            localStorage.setItem('access_token', res.access_token);
+            localStorage.setItem('user', JSON.stringify(res.user || {}));
 
-      if (this.registerForm.valid) {
-        console.log(this.registerForm.value);
-      }
+            this.router.navigate(['/dashboard']);
+          },
+          error: (err) => {
+            this.customModalMessage = err.error.message || err.error || err.message;
+            this.customModalTitle = 'Error de registro';
+            this.customModalButtonText = 'Cerrar';
+            this.showCustomModal = true;  
+            console.error('Error en login:', err.error.message || err.error || err.message);
+          },
+        });
+     
     } else {
-      alert('Las contraseñas no coinciden');
+      this.customModalMessage = 'Las contraseñas no coinciden';
+      this.customModalTitle = 'Error de validación';
+      this.customModalButtonText = 'Cerrar';
+      this.showCustomModal = true; 
+    }
+    } else {
+      this.showFormErrors();
     }
   }
+
+  showFormErrors() {
+    this.customModalMessage = ''
+   
+    this.customModalMessage += `<ul class="error-list">`;
+    this.customModalButtonText = 'Cerrar';
+    this.customModalTitle = 'Errores en el formulario'; 
+  Object.entries(this.registerForm.controls).forEach(([key, control]) => {
+    if (control.errors) {
+      const errors = control.errors;
+      const messages = this.validationMessages[key];
+
+
+      Object.keys(errors).forEach(errorKey => {
+      this.customModalMessage += `<li>${messages[errorKey]} </li>`;
+
+        console.log(`❌ ${key}: ${messages[errorKey]}`);
+      });
+    }
+  });
+    this.customModalMessage += `</ul>`;
+
+  this.showCustomModal = true;
+}
 
   verificarOtp() {
     const codigoFinal = this.getCodigoFinal();
@@ -218,8 +296,11 @@ export class Register {
       },
     });
   }
-  toggleTerminos() {
-    this.aceptaTerminos = !this.aceptaTerminos;
+ 
+  onTerminosChange(event: any) {
+    const checked = event.target.checked;
+    this.registerForm.get('aceptaTerminos')?.setValue(checked);
+    console.log('Nuevo valor:', checked);
   }
   loadDocumentTypes(): void {
     this.documentTypeService.getDocumentTypes().subscribe({
@@ -255,5 +336,17 @@ export class Register {
     const selectedValue = (event.target as HTMLSelectElement).value;
     console.log('Provincia seleccionada:', selectedValue);
     this.loadCities(Number(selectedValue));
+  }
+
+
+
+
+   onRetry() {
+    this.showCustomModal = false;
+    // lógica para reintentar
+  }
+
+  onClose() {
+    this.showCustomModal = false;
   }
 }
