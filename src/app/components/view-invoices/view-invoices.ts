@@ -116,7 +116,7 @@ export class ViewInvoices {
   }
 
   downloadInvoice(invoice: any) {   
-     this.s3Service.getPdf(invoice.reference, this.user.document).subscribe({
+     this.s3Service.getPdf(invoice.reference).subscribe({
       next: (res) => {
         window.open(res.url, '_blank');
       },
