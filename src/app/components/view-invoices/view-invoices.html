@@ -2,6 +2,17 @@
 <div class="container">
   <a href="/dashboard" class="volver">Volver a la página principal</a>
 
+
+  <app-custom-modal
+  [visible]="showCustomModal"
+  title="{{ customModalTitle }}"
+  message="{{ customModalMessage }}"
+  type="{{ customModalType }}"
+  buttonText="{{ customModalButtonText }}"
+  (confirmed)="onRetry()"
+  (closed)="onClose()"
+></app-custom-modal>
+
   <h2>Ver mis históricos</h2>
 
   <div class="filtros-container">

@@ -18,6 +18,13 @@ export class ViewInvoices {
 
   paginatedInvoices: Invoice[] = [];
 
+  showCustomModal = false;
+
+  customModalTitle = '';
+  customModalMessage = '';
+  customModalType = 'error';
+  customModalButtonText = '';
+
   currentPage = 1;
   itemsPerPage = 10;
   totalPages = 0;
@@ -68,15 +75,29 @@ export class ViewInvoices {
     }
   }
   loadInvoices() {
-    this.contractService.getInvoices(this.filters).subscribe((response) => {
-      this.invoices = response.data.map((i) => ({
-        ...i,
-        expirationDate: i.expirationDate.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
-        createdAt: i.createdAt.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
-      }));
-      this.totalPages = Math.ceil(this.invoices.length / this.itemsPerPage);
-      this.updatePaginatedData();
+      this.contractService.getInvoices(this.filters).subscribe((response) => {
+      if( response.data.length === 0 ){
+        this.customModalTitle = 'Información';
+        if(  this.filters.company === '' && this.filters.agreement === '' ){
+          this.customModalMessage = 'No se encontraron facturas con el documento del usuario.';
+        } else {
+          this.customModalMessage = 'No se encontraron facturas para los filtros seleccionados.';
+        }
+        this.customModalType = 'error';
+        this.customModalButtonText = 'Aceptar';
+        this.showCustomModal = true;
+      } 
+      else {
+        this.invoices = response.data.map((i) => ({
+          ...i,
+          expirationDate: i.expirationDate.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
+          createdAt: i.createdAt.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
+        }));
+        this.totalPages = Math.ceil(this.invoices.length / this.itemsPerPage);
+        this.updatePaginatedData();
+      } 
     });
+    
   }
 
   loadContracts() {
@@ -94,15 +115,19 @@ export class ViewInvoices {
     });
   }
 
-  downloadInvoice(invoice: any) {
-    console.log('Factura seleccionada:', invoice.reference);
-    console.log('Factura seleccionada:', this.user.document);
-    // Aquí haces la descarga real
-
+  downloadInvoice(invoice: any) {   
      this.s3Service.getPdf(invoice.reference, this.user.document).subscribe({
       next: (res) => {
         window.open(res.url, '_blank');
       },
+      error: (err) => { 
+        this.customModalTitle = 'Error';
+        this.customModalMessage = 'No se pudo descargar la factura. Por favor, inténtelo de nuevo más tarde.';
+        this.customModalType = 'error';
+        this.customModalButtonText = 'Aceptar';
+        this.showCustomModal = true;
+        console.log('❌ Error al descargar la factura', err);
+      }
     });
   }
 
@@ -155,5 +180,13 @@ export class ViewInvoices {
   formatDate(dateString: string): string {
     const date = new Date(dateString.replace('-5:00', '-05:00'));
     return date.toISOString().split('T')[0];
+  }
+
+   onRetry() {
+    this.showCustomModal = false;
+  }
+
+  onClose() {
+    this.showCustomModal = false;
   }
 }
