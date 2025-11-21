@@ -10,7 +10,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Home } from './components/home/home';
 import { Header } from './components/shared/header/header';
 
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { provideLottieOptions, LottieComponent } from 'ngx-lottie';
 import player from 'lottie-web';
@@ -23,6 +23,7 @@ import { SuccessModal } from './components/shared/success-modal/success-modal';
 import { CustomModal } from './components/shared/custom-modal/custom-modal';
 import { ConfirmContractModal } from './components/shared/confirm-contract-modal/confirm-contract-modal';
 import { PendingPayments } from './components/pending-payments/pending-payments';
+import { AuthInterceptor } from './interceptors/uth.interceptor';
 
 export function playerFactory() {
   return player;
@@ -53,6 +54,7 @@ export function playerFactory() {
     provideLottieOptions({
       player: playerFactory,
     }),
+     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [App],
 })

@@ -59,9 +59,7 @@ export class ViewInvoices {
  
   onChangeContrato(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
-    console.log('Valor seleccionado:', value);
     let contratoSeleccionado = this.contracts.find((c) => c.id === Number(value));
-    console.log('Valor seleccionado:', contratoSeleccionado);
     if (contratoSeleccionado) {
       this.filters.company = contratoSeleccionado.companyId;
       this.filters.agreement = contratoSeleccionado.number;

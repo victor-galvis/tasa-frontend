@@ -38,13 +38,16 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getToken(): string | null {
+ getToken(): string | null {
+  if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
     return localStorage.getItem('access_token');
   }
+  return null;
+}
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
+ isLoggedIn(): boolean {
+  return typeof window !== 'undefined' && !!this.getToken();
+}
   getUser() {
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       const raw = localStorage.getItem('user');
