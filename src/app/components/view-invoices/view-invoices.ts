@@ -64,7 +64,7 @@ export class ViewInvoices {
     console.log('Valor seleccionado:', contratoSeleccionado);
     if (contratoSeleccionado) {
       this.filters.company = contratoSeleccionado.companyId;
-      this.filters.agreement = value;
+      this.filters.agreement = contratoSeleccionado.number;
 
       this.loadInvoices();
     }
