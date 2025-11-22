@@ -1,10 +1,23 @@
+/* NUEVO: fuerza el layout para que el footer vaya al fondo */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* NUEVO: envuelve el contenido */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 .banner {
   display: block;
   background-image: url('/images/home.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
   height: 400px;
   position: relative;
 }
@@ -51,13 +64,69 @@
   left: 120px;
   padding: 0;
 }
+
 .btn-wrapper:hover {
   cursor: pointer;
 }
+
 .btn-registro-login {
   width: 160px;
   height: 50px;
-
   background-image: url('/images/btn.png');
   background-repeat: no-repeat;
+}
+
+.govco-header {
+  width: 100%;
+  background-color: #0B457F;
+  padding: 5px 0;
+}
+
+.govco-container {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 20px;
+}
+
+.govco-header-img {
+  height: 28px;
+}
+
+.govco-footer {
+  width: 100%;
+  background-color: #0B457F;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.govco-footer-left {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.co-colombia-img {
+  height: 32px;
+}
+
+.govco-footer-img {
+  height: 32px;
+}
+
+.footer-logos {
+    display: flex;
+    align-items: center;
+    gap: 12px; 
+}
+
+.footer-logos img {
+    height: 32px; 
+}
+
+.separator {
+    font-size: 22px;
+    font-weight: bold;
+    color: #555; 
 }
