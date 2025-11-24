@@ -1,15 +1,24 @@
-/* NUEVO: fuerza el layout para que el footer vaya al fondo */
 :host {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-
-/* NUEVO: envuelve el contenido */
 .main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+
+.middle-logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  background-color: #fff; 
+}
+.middle-logo {
+  max-width: 180px;
+  height: auto;
 }
 
 .banner {
@@ -23,26 +32,23 @@
 }
 
 .menu {
-  display: flex;
-  margin-top: 10px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); 
+  width: 100%;
+  padding: 0 20px;
+  margin-top: 20px;
+  gap: 20px;
 }
 .menu-item {
   width: 160px;
   border-radius: 10px;
   margin: 10px;
+  text-align: center; 
 }
-.logo-container {
-  width: 250px;
-  height: 120px;
-  background-color: white;
-  border-bottom-right-radius: 50px;
-  position: absolute;
-  background-image: url('/images/gobernacion.png');
-  background-repeat: no-repeat;
-  top: 0;
-  left: 0;
+.menu-item img {
+  border-radius: 10px; 
 }
+
 .tasa-container {
   width: 350px;
   height: 120px;
@@ -56,42 +62,19 @@
   background-position: 20px 20px;
 }
 
-.btn-wrapper {
-  width: 160px;
-  height: 50px;
-  position: absolute;
-  top: 190px;
-  left: 120px;
-  padding: 0;
-}
-
-.btn-wrapper:hover {
-  cursor: pointer;
-}
-
-.btn-registro-login {
-  width: 160px;
-  height: 50px;
-  background-image: url('/images/btn.png');
-  background-repeat: no-repeat;
-}
-
 .govco-header {
   width: 100%;
   background-color: #0B457F;
   padding: 5px 0;
 }
-
 .govco-container {
   display: flex;
   justify-content: flex-start;
   padding-left: 20px;
 }
-
 .govco-header-img {
   height: 28px;
 }
-
 .govco-footer {
   width: 100%;
   background-color: #0B457F;
@@ -100,33 +83,50 @@
   justify-content: flex-start;
   align-items: center;
 }
-
 .govco-footer-left {
   display: flex;
   gap: 20px;
   align-items: center;
 }
-
 .co-colombia-img {
   height: 32px;
 }
-
 .govco-footer-img {
   height: 32px;
 }
-
 .footer-logos {
     display: flex;
     align-items: center;
     gap: 12px; 
 }
-
 .footer-logos img {
-    height: 32px; 
+    height: 28px; 
 }
-
 .separator {
     font-size: 22px;
     font-weight: bold;
     color: #555; 
+}
+
+.menu-row {
+  width: 100%;
+  display: flex;
+  margin-top: 20px;
+  padding: 10px 40px;
+}
+.menu-top {
+  grid-column: span 4; 
+  
+}
+.menu-bottom {
+  grid-column: span 8; 
+}
+.register-item img {
+  width: 300px;    
+  height: auto;
+}
+.menu-bottom .menu-item img {
+  width: 160px;
+  height: auto;
+  border-radius: 10px;
 }
