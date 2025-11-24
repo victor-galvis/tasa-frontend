@@ -53,10 +53,10 @@ export class ViewInvoices {
       documentType: this.user.documentType,
     };
 
-    console.log('******************************');
-    console.log(this.filters);
-    console.log(this.user);
-    console.log('******************************');
+    //console.log('******************************');
+    //console.log(this.filters);
+    //console.log(this.user);
+    //console.log('******************************');
 
     this.loadInvoices();
 
@@ -74,31 +74,47 @@ export class ViewInvoices {
       this.loadInvoices();
     }
   }
-  loadInvoices() {
-      this.contractService.getInvoices(this.filters).subscribe((response) => {
-      if( response.data.length === 0 ){
+loadInvoices() {
+  this.contractService.getInvoices(this.filters).subscribe((response) => {
+    
+    if (response.data.length === 0) {
+
+      // ✔ 1. Si el usuario tiene contratos, pero NO ha seleccionado ninguno → NO mostrar modal
+      if (
+        this.contracts.length > 0 &&
+        this.filters.company === '' &&
+        this.filters.agreement === ''
+      ) {
+        return;
+      }
+      // ✔ 2. Usuario NO TIENE contratos asociados
+      if (this.contracts.length === 0) {
         this.customModalTitle = 'Información';
-        if(  this.filters.company === '' && this.filters.agreement === '' ){
-          this.customModalMessage = 'No se encontraron facturas con el documento del usuario.';
-        } else {
-          this.customModalMessage = 'No se encontraron facturas para los filtros seleccionados.';
-        }
+        this.customModalMessage = 'No se encontraron contratos asociados al usuario.';
         this.customModalType = 'error';
         this.customModalButtonText = 'Aceptar';
         this.showCustomModal = true;
-      } 
-      else {
-        this.invoices = response.data.map((i) => ({
-          ...i,
-          expirationDate: i.expirationDate.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
-          createdAt: i.createdAt.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
-        }));
-        this.totalPages = Math.ceil(this.invoices.length / this.itemsPerPage);
-        this.updatePaginatedData();
-      } 
-    });
-    
-  }
+        return;
+      }
+      // ✔ 3. Usuario SI seleccionó contrato pero no hay facturas
+      this.customModalTitle = 'Información';
+      this.customModalMessage = 'No se encontraron facturas para los filtros seleccionados.';
+      this.customModalType = 'error';
+      this.customModalButtonText = 'Aceptar';
+      this.showCustomModal = true;
+      return;
+    }
+    // ✔ Si SÍ trae facturas
+    this.invoices = response.data.map((i) => ({
+      ...i,
+      expirationDate: i.expirationDate.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
+      createdAt: i.createdAt.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
+    }));
+
+    this.totalPages = Math.ceil(this.invoices.length / this.itemsPerPage);
+    this.updatePaginatedData();
+  });
+}
 
   loadContracts() {
     this.contractService.getByUser(this.user.id).subscribe({
