@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'register', component: Register },
   { path: 'login', component: Login },
   { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
-  { path: 'facturas', component: ViewInvoices, canActivate: [AuthGuard] },
+  { path: 'view-invoices', component: ViewInvoices, canActivate: [AuthGuard] },
   { path: 'pending-payments', component: PendingPayments, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'login' },
 ];

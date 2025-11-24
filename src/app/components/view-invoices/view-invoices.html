@@ -45,7 +45,6 @@
         <tr>
           <th>Estado</th>
           <th>Fecha factura</th>
-
           <th>Número factura</th>
           <th>Valor factura</th>
           <th>Dirección</th>
@@ -57,7 +56,7 @@
         @for (d of paginatedInvoices; track i; let i = $index) { }
 
         <tr *ngFor="let invoice of paginatedInvoices">
-          <td>{{ invoice.status }}</td>
+          <td>{{ translateStatus(invoice.status) }}</td>
           <td>{{ formatDate(invoice.createdAt) }}</td>
           <td>{{ invoice.reference }}</td>
           <td>{{ invoice.total | currency : 'COP ' }}</td>

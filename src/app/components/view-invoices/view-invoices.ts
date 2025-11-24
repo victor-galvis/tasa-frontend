@@ -189,4 +189,17 @@ export class ViewInvoices {
   onClose() {
     this.showCustomModal = false;
   }
+  
+  translateStatus(status: string): string {
+  switch (status) {
+    case 'ACTIVE':
+      return 'Activa';
+    case 'PAYED':
+      return 'Pagada';
+    case 'EXPIRED':
+      return 'Vencida';
+    default:
+      return status;
+    }
+  }
 }
