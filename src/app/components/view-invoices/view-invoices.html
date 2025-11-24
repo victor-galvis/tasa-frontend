@@ -44,6 +44,7 @@
       <thead>
         <tr>
           <th>Estado</th>
+          <th>Número de contrato</th>
           <th>Fecha factura</th>
           <th>Número factura</th>
           <th>Valor factura</th>
@@ -57,6 +58,7 @@
 
         <tr *ngFor="let invoice of paginatedInvoices">
           <td>{{ translateStatus(invoice.status) }}</td>
+          <td>{{invoice.agreement }}</td>
           <td>{{ formatDate(invoice.createdAt) }}</td>
           <td>{{ invoice.reference }}</td>
           <td>{{ invoice.total | currency : 'COP ' }}</td>
