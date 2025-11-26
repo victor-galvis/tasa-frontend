@@ -118,8 +118,8 @@
           Verificar contrato
         </button>
       </div>
-
-      <div class="location-wrapper">
+<!-- TODO: Ajustar campos de Departamento y Ciudad en el siguiente módulo Actualizador. -->
+      <div class="location-wrapper" *ngIf="false">
         <div class="select-wrapper" [class.open]="openSelect">
           <label for="province" class="md-label">Departamento</label>
 
@@ -154,7 +154,7 @@
             <div class="info-text">
               <span class="info-text-gray"
                 >*Si seleccionas esta opción, la factura continuará llegando </span
-              ><strong>sólo de forma digital</strong>.
+              ><strong>sólo de forma digital al correo registrado en esta plataforma.</strong>.
             </div>
           </div>
 
@@ -166,7 +166,7 @@
             </label>
             <div class="info-text">
               <span class="info-text-gray">*Si seleccionas esta opción, la factura </span>
-              <strong>sólo se entregará de forma física</strong> en la dirección correspondiente.
+              <strong>sólo se entregará de forma física</strong> en la dirección correspondiente al servicio de energía electrica.
             </div>
           </div>
         </div>
