@@ -218,13 +218,4 @@ loadInvoices() {
       return status;
     }
   }
-  
-  getPeriodoFacturado(dateString: string): string {
-  const date = new Date(dateString);
-  const month = date.getMonth() + 1; // 1–12
-
-  if (month >= 1 && month <= 4) return 'Primer trimestre';
-  if (month >= 5 && month <= 8) return 'Segundo trimestre';
-  return 'Tercer trimestre';
-}
 }
