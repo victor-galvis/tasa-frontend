@@ -64,16 +64,32 @@ export class ViewInvoices {
   }
 
 
-  onChangeContrato(event: Event) {
-    const value = (event.target as HTMLSelectElement).value;
-    let contratoSeleccionado = this.contracts.find((c) => c.id === Number(value));
-    if (contratoSeleccionado) {
-      this.filters.company = contratoSeleccionado.companyId;
-      this.filters.agreement = contratoSeleccionado.number;
-
-      this.loadInvoices();
-    }
+onChangeContrato(event: Event) {
+  const value = (event.target as HTMLSelectElement).value;
+  // ✔ Cuando selecciona "Seleccione una opción" → restaurar filtros por cédula
+  if (value === '0') {
+    this.filters = {
+      company: '',
+      agreement: '',
+      document: this.user.document,
+      documentType: this.user.documentType,
+    };
+    this.loadInvoices();
+    return;
   }
+  // ✔ Si seleccionó un contrato válido
+  const contratoSeleccionado = this.contracts.find(c => c.id === Number(value));
+  if (contratoSeleccionado) {
+    this.filters = {
+      company: contratoSeleccionado.companyId,
+      agreement: contratoSeleccionado.number,
+      document: '',
+      documentType: '',
+    };
+
+    this.loadInvoices();
+  }
+}
   loadInvoices() {
 
     this.contractService.getInvoices(this.filters).subscribe({
@@ -234,14 +250,5 @@ export class ViewInvoices {
       default:
         return status;
     }
-  }
-
-  getPeriodoFacturado(dateString: string): string {
-    const date = new Date(dateString);
-    const month = date.getMonth() + 1; // 1–12
-
-    if (month >= 1 && month <= 4) return 'Primer trimestre';
-    if (month >= 5 && month <= 8) return 'Segundo trimestre';
-    return 'Tercer trimestre';
   }
 }
