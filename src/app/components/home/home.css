@@ -1,8 +1,19 @@
+/*
 :host {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  border: 5px solid red;
 }
+  .
+*/
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100%;
+}
+
 .main-content {
   flex: 1;
   display: flex;
@@ -14,8 +25,9 @@
   justify-content: center;
   align-items: center;
   padding: 10px 0;
-  background-color: #fff; 
+  background-color: #fff;
 }
+
 .middle-logo {
   max-width: 180px;
   height: auto;
@@ -33,26 +45,27 @@
 
 .menu {
   display: grid;
-  grid-template-columns: repeat(12, 1fr); 
+  grid-template-columns: repeat(12, 1fr);
   width: 100%;
   padding: 0 20px;
   margin-top: 20px;
   gap: 20px;
+
 }
+
 .menu-item {
-  width: 160px;
   border-radius: 10px;
   margin: 10px;
-  text-align: center; 
+  text-align: center;
 }
+
 .menu-item img {
-  border-radius: 10px; 
+  border-radius: 10px;
 }
 
 .tasa-container {
   width: 350px;
   height: 120px;
-  background-color: #075c48;
   border-top-right-radius: 120px;
   position: absolute;
   bottom: 0;
@@ -67,14 +80,17 @@
   background-color: #0B457F;
   padding: 5px 0;
 }
+
 .govco-container {
   display: flex;
   justify-content: flex-start;
   padding-left: 20px;
 }
+
 .govco-header-img {
   height: 28px;
 }
+
 .govco-footer {
   width: 100%;
   background-color: #0B457F;
@@ -83,29 +99,35 @@
   justify-content: flex-start;
   align-items: center;
 }
+
 .govco-footer-left {
   display: flex;
   gap: 20px;
   align-items: center;
 }
+
 .co-colombia-img {
   height: 32px;
 }
+
 .govco-footer-img {
   height: 32px;
 }
+
 .footer-logos {
-    display: flex;
-    align-items: center;
-    gap: 12px; 
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
+
 .footer-logos img {
-    height: 28px; 
+  height: 28px;
 }
+
 .separator {
-    font-size: 22px;
-    font-weight: bold;
-    color: #555; 
+  font-size: 22px;
+  font-weight: bold;
+  color: #555;
 }
 
 .menu-row {
@@ -113,20 +135,111 @@
   display: flex;
   margin-top: 20px;
   padding: 10px 40px;
+
 }
+
 .menu-top {
-  grid-column: span 4; 
-  
+  grid-column: span 4;
+
 }
+
 .menu-bottom {
-  grid-column: span 8; 
+  grid-column: span 8;
 }
+
 .register-item img {
-  width: 300px;    
+  width: 300px;
   height: auto;
 }
+
 .menu-bottom .menu-item img {
   width: 160px;
   height: auto;
   border-radius: 10px;
+}
+
+/* === DESKTOP (default) ya lo tienes === */
+
+/* === Tablets (pantallas medianas) === */
+@media (max-width: 991px) {
+  .register-item img {
+    width: 240px;
+  }
+
+  .menu-bottom .menu-item img {
+    width: 130px;
+  }
+
+}
+
+/* === Celulares y pantallas pequeñas === */
+@media (max-width: 767px) {
+  .menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 20px;
+    margin-top: 20px;
+    gap: 20px;
+
+  }
+
+  .register-item img {
+    width: 200px;
+  }
+
+  .menu-row {
+    margin-top: 5px;
+    padding: 0px;
+
+  }
+
+  .menu-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* === Celulares muy pequeños (≤ 480px) === */
+@media (max-width: 480px) {
+  .menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 20px;
+    margin-top: 20px;
+    gap: 20px;
+
+  }
+
+  .register-item {
+    width: 200px;
+  }
+
+  .menu-row {
+    margin-top: 5px;
+    padding: 0px;
+
+  }
+
+  .menu-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
 }

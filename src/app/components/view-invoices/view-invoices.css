@@ -63,7 +63,7 @@ label {
 /* ===== Tabla ===== */
 .table-wrapper {
   border-radius: 10px;
-  overflow: hidden; /* importante para mantener los bordes redondeados */
+  overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   border: 1px solid #e0e0e0;
 }
@@ -122,15 +122,57 @@ label {
   color: #00764b;
   font-weight: 600;
 }
+
 .paginacion a.disabled {
   color: #999;
   pointer-events: none;
   opacity: 0.6;
   cursor: default;
 }
+
 .paginacion .page-number {
   background: #00764b;
   color: white;
   padding: 4px 10px;
   border-radius: 4px;
+}
+
+
+
+@media (max-width: 991px) {}
+
+@media (max-width: 767px) {}
+
+@media (max-width: 480px) {
+  h2 {
+    font: 18px;
+    margin-left: 5px;
+  }
+
+  .table-wrapper {
+    overflow-y: scroll;
+  }
+
+  .filtros-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 10px;
+  }
+
+}
+
+.table-responsive {
+  width: 100%;
+  padding: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  /* suave en iPhone */
+}
+
+.facturas-table {
+  min-width: 800px;
+  /* evita que colapse demasiado */
 }

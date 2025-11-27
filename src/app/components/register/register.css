@@ -171,11 +171,11 @@ h2 {
   flex-shrink: 0;
 }
 
-.custom-checkbox input:checked + .check {
+.custom-checkbox input:checked+.check {
   background-color: #0c5441;
 }
 
-.custom-checkbox input:checked + .check::after {
+.custom-checkbox input:checked+.check::after {
   content: '';
   position: absolute;
   left: 4px;
@@ -186,6 +186,7 @@ h2 {
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
+
 .loading-container {
   display: flex;
   justify-content: center;
@@ -196,4 +197,36 @@ input[readonly] {
   background-color: #f0f0f0;
   color: #555;
   cursor: not-allowed;
+}
+
+.register-form-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-form-container form {
+  width: 90%;
+  max-width: 400px;
+}
+
+@media (max-width: 991px) {}
+
+@media (max-width: 767px) {}
+
+@media (max-width: 480px) {
+  .steps-decriptions span {
+    font-size: 11px;
+  }
+
+  .text-validate-email {
+    font-size: 22px;
+  }
+
+  .email-input {
+    width: 95%;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }

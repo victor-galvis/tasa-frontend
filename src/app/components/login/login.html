@@ -1,7 +1,8 @@
 <app-header></app-header>
- <a href="/" class="volver">Volver a la página principal</a>
+<!---->
+<a href="/" class="volver">Volver a la página principal</a>
 
- 
+
 
 
 <div class="login-container">
@@ -13,21 +14,18 @@
 
 
             <div class="input-group">
-                <input placeholder="Correo electrónico" type="email" id="email" name="email" [(ngModel)]="email" autocomplete="off" />
+                <input placeholder="Correo electrónico" type="email" id="email" name="email" [(ngModel)]="email"
+                    autocomplete="off" />
                 <span class="bar"></span>
             </div>
 
-            <!-- Password -->
+
             <div class="input-group">
-                <input placeholder="Contraseña" type="password" id="password" name="password" [(ngModel)]="password" autocomplete="off" />
+                <input placeholder="Contraseña" type="password" id="password" name="password" [(ngModel)]="password"
+                    autocomplete="off" />
                 <span class="bar"></span>
             </div>
 
-
-            <!--
-            <div class="g-recaptcha" data-sitekey="6LdZv9UrAAAAAAMqu95t_dohnkWflvdwh60Qzd5D-CWlcBX
-"></div>
-            -->
             <div class="input-group center">
                 <button type="submit" class="btn-continuar" [disabled]="!loginForm.form.valid">
                     Continuar

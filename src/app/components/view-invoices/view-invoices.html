@@ -3,15 +3,9 @@
   <a href="/dashboard" class="volver">Volver a la página principal</a>
 
 
-  <app-custom-modal
-  [visible]="showCustomModal"
-  title="{{ customModalTitle }}"
-  message="{{ customModalMessage }}"
-  type="{{ customModalType }}"
-  buttonText="{{ customModalButtonText }}"
-  (confirmed)="onRetry()"
-  (closed)="onClose()"
-></app-custom-modal>
+  <app-custom-modal [visible]="showCustomModal" title="{{ customModalTitle }}" message="{{ customModalMessage }}"
+    type="{{ customModalType }}" buttonText="{{ customModalButtonText }}" (confirmed)="onRetry()"
+    (closed)="onClose()"></app-custom-modal>
 
   <h2>Ver mis históricos</h2>
 
@@ -20,13 +14,7 @@
       <div class="select-wrapper" [class.open]="openSelect">
         <label for="grado" class="md-label">Contrato</label>
 
-        <select
-          id="grado"
-          (change)="onChangeContrato($event)"
-          (focus)="onFocus()"
-          (blur)="onBlur()"
-          aria-label="Grado"
-        >
+        <select id="grado" (change)="onChangeContrato($event)" (focus)="onFocus()" (blur)="onBlur()" aria-label="Grado">
           <option value="0">Seleccione una opción</option>
           @for (o of contracts; track o.id) {
           <option [value]="o.id">{{ o.number }}</option>
@@ -39,7 +27,7 @@
     </div>
   </div>
 
-  <div class="table-wrapper">
+  <div class="table-responsive">
     <table class="facturas-table">
       <thead>
         <tr>
@@ -64,27 +52,19 @@
           <td>{{ invoice.total | currency : 'COP ' }}</td>
           <td>{{ invoice.address }}</td>
           <td>{{ formatDate(invoice.expirationDate) }}</td>
-          <td style="text-align: center"><img 
-            src="/images/descargar.png" 
-            alt="Descargar" 
-            style="cursor: pointer"
-            (click)="downloadInvoice(invoice)"/></td>
+          <td style="text-align: center"><img src="/images/descargar.png" alt="Descargar" style="cursor: pointer"
+              (click)="downloadInvoice(invoice)" /></td>
         </tr>
       </tbody>
     </table>
 
     <div class="paginacion">
-      <a href="#" [class.disabled]="currentPage === 1" (click)="goToFirst($event)"
-        >← Ir al primero</a
-      >
+      <a href="#" [class.disabled]="currentPage === 1" (click)="goToFirst($event)">← Ir al primero</a>
       <a href="#" [class.disabled]="currentPage === 1" (click)="prevPage($event)">Anterior</a>
       <span class="page-number">{{ currentPage }} / {{ totalPages }}</span>
-      <a href="#" [class.disabled]="currentPage === totalPages" (click)="nextPage($event)"
-        >Siguiente</a
-      >
-      <a href="#" [class.disabled]="currentPage === totalPages" (click)="goToLast($event)"
-        >Ir al último →</a
-      >
+      <a href="#" [class.disabled]="currentPage === totalPages" (click)="nextPage($event)">Siguiente</a>
+      <a href="#" [class.disabled]="currentPage === totalPages" (click)="goToLast($event)">Ir al
+        último →</a>
     </div>
   </div>
 </div>

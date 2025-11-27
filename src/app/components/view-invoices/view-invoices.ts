@@ -41,7 +41,7 @@ export class ViewInvoices {
     private contractService: ContractService,
     private s3Service: S3Service,
     private authService: AuthService
-  ) {}
+  ) { }
   ngOnInit() {
     this.user = this.authService.getUser();
     console.log('Usuario en facturas', this.user);
@@ -63,7 +63,7 @@ export class ViewInvoices {
     this.loadContracts();
   }
 
- 
+
   onChangeContrato(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
     let contratoSeleccionado = this.contracts.find((c) => c.id === Number(value));
@@ -74,53 +74,70 @@ export class ViewInvoices {
       this.loadInvoices();
     }
   }
-loadInvoices() {
-  this.contractService.getInvoices(this.filters).subscribe((response) => {
-    
-    if (response.data.length === 0) {
+  loadInvoices() {
 
-      // ✔ 1. Si el usuario tiene contratos, pero NO ha seleccionado ninguno → NO mostrar modal
-      if (
-        this.contracts.length > 0 &&
-        this.filters.company === '' &&
-        this.filters.agreement === ''
-      ) {
-        return;
-      }
-      // ✔ 2. Usuario NO TIENE contratos asociados
-      if (this.contracts.length === 0) {
-        this.customModalTitle = 'Información';
-        this.customModalMessage = 'No se encontraron contratos asociados al usuario.';
+    this.contractService.getInvoices(this.filters).subscribe({
+      next: (response) => {
+        if (response.data.length === 0) {
+
+          // ✔ 1. Si el usuario tiene contratos, pero NO ha seleccionado ninguno → NO mostrar modal
+          if (
+            this.contracts.length > 0 &&
+            this.filters.company === '' &&
+            this.filters.agreement === ''
+          ) {
+            return;
+          }
+          // ✔ 2. Usuario NO TIENE contratos asociados
+          if (this.contracts.length === 0) {
+            this.customModalTitle = 'Información';
+            this.customModalMessage = 'No se encontraron contratos asociados al usuario.';
+            this.customModalType = 'error';
+            this.customModalButtonText = 'Aceptar';
+            this.showCustomModal = true;
+            return;
+          }
+          // ✔ 3. Usuario SI seleccionó contrato pero no hay facturas
+          this.customModalTitle = 'Información';
+          this.customModalMessage = 'No se encontraron facturas para los filtros seleccionados.';
+          this.customModalType = 'error';
+          this.customModalButtonText = 'Aceptar';
+          this.showCustomModal = true;
+          return;
+        } else {
+          this.currentPage = 1;
+        }
+
+        // ✔ Si SÍ trae facturas
+        this.invoices = response.data.map((i) => ({
+          ...i,
+          expirationDate: i.expirationDate.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
+          createdAt: i.createdAt.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
+        }));
+
+        this.totalPages = Math.ceil(this.invoices.length / this.itemsPerPage);
+        this.updatePaginatedData();
+
+      },
+      error: (error) => {
+        console.error("ERROR EN PETICIÓN:", error);
+
+        this.customModalTitle = 'Error';
+        this.customModalMessage = 'Ocurrió un error al cargar las facturas. ' +
+          'No se pudo obtener la información.';
         this.customModalType = 'error';
         this.customModalButtonText = 'Aceptar';
         this.showCustomModal = true;
-        return;
       }
-      // ✔ 3. Usuario SI seleccionó contrato pero no hay facturas
-      this.customModalTitle = 'Información';
-      this.customModalMessage = 'No se encontraron facturas para los filtros seleccionados.';
-      this.customModalType = 'error';
-      this.customModalButtonText = 'Aceptar';
-      this.showCustomModal = true;
-      return;
-    }
-    // ✔ Si SÍ trae facturas
-    this.invoices = response.data.map((i) => ({
-      ...i,
-      expirationDate: i.expirationDate.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
-      createdAt: i.createdAt.toString().replace(/(-\d{2}):(\d{2})$/, '$1$2'),
-    }));
+    });
 
-    this.totalPages = Math.ceil(this.invoices.length / this.itemsPerPage);
-    this.updatePaginatedData();
-  });
-}
+  }
 
   loadContracts() {
     this.contractService.getByUser(this.user.id).subscribe({
       next: (data) => {
         console.log('Contratos', data);
-        this.contracts = data; 
+        this.contracts = data;
       },
       error: (err) => {
         /*
@@ -131,12 +148,12 @@ loadInvoices() {
     });
   }
 
-  downloadInvoice(invoice: any) {   
-     this.s3Service.getPdf(invoice.reference).subscribe({
+  downloadInvoice(invoice: any) {
+    this.s3Service.getPdf(invoice.reference).subscribe({
       next: (res) => {
         window.open(res.url, '_blank');
       },
-      error: (err) => { 
+      error: (err) => {
         this.customModalTitle = 'Error';
         this.customModalMessage = 'No se pudo descargar la factura. Por favor, inténtelo de nuevo más tarde.';
         this.customModalType = 'error';
@@ -198,33 +215,33 @@ loadInvoices() {
     return date.toISOString().split('T')[0];
   }
 
-   onRetry() {
+  onRetry() {
     this.showCustomModal = false;
   }
 
   onClose() {
     this.showCustomModal = false;
   }
-  
+
   translateStatus(status: string): string {
-  switch (status) {
-    case 'ACTIVE':
-      return 'Activa';
-    case 'PAYED':
-      return 'Pagada';
-    case 'RECEIPT':
-      return 'Pagada en Liquidación';
-    default:
-      return status;
+    switch (status) {
+      case 'ACTIVE':
+        return 'Activa';
+      case 'PAYED':
+        return 'Pagada';
+      case 'RECEIPT':
+        return 'Pagada en Liquidación';
+      default:
+        return status;
     }
   }
-  
-  getPeriodoFacturado(dateString: string): string {
-  const date = new Date(dateString);
-  const month = date.getMonth() + 1; // 1–12
 
-  if (month >= 1 && month <= 4) return 'Primer trimestre';
-  if (month >= 5 && month <= 8) return 'Segundo trimestre';
-  return 'Tercer trimestre';
-}
+  getPeriodoFacturado(dateString: string): string {
+    const date = new Date(dateString);
+    const month = date.getMonth() + 1; // 1–12
+
+    if (month >= 1 && month <= 4) return 'Primer trimestre';
+    if (month >= 5 && month <= 8) return 'Segundo trimestre';
+    return 'Tercer trimestre';
+  }
 }
