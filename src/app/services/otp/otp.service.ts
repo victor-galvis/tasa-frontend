@@ -9,9 +9,13 @@ import { Observable, tap } from 'rxjs';
 export class OtpService {
   private base = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   generateOtp(email: string) {
+    console.log("xxxxxxxxxxxxx");
+    console.log(this.base);
+    console.log("xxxxxxxxxxxxx");
+
     return this.http.post<{ otp: string }>(`${this.base}/otp/generate-otp`, { email }).pipe(
       tap((res) => {
         console.log('OTP enviado:', res);

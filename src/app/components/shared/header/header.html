@@ -7,7 +7,9 @@
     <span class="text-seguridad">Seguridad</span>
 
     @if ( user ) {
-    <div class="user right-div" (click)="toggleSesionContainer()">{{ initials }}</div>
+    <div class="user-header-container">
+      <div class="user " (click)="toggleSesionContainer()">{{ initials }}</div>
+    </div>
     }
 
     @if (showSesionContainer && user ) {

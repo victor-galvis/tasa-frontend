@@ -35,13 +35,13 @@ export class Dashboard {
     this.showNoContracts = false;
   }
 
-  constructor(private homeService: HomeService, private contractService: ContractService) {}
+  constructor(private homeService: HomeService, private contractService: ContractService) { }
   ngOnInit(): void {
     this.user = this.homeService.getUser();
   }
 
   openContractModal() {
-    this.showNoContracts = true;
+
     this.validateAsociateContracts();
   }
 
@@ -57,7 +57,9 @@ export class Dashboard {
     this.contractService.getByUser(this.user.id).subscribe({
       next: (data) => {
         if (data.length > 0) {
-          //this._showInvoiceModal = true;
+          this.showContractModal = true;
+        } else {
+          this.showNoContracts = true;
         }
       },
       error: (err) => console.error('❌ Error al cargar contratos', err),

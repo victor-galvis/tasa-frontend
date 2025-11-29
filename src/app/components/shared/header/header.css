@@ -28,7 +28,7 @@
   justify-content: center;
 }
 
-.user,
+
 .user-icon {
   width: 48px;
   height: 48px;
@@ -45,8 +45,19 @@
   margin-right: 20px;
 }
 
+
 .user {
+  width: 48px;
+  height: 48px;
+  font-size: 20px;
+  margin-left: 20px;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: 1px solid white;
+  border-radius: 50%;
 }
 
 .user:hover {
@@ -162,9 +173,6 @@
   margin-left: 10px;
 }
 
-.right-div {
-  margin-left: auto;
-}
 
 @media (max-width: 991px) {
   .text-tasa {
@@ -203,17 +211,13 @@
     margin-left: 2px;
   }
 
-  .user {
-    width: 48px;
-    height: 48px;
-    font-size: 20px;
-    position: relative;
+  .user-header-container {
+    flex-grow: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
-
-
+    justify-content: flex-end;
   }
+
+
 }
 
 @media (max-width: 480px) {
@@ -243,14 +247,6 @@
   }
 
   .user {
-    width: 48px;
-    height: 48px;
-    font-size: 20px;
-    margin-left: 20px;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
+    margin-right: 5px;
   }
 }
