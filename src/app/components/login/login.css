@@ -27,3 +27,16 @@ h2 {
     margin-bottom: 1.5rem;
     color: #075C48;
 }
+
+.links {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.links a {
+    color: #075C48;
+    text-decoration: none;
+    margin: 5px 0;
+    font-size: 0.9rem;
+}

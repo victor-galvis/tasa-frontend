@@ -7,11 +7,13 @@ import { Dashboard } from './components/dashboard/dashboard';
 import { ViewInvoices } from './components/view-invoices/view-invoices';
 import { PendingPayments } from './components/pending-payments/pending-payments';
 import { AuthGuard } from './guards/auth-guard';
+import { ForgotPassword } from './components/forgot-password/forgot-password';
 
 const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
   { path: 'register', component: Register },
   { path: 'login', component: Login },
+  { path: 'forgot-password', component: ForgotPassword },
   { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
   { path: 'view-invoices', component: ViewInvoices, canActivate: [AuthGuard] },
   { path: 'pending-payments', component: PendingPayments, canActivate: [AuthGuard] },
@@ -22,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

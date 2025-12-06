@@ -29,6 +29,8 @@ export class Register {
   form: FormGroup;
   aceptaTerminos: boolean = false;
   email: string = '';
+  codigoFinal: string = '';
+
   btnDisabled: boolean = true;
   loading = false;
   documentTypes: DocumentTypes[] = [];
@@ -39,7 +41,7 @@ export class Register {
   cities: CityModel[] = [];
 
   loadingOptions: AnimationOptions = {
-    path: '/loading.json', // pon aquí tu .json de Lottie
+    path: '/loading.json',
     loop: true,
     autoplay: true,
   };
@@ -50,6 +52,8 @@ export class Register {
   customModalType = 'error';
   customModalButtonText = '';
 
+  inputs = Array(5);
+  codigo: string[] = ['', '', '', '', ''];
 
   validationMessages: any = {
     email: {
@@ -120,9 +124,6 @@ export class Register {
     });
   }
 
-  inputs = Array(5);
-  codigo: string[] = ['', '', '', '', ''];
-
   validateEmail(value: string): void {
     this.email = value;
 
@@ -130,6 +131,7 @@ export class Register {
     this.btnDisabled = !result;
   }
 
+  /*
   moverFoco(event: any, index: number) {
     const input = event.target;
     if (input.value && index < this.inputs.length - 1) {
@@ -169,6 +171,10 @@ export class Register {
   getCodigoFinal(): string {
     return this.codigo.join('');
   }
+  */
+  recibirCodigo(codigo: string) {
+    this.codigoFinal = codigo.trim();
+  }
 
   siguiente() {
     if (this.step === 1 && this.regex.test(this.email)) {
@@ -176,24 +182,18 @@ export class Register {
 
       this.registerForm.get('email')?.setValue(this.email);
 
-      this.otpService.generateOtp(this.email).subscribe({
+      this.otpService.generateOtp(this.email, 'register').subscribe({
         next: (res) => {
           this.step++;
         },
         error: (err) => {
-          console.log("*******************************************");
-          console.log(err);
-          console.log("*******************************************");
-
-          /*
 
           this.customModalMessage = err.error.message || err.error || err.message;
           this.customModalTitle = 'Error de registro';
           this.customModalButtonText = 'Cerrar';
           this.showCustomModal = true;
-          console.error('Error en login:', err.error.message || err.error || err.message);
           this.loading = false;
-          */
+
         },
       });
     } else if (this.step === 2 && this.form.controls['nombre'].valid) {
@@ -209,13 +209,7 @@ export class Register {
     }
   }
 
-  enviar() {
-    if (this.form.valid) {
-      alert('Registro completado con éxito ✅');
-    }
-  }
   onSubmit(): void {
-    console.log('Formulario de registro enviado:', this.registerForm.value);
 
     if (this.registerForm.valid) {
       if (this.registerForm.value.password == this.registerForm.value.confirmPassword) {
@@ -231,7 +225,6 @@ export class Register {
             this.customModalTitle = 'Error de registro';
             this.customModalButtonText = 'Cerrar';
             this.showCustomModal = true;
-            console.error('Error en login:', err.error.message || err.error || err.message);
           },
         });
 
@@ -261,7 +254,6 @@ export class Register {
         Object.keys(errors).forEach(errorKey => {
           this.customModalMessage += `<li>${messages[errorKey]} </li>`;
 
-          console.log(`❌ ${key}: ${messages[errorKey]}`);
         });
       }
     });
@@ -271,35 +263,36 @@ export class Register {
   }
 
   verificarOtp() {
-    const codigoFinal = this.getCodigoFinal();
-    console.log('Código OTP ingresado:', codigoFinal);
     this.loading = true;
-    this.otpService.verifyOtp(this.email, codigoFinal).subscribe({
+    this.otpService.verifyOtp(this.email, this.codigoFinal).subscribe({
       next: (res: { valid: any }) => {
-        console.log('OTP verificado:', res);
         this.loading = false;
         if (res.valid) {
           this.step++;
         } else {
-          alert('Código OTP inválido. Por favor, inténtalo de nuevo.');
+          this.loading = false;
+          this.customModalMessage = 'Código OTP inválido. Por favor, inténtalo de nuevo.';
+          this.customModalTitle = 'Error de registro';
+          this.customModalButtonText = 'Cerrar';
+          this.showCustomModal = true;
         }
       },
       error: (err: any) => {
         this.loading = false;
-        console.error('Error al verificar OTP:', err);
-        alert('Error al verificar el código OTP. Por favor, inténtalo de nuevo.');
+        this.customModalMessage = err.error.message || err.error || err.message;
+        this.customModalTitle = 'Error de registro';
+        this.customModalButtonText = 'Cerrar';
+        this.showCustomModal = true;
       },
     });
   }
+
   reenviarOtp() {
-    console.log('Reenviando OTP a', this.email);
 
     this.loading = true;
-    this.otpService.generateOtp(this.email).subscribe({
+    this.otpService.generateOtp(this.email, 'register').subscribe({
       next: (res) => {
-        console.log('OTP reenviado:', res);
         this.loading = false;
-        alert('Código OTP reenviado con éxito.');
       },
     });
   }
@@ -307,46 +300,42 @@ export class Register {
   onTerminosChange(event: any) {
     const checked = event.target.checked;
     this.registerForm.get('aceptaTerminos')?.setValue(checked);
-    console.log('Nuevo valor:', checked);
   }
+
   loadDocumentTypes(): void {
     this.documentTypeService.getDocumentTypes().subscribe({
       next: (data) => {
         this.documentTypes = data;
       },
       error: (err) => {
-        console.error('Error al cargar tipos de documento', err);
       },
     });
   }
+
   loadProvinces(): void {
     this.provinceService.getProvinces().subscribe({
       next: (data) => {
         this.provinces = data;
       },
       error: (err) => {
-        console.error('Error al cargar los departamentos', err);
       },
     });
   }
+
   loadCities(provinceId: number): void {
     this.cityService.getCities(provinceId).subscribe({
       next: (data) => {
         this.cities = data;
       },
       error: (err) => {
-        console.error('Error al cargar las ciudades', err);
       },
     });
   }
+
   onProvinceChange(event: Event): void {
     const selectedValue = (event.target as HTMLSelectElement).value;
-    console.log('Provincia seleccionada:', selectedValue);
     this.loadCities(Number(selectedValue));
   }
-
-
-
 
   onRetry() {
     this.showCustomModal = false;

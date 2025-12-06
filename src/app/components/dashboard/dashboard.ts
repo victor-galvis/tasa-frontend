@@ -62,7 +62,7 @@ export class Dashboard {
           this.showNoContracts = true;
         }
       },
-      error: (err) => console.error('❌ Error al cargar contratos', err),
+      error: (err) => { },
     });
   }
 

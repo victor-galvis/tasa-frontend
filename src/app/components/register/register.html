@@ -53,10 +53,8 @@
   <div class="validate-email-container">
     <div class="title">Digita el código</div>
     <div class="subtitle">Te enviamos un código de verificación al correo</div>
-    <div class="otp-container">
-      <input *ngFor="let ctrl of inputs; let i = index" type="text" maxlength="1" class="otp-input"
-        [(ngModel)]="codigo[i]" (input)="onInput($event, i)" />
-    </div>
+    <app-otp-input [length]="5" (codeCompleted)="recibirCodigo($event)"></app-otp-input>
+
 
     <div class="buttons">
       <button class="outline-button" (click)="reenviarOtp()">Reenviar</button>

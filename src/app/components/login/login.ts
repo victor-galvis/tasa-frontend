@@ -15,13 +15,11 @@ export class Login {
   successMessage: string = '';
 
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) { }
 
   onSubmit(): void {
-    console.log('Intentando iniciar sesión con:', this.email, this.password);
     this.authService.login(this.email, this.password).subscribe({
       next: (res) => {
-        console.log('Login exitoso:', res);
 
         this.successMessage = 'Inicio de sesión exitoso ✅';
         this.errorMessage = '';
@@ -29,7 +27,6 @@ export class Login {
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
-        console.error('Error en login:', err);
         this.errorMessage = 'Usuario o contraseña incorrectos ❌';
         this.successMessage = '';
       },

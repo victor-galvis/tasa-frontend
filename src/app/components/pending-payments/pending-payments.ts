@@ -17,7 +17,7 @@ export class PendingPayments {
   loading = true;
   contracts: Contract[] = [];
   openSelect = false;
-    
+
 
   filters: PendingPaymentFilter = {
     company: "",
@@ -25,26 +25,23 @@ export class PendingPayments {
     documentType: "",
     document: ""
   };
-  constructor(private contractService: ContractService, private authService: AuthService) {}
+  constructor(private contractService: ContractService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.user = this.authService.getUser();
 
-    console.log('Usuario en pagos pendientes', this.user);
     this.filters.document = this.user.document;
     this.filters.documentType = this.user.documentType;
 
     this.loadPendingPayments();
     this.loadContracts();
 
-    
+
   }
 
-   onChangeContrato(event: Event) {
+  onChangeContrato(event: Event) {
     const value = (event.target as HTMLSelectElement).value;
-    console.log('Valor seleccionado:', value);
     let contratoSeleccionado = this.contracts.find((c) => c.id === Number(value));
-    console.log('Valor seleccionado:', contratoSeleccionado);
     if (contratoSeleccionado) {
       this.filters.company = contratoSeleccionado.companyId;
       this.filters.agreement = contratoSeleccionado.number;
@@ -52,7 +49,7 @@ export class PendingPayments {
       this.loadPendingPayments();
     }
   }
-   onFocus() {
+  onFocus() {
     this.openSelect = true;
   }
 
@@ -61,25 +58,20 @@ export class PendingPayments {
   }
   loadPendingPayments() {
     this.contractService.pendingPayment(this.filters).subscribe((response) => {
-        console.log('Pending Payments Response:', response);
-        this.pendingPayments = response.data;
-      });
+      this.pendingPayments = response.data;
+    });
   }
   loadContracts() {
     this.contractService.getByUser(this.user.id).subscribe({
       next: (data) => {
-        console.log('Contratos', data);
-        this.contracts = data; 
+        this.contracts = data;
       },
       error: (err) => {
-        /*
-        this.loading = false;
-        console.error('❌ Error al cargar contratos', err);
-        */
+
       },
     });
   }
-  actualizarTotal() {}
+  actualizarTotal() { }
 
   isGridView = false;
   dots = Array(6).fill(0);

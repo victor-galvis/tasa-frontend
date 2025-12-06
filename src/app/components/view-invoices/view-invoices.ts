@@ -44,7 +44,6 @@ export class ViewInvoices {
   ) { }
   ngOnInit() {
     this.user = this.authService.getUser();
-    console.log('Usuario en facturas', this.user);
 
     this.filters = {
       company: '',
@@ -53,10 +52,6 @@ export class ViewInvoices {
       documentType: this.user.documentType,
     };
 
-    //console.log('******************************');
-    //console.log(this.filters);
-    //console.log(this.user);
-    //console.log('******************************');
 
     this.loadInvoices();
 
@@ -64,32 +59,32 @@ export class ViewInvoices {
   }
 
 
-onChangeContrato(event: Event) {
-  const value = (event.target as HTMLSelectElement).value;
-  // ✔ Cuando selecciona "Seleccione una opción" → restaurar filtros por cédula
-  if (value === '0') {
-    this.filters = {
-      company: '',
-      agreement: '',
-      document: this.user.document,
-      documentType: this.user.documentType,
-    };
-    this.loadInvoices();
-    return;
-  }
-  // ✔ Si seleccionó un contrato válido
-  const contratoSeleccionado = this.contracts.find(c => c.id === Number(value));
-  if (contratoSeleccionado) {
-    this.filters = {
-      company: contratoSeleccionado.companyId,
-      agreement: contratoSeleccionado.number,
-      document: '',
-      documentType: '',
-    };
+  onChangeContrato(event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+    // ✔ Cuando selecciona "Seleccione una opción" → restaurar filtros por cédula
+    if (value === '0') {
+      this.filters = {
+        company: '',
+        agreement: '',
+        document: this.user.document,
+        documentType: this.user.documentType,
+      };
+      this.loadInvoices();
+      return;
+    }
+    // ✔ Si seleccionó un contrato válido
+    const contratoSeleccionado = this.contracts.find(c => c.id === Number(value));
+    if (contratoSeleccionado) {
+      this.filters = {
+        company: contratoSeleccionado.companyId,
+        agreement: contratoSeleccionado.number,
+        document: '',
+        documentType: '',
+      };
 
-    this.loadInvoices();
+      this.loadInvoices();
+    }
   }
-}
   loadInvoices() {
 
     this.contractService.getInvoices(this.filters).subscribe({
@@ -136,7 +131,6 @@ onChangeContrato(event: Event) {
 
       },
       error: (error) => {
-        console.error("ERROR EN PETICIÓN:", error);
 
         this.customModalTitle = 'Error';
         this.customModalMessage = 'Ocurrió un error al cargar las facturas. ' +
@@ -152,14 +146,10 @@ onChangeContrato(event: Event) {
   loadContracts() {
     this.contractService.getByUser(this.user.id).subscribe({
       next: (data) => {
-        console.log('Contratos', data);
         this.contracts = data;
       },
       error: (err) => {
-        /*
-        this.loading = false;
-        console.error('❌ Error al cargar contratos', err);
-        */
+
       },
     });
   }
@@ -175,7 +165,6 @@ onChangeContrato(event: Event) {
         this.customModalType = 'error';
         this.customModalButtonText = 'Aceptar';
         this.showCustomModal = true;
-        console.log('❌ Error al descargar la factura', err);
       }
     });
   }

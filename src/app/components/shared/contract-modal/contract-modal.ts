@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ContractService } from '../../../services/contracts/contract.service';
-import { log } from 'console';
 import { AuthService } from '../../../services/auth/auth.service';
 import { CityModel } from '../../../models/city.model';
 import { ProvinceModel } from '../../../models/provice.model';
@@ -62,7 +61,7 @@ export class ContractModal implements OnInit, OnChanges {
     private provinceService: ProvinceService,
     private cityService: CityService,
     private companyService: CompanyService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -75,7 +74,6 @@ export class ContractModal implements OnInit, OnChanges {
       address: [this.correctAddress],
     });
     this.form.get('name')?.valueChanges.subscribe((value) => {
-      //console.log('Nombre personalizado:', value);
     });
     this.loadProvinces();
     this.loadCities(1);
@@ -95,7 +93,7 @@ export class ContractModal implements OnInit, OnChanges {
     this.onSaveContract();
   }
   onRetry() {
-    this.showCustomModal = false; 
+    this.showCustomModal = false;
   }
 
   onCloseCustomModel() {
@@ -105,12 +103,11 @@ export class ContractModal implements OnInit, OnChanges {
     this.contrato = this.form.get('number')?.value;
     if (!this.contrato) {
       this.errorMessage = 'Debe ingresar un número de contrato';
-      console.warn('Debe ingresar un número de contrato');
       return;
     }
     this.errorMessage = '';
 
-    this.loading = true; 
+    this.loading = true;
 
     this.contractService
       .validateContract({
@@ -120,11 +117,9 @@ export class ContractModal implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.loading = false;
-          console.log('✅ Response:', response);
           if (response.status.status === 'OK') {
             if (response.data.length > 0) {
               this.correctAddress = response.data[0].address;
-              console.log('Dirección correcta del contrato:', response.data[0].address);
 
               this.addressFromServerList = response.data.map((data: any) => {
                 return data.address;
@@ -141,17 +136,15 @@ export class ContractModal implements OnInit, OnChanges {
               this.customModalMessage = 'El contrato no existe o no está activo.';
               this.customModalTitle = 'Contrato inválido';
               this.customModalButtonText = 'Cerrar';
-              this.showCustomModal = true;  
+              this.showCustomModal = true;
             }
           } else {
             this.errorMessage = `Error al validar el contrato: ${response.status.message}`;
-            console.error('Error al validar el contrato:', response.status.message);
           }
         },
         error: (err) => {
           this.loading = false;
           this.errorMessage = `Error en la petición: ${err.message}`;
-          console.error('Error en la petición:', err);
         },
       });
   }
@@ -181,7 +174,6 @@ export class ContractModal implements OnInit, OnChanges {
     return arr[Math.floor(Math.random() * arr.length)];
   }
   onAddressSelected(address: string) {
-    console.log('Dirección seleccionada:', address);
     this.address = address;
 
     const exists = this.addressFromServerList.includes(address);
@@ -191,11 +183,9 @@ export class ContractModal implements OnInit, OnChanges {
       this.form.patchValue({
         address: this.correctAddress,
       });
-      console.log('✅ Dirección correcta:', address);
     } else {
       this.contractVerified = false;
       this.errorMessage = '❌ Dirección incorrecta: ' + address;
-      console.log('❌ Dirección incorrecta:', address);
     }
   }
   ngOnChanges(changes: SimpleChanges): void {
@@ -239,7 +229,6 @@ export class ContractModal implements OnInit, OnChanges {
       Object.keys(this.form.controls).forEach((key) => {
         const control = this.form.get(key);
         if (control && control.invalid) {
-          console.warn(`Campo inválido: ${key}`, control.errors);
         }
       });
     }
@@ -257,13 +246,11 @@ export class ContractModal implements OnInit, OnChanges {
     this.showValidationModal = true;
   }
   onSaveContract() {
-    console.log('this.form.invalid', this.form.invalid);
 
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    console.log('this.contractVerified', this.contractVerified);
 
     if (!this.contractVerified) {
       this.errorMessage = 'Por favor verifica la dirección antes de inscribir el contrato.';
@@ -273,7 +260,7 @@ export class ContractModal implements OnInit, OnChanges {
     this.loading = true;
     this.errorMessage = '';
 
-    const payload = this.form.value; 
+    const payload = this.form.value;
 
     let user = this.authService.getUser();
     payload.user_id = user.id;
@@ -315,7 +302,6 @@ export class ContractModal implements OnInit, OnChanges {
         this.provinces = data;
       },
       error: (err) => {
-        console.error('Error al cargar los departamentos', err);
       },
     });
   }
@@ -325,7 +311,6 @@ export class ContractModal implements OnInit, OnChanges {
         this.cities = data;
       },
       error: (err) => {
-        console.error('Error al cargar las ciudades', err);
       },
     });
   }
@@ -333,10 +318,8 @@ export class ContractModal implements OnInit, OnChanges {
     this.companyService.getCompanies().subscribe({
       next: (data) => {
         this.companies = data;
-        console.log('Companies loaded', data);
       },
       error: (err) => {
-        console.error('Error al cargar las compañias', err);
       },
     });
   }

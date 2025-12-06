@@ -11,14 +11,18 @@ export class OtpService {
 
   constructor(private http: HttpClient) { }
 
-  generateOtp(email: string) {
-    console.log("xxxxxxxxxxxxx");
-    console.log(this.base);
-    console.log("xxxxxxxxxxxxx");
+  generateOtp(email: string, type: string) {
 
-    return this.http.post<{ otp: string }>(`${this.base}/otp/generate-otp`, { email }).pipe(
+    return this.http.post<{ otp: string }>(`${this.base}/otp/generate-otp`, { email, type }).pipe(
       tap((res) => {
-        console.log('OTP enviado:', res);
+      })
+    );
+  }
+
+  generateOtpPasswordRecovery(email: string, type: string) {
+
+    return this.http.post<{ otp: string }>(`${this.base}/otp/generate-otp-forgot-password`, { email, type }).pipe(
+      tap((res) => {
       })
     );
   }

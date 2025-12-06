@@ -26,6 +26,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 
@@ -173,6 +175,11 @@
   margin-left: 10px;
 }
 
+.user-header-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: flex-end;
+}
 
 @media (max-width: 991px) {
   .text-tasa {
@@ -183,6 +190,12 @@
   .text-seguridad {
     font-size: 38px;
     margin-left: 2px;
+  }
+
+  .user-header-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
   }
 }
 

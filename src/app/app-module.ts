@@ -24,6 +24,8 @@ import { CustomModal } from './components/shared/custom-modal/custom-modal';
 import { ConfirmContractModal } from './components/shared/confirm-contract-modal/confirm-contract-modal';
 import { PendingPayments } from './components/pending-payments/pending-payments';
 import { AuthInterceptor } from './interceptors/uth.interceptor';
+import { ForgotPassword } from './components/forgot-password/forgot-password';
+import { OtpInputComponent } from './components/otp-input-component/otp-input-component';
 
 export function playerFactory() {
   return player;
@@ -45,6 +47,8 @@ export function playerFactory() {
     CustomModal,
     ConfirmContractModal,
     PendingPayments,
+    ForgotPassword,
+    OtpInputComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, LottieComponent],
   providers: [
@@ -54,8 +58,8 @@ export function playerFactory() {
     provideLottieOptions({
       player: playerFactory,
     }),
-     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [App],
 })
-export class AppModule {}
+export class AppModule { }

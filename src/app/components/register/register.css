@@ -114,25 +114,7 @@ h2 {
   border-radius: 5px;
 }
 
-.otp-container {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-top: 20px;
-}
 
-.otp-input {
-  width: 50px;
-  height: 60px;
-  font-size: 24px;
-  text-align: center;
-  border-radius: 12px;
-  border: none;
-  outline: none;
-  background-color: #bdcdc5;
-  color: #0c5441;
-  font-weight: bold;
-}
 
 .verification-success-container {
   display: flex;
