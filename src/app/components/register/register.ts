@@ -131,47 +131,7 @@ export class Register {
     this.btnDisabled = !result;
   }
 
-  /*
-  moverFoco(event: any, index: number) {
-    const input = event.target;
-    if (input.value && index < this.inputs.length - 1) {
-      const next = input.nextElementSibling;
-      if (next) next.focus();
-    }
-  }
 
-  retrocederFoco(event: any, index: number) {
-    if (event.key === 'Backspace') {
-      if (this.codigo[index]) {
-        this.codigo[index] = '';
-      } else if (index > 0) {
-        const prev = (event.target as HTMLInputElement).previousElementSibling as HTMLInputElement;
-        if (prev) {
-          this.codigo[index - 1] = '';
-          prev.focus();
-        }
-      }
-    }
-  }
-
-  onInput(event: any, index: number) {
-    const input = event.target as HTMLInputElement;
-
-    if (input.value && index < this.inputs.length - 1) {
-      const next = input.nextElementSibling as HTMLInputElement;
-      if (next) next.focus();
-    }
-
-    if (!input.value && index > 0) {
-      const prev = input.previousElementSibling as HTMLInputElement;
-      if (prev) prev.focus();
-    }
-  }
-
-  getCodigoFinal(): string {
-    return this.codigo.join('');
-  }
-  */
   recibirCodigo(codigo: string) {
     this.codigoFinal = codigo.trim();
   }

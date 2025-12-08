@@ -1,40 +1,19 @@
 <div *ngIf="visible" class="modal-overlay" (click)="backdropClick()">
 
-  <app-custom-modal
-  [visible]="showCustomModal"
-  title="{{ customModalTitle }}"
-  message="{{ customModalMessage }}"
-  type="{{ customModalType }}"
-  buttonText="{{ customModalButtonText }}"
-  (confirmed)="onRetry()"
-  (closed)="onCloseCustomModel()"
-  
-></app-custom-modal>
+  <app-custom-modal [visible]="showCustomModal" title="{{ customModalTitle }}" message="{{ customModalMessage }}"
+    type="{{ customModalType }}" buttonText="{{ customModalButtonText }}" (confirmed)="onRetry()"
+    (closed)="onCloseCustomModel()"></app-custom-modal>
 
-  <app-address-select-modal
-    [(visible)]="showAddressModal"
-    [addresses]="addressList"
-    (selected)="onAddressSelected($event)"
-  ></app-address-select-modal>
+  <app-address-select-modal [(visible)]="showAddressModal" [addresses]="addressList"
+    (selected)="onAddressSelected($event)"></app-address-select-modal>
   <div class="loading-wrapper" *ngIf="loading">
     <div class="spinner"></div>
   </div>
-  <app-confirm-contract-modal
-    [visible]="showValidationModal"
-    [contractNumber]="form.controls['number'].value"
-    (closed)="onCloseModal()"
-    (validated)="onValidate($event)"
-  ></app-confirm-contract-modal>
+  <app-confirm-contract-modal [visible]="showValidationModal" [contractNumber]="form.controls['number'].value"
+    (closed)="onCloseModal()" (validated)="onValidate($event)"></app-confirm-contract-modal>
 
-  <form
-    class="modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="modalTitle"
-    (click)="$event.stopPropagation()"
-    [formGroup]="form"
-    (ngSubmit)="onSubmit()"
-  >
+  <form class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" (click)="$event.stopPropagation()"
+    [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="modal-header">
       <h3 id="modalTitle">Inscribir contrato</h3>
       <button type="button" class="btn-close" (click)="close()" aria-label="Cerrar">✕</button>
@@ -66,14 +45,8 @@
 
             } @else if (!contractVerified) {
             <div class="input-group margin-custom">
-              <input
-                placeholder=""
-                type="text"
-                id="contrato"
-                name="contrato"
-                autocomplete="off"
-                formControlName="number"
-              />
+              <input placeholder="" type="text" id="contrato" name="contrato" autocomplete="off"
+                formControlName="number" />
               <label for="name">Contrato *</label>
               <span class="bar"></span>
             </div>
@@ -92,14 +65,7 @@
       <div class="fields_container">
         <div class="personalized_name">
           <div class="input-group error.">
-            <input
-              placeholder=" "
-              type="text"
-              id="name"
-              name="name"
-              formControlName="name"
-              autocomplete="off"
-            />
+            <input placeholder=" " type="text" id="name" name="name" formControlName="name" autocomplete="off" />
             <label for="name">Nombre personalizado *</label>
             <span class="bar"></span>
             @if (form.controls['name'].invalid && form.controls['name'].touched) {
@@ -118,7 +84,7 @@
           Verificar contrato
         </button>
       </div>
-<!-- TODO: Ajustar campos de Departamento y Ciudad en el siguiente módulo Actualizador. -->
+      <!-- TODO: Ajustar campos de Departamento y Ciudad en el siguiente módulo Actualizador. -->
       <div class="location-wrapper" *ngIf="false">
         <div class="select-wrapper" [class.open]="openSelect">
           <label for="province" class="md-label">Departamento</label>
@@ -152,9 +118,8 @@
             </label>
 
             <div class="info-text">
-              <span class="info-text-gray"
-                >*Si seleccionas esta opción, la factura continuará llegando </span
-              ><strong>sólo de forma digital al correo registrado en esta plataforma.</strong>.
+              <span class="info-text-gray">*Si seleccionas esta opción, la factura continuará llegando
+              </span><strong>sólo de forma digital al correo registrado en esta plataforma.</strong>.
             </div>
           </div>
 
@@ -166,7 +131,8 @@
             </label>
             <div class="info-text">
               <span class="info-text-gray">*Si seleccionas esta opción, la factura </span>
-              <strong>sólo se entregará de forma física</strong> en la dirección correspondiente al servicio de energía electrica.
+              <strong>sólo se entregará de forma física</strong> en la dirección correspondiente al servicio de energía
+              electrica.
             </div>
           </div>
         </div>

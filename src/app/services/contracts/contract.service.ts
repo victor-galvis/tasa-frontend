@@ -10,6 +10,7 @@ import { InvoiceFilter } from '../../models/invoice/invoice.filter';
 import { InvoiceResponse } from '../../models/invoice/invoice.response';
 import { PendingPaymentFilter } from '../../models/pending-payments/pending.payment.filter';
 import { PendingPaymentResponse } from '../../models/pending-payments/pending.payment.response';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,8 @@ import { PendingPaymentResponse } from '../../models/pending-payments/pending.pa
 export class ContractService {
   private base = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
+
 
   getAll(): Observable<Contract[]> {
     return this.http.get<Contract[]>(this.base);
@@ -42,9 +44,17 @@ export class ContractService {
   }
 
   validateContract(filters: ContractFilter): Observable<ContractResponse> {
-    return this.http.post<ContractResponse>(`${this.base}/contract/validate`, {
-      filters: filters,
-    });
+    const token = this.authService.getToken();
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    return this.http.post<ContractResponse>(
+      `${this.base}/contract/validate`,
+      { filters },
+      { headers }
+    );
   }
 
   pendingPayment(filters: PendingPaymentFilter): Observable<PendingPaymentResponse> {

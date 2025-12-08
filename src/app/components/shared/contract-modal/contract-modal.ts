@@ -16,6 +16,7 @@ import { ProvinceModel } from '../../../models/provice.model';
 import { CityService } from '../../../services/city/city.service';
 import { ProvinceService } from '../../../services/province/province.service';
 import { Company, CompanyService } from '../../../services/company/company.service';
+import { AddressValidateService } from '../../../services/address-validate';
 
 @Component({
   selector: 'app-contract-modal',
@@ -60,7 +61,8 @@ export class ContractModal implements OnInit, OnChanges {
     private contractService: ContractService,
     private provinceService: ProvinceService,
     private cityService: CityService,
-    private companyService: CompanyService
+    private companyService: CompanyService,
+    private addressValidateService: AddressValidateService
   ) { }
 
   ngOnInit(): void {
@@ -117,20 +119,10 @@ export class ContractModal implements OnInit, OnChanges {
       .subscribe({
         next: (response) => {
           this.loading = false;
-          if (response.status.status === 'OK') {
-            if (response.data.length > 0) {
-              this.correctAddress = response.data[0].address;
+          if (response.status === 'OK') {
+            if (response.addresses.length > 0) {
 
-              this.addressFromServerList = response.data.map((data: any) => {
-                return data.address;
-              });
-
-              const randomFakes = Array.from({ length: 4 }, () => this.generateRandomAddress());
-
-              const allAddresses = this.shuffleArray([...randomFakes, this.correctAddress]);
-
-              this.addressList = allAddresses;
-
+              this.addressList = response.addresses;
               this.showAddressModal = true;
             } else {
               this.customModalMessage = 'El contrato no existe o no está activo.';
@@ -139,7 +131,7 @@ export class ContractModal implements OnInit, OnChanges {
               this.showCustomModal = true;
             }
           } else {
-            this.errorMessage = `Error al validar el contrato: ${response.status.message}`;
+            this.errorMessage = `Error al validar el contrato: ${this.contrato}`;
           }
         },
         error: (err) => {
@@ -148,45 +140,40 @@ export class ContractModal implements OnInit, OnChanges {
         },
       });
   }
-  private generateRandomAddress(): string {
-    const calle = this.randomInt(1, 100);
-    const carrera = this.randomInt(1, 120);
-    const letras = ['A', 'B', 'C', 'D', 'E', 'SUR', 'NORTE'];
-    const sufijoCalle = Math.random() > 0.5 ? ` ${this.randomItem(letras)}` : '';
-    const sufijoCarrera = Math.random() > 0.5 ? ` ${this.randomItem(letras)}` : '';
-    const numero = this.randomInt(1, 80);
-    const interior = Math.random() > 0.3 ? ` (INTERIOR ${this.randomInt(100, 900)})` : '';
 
-    return `CL ${calle}${sufijoCalle} CR ${carrera}${sufijoCarrera} -${numero}${interior}`;
-  }
-  private shuffleArray<T>(array: T[]): T[] {
-    const arr = [...array];
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }
-  private randomInt(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  private randomItem<T>(arr: T[]): T {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
   onAddressSelected(address: string) {
     this.address = address;
-
-    const exists = this.addressFromServerList.includes(address);
-
-    if (exists) {
-      this.contractVerified = true;
-      this.form.patchValue({
-        address: this.correctAddress,
-      });
-    } else {
-      this.contractVerified = false;
-      this.errorMessage = '❌ Dirección incorrecta: ' + address;
-    }
+    let company = this.form.get('companyId')?.value
+    let agreement = this.form.get('number')?.value
+    console.log('Dirección seleccionada:', address);
+    console.log('Compañía:', company);
+    console.log('Contrato:', agreement);
+    this.addressValidateService.validateAddress({
+      company: company,
+      agreement: agreement,
+      address: address
+    }).subscribe({
+      next: (data) => {
+        console.log('Respuesta de validación de dirección:', data);
+        if (data.isValid) {
+          this.contractVerified = true;
+          this.form.patchValue({
+            address: data.correctedAddress,
+          });
+          this.showAddressModal = false;
+        } else {
+          this.contractVerified = false;
+          this.errorMessage = '❌ Dirección incorrecta: ' + address;
+          this.showAddressModal = false;
+        }
+      },
+      error: (err) => {
+        console.error('Error al validar la dirección:', err);
+        this.contractVerified = false;
+        this.errorMessage = '❌ Error al validar la dirección.';
+        this.showAddressModal = false;
+      }
+    });
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
