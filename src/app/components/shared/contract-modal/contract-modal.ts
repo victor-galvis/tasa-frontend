@@ -117,7 +117,7 @@ export class ContractModal implements OnInit, OnChanges {
         agreement: this.form.get('number')?.value,
       })
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.loading = false;
           if (response.status === 'OK') {
             if (response.addresses.length > 0) {
@@ -131,7 +131,7 @@ export class ContractModal implements OnInit, OnChanges {
               this.showCustomModal = true;
             }
           } else {
-            this.errorMessage = `Error al validar el contrato: ${this.contrato}`;
+            this.errorMessage = response.message
           }
         },
         error: (err) => {
@@ -163,7 +163,7 @@ export class ContractModal implements OnInit, OnChanges {
           this.showAddressModal = false;
         } else {
           this.contractVerified = false;
-          this.errorMessage = '❌ Dirección incorrecta: ' + address;
+          this.errorMessage = data.message;
           this.showAddressModal = false;
         }
       },

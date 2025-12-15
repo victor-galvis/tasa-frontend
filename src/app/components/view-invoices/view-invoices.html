@@ -17,7 +17,7 @@
         <select id="grado" (change)="onChangeContrato($event)" (focus)="onFocus()" (blur)="onBlur()" aria-label="Grado">
           <option value="0">Seleccione una opción</option>
           @for (o of contracts; track o.id) {
-          <option [value]="o.id">{{ o.number }}</option>
+          <option [value]="o.id">{{ o.number }} - {{ o.name }}</option>
           }
         </select>
 
