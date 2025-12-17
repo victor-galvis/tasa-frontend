@@ -35,12 +35,13 @@
 
 .banner {
   display: block;
-  background-image: url('/images/home.jpg');
+  background-image: url('/images/home2.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 400px;
+  height: 450px;
   position: relative;
+  background-size: 100% 100%;
 }
 
 .menu {
@@ -72,7 +73,7 @@
   left: 0;
   background-image: url('/images/tasa-text-home.png');
   background-repeat: no-repeat;
-  background-position: 20px 20px;
+  background-position: 0px 10px;
 }
 
 .govco-header {
