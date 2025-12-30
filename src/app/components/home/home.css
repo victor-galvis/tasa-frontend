@@ -71,9 +71,13 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  background-image: url('/images/tasa-text-home.png');
+  /*background-image: url('/images/tasa-text-home.png');*/
   background-repeat: no-repeat;
   background-position: 0px 10px;
+}
+
+.tasa-container img {
+  margin-top: 10px;
 }
 
 .govco-header {
@@ -187,6 +191,7 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 .tasa-info-content .items .item {
@@ -223,7 +228,15 @@
     width: 130px;
   }
 
+  .banner {
+    background-image: url('/images/Banner-tasa-de-seguridad-1400px-x-768px.jpg');
+    height: 788px;
+  }
 
+  .tasa-container img {
+    width: 70%;
+    margin-top: 52px;
+  }
 }
 
 /* === Celulares y pantallas pequeñas === */
@@ -246,6 +259,16 @@
     margin-top: 5px;
     padding: 0px;
 
+  }
+
+  .banner {
+    background-image: url('/images/Banner-tasa-de-seguridad-767px-x-431px.jpg');
+    height: 431px;
+  }
+
+  .tasa-container img {
+    width: 70%;
+    margin-top: 52px;
   }
 
   .menu-top {
@@ -330,4 +353,16 @@
   .tasa-info-content .left {
     width: 100%;
   }
+
+  .banner {
+    background-image: url('/images/Banner-tasa-de-seguridad-480px-x-270px.jpg');
+    height: 270px;
+  }
+
+  .tasa-container img {
+    width: 50%;
+    margin-top: 52px;
+  }
+
+
 }
