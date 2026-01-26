@@ -471,3 +471,48 @@
   color: #0e4a39;
   transform: translateX(4px);
 }
+@media (max-width: 767px) {
+  .banner {
+    aspect-ratio: auto;
+    height: 431px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    aspect-ratio: auto;
+    height: 270px;
+  }
+}
+
+/* ==============================
+   IMÁGENES EN TARJETAS NOTICIAS
+   ============================== */
+
+.tasa-noticia-img {
+  width: 100%;
+  height: 160px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.tasa-noticia-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Contenido interno */
+.tasa-noticia-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Hover suave para imagen */
+.tasa-noticia-card:hover .tasa-noticia-img img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
