@@ -1,4 +1,4 @@
-.home-container {
+ .home-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -59,13 +59,13 @@
 /* ================= MENÚ ================= */
 
 .menu {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
   width: 100%;
   padding: 0 20px;
   margin-top: 20px;
-  gap: 20px;
+  display: flex;
+  justify-content: center;
 }
+
 
 .menu-item {
   border-radius: 10px;
@@ -78,14 +78,12 @@
 }
 
 .menu-row {
-  width: 100%;
   display: flex;
-  margin-top: 20px;
-  padding: 10px 40px;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
-.menu-top { grid-column: span 4; }
-.menu-bottom { grid-column: span 8; }
 
 .register-item img { width: 300px; height: auto; }
 .menu-bottom .menu-item img { width: 160px; height: auto; }
@@ -296,3 +294,15 @@
     font-size: 30px;
   }
 }
+
+/* FIX iPhone: evita que el banner se corte */
+@media (max-width: 767px) {
+  .banner {
+    height: auto !important;        /* ← clave */
+    min-height: unset !important;
+    max-height: unset !important;
+    aspect-ratio: 767 / 431;        /* proporción real del banner móvil */
+  }
+}
+
+
