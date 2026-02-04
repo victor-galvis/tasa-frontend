@@ -305,4 +305,36 @@
   }
 }
 
+/* footer nuevo */
+/* ================= FRANJA VERDE SUPERIOR FOOTER ================= */
 
+.govco-footer-top {
+  width: 100%;
+  background-color: #0e4a39; /* Verde institucional */
+  color: #ffffff;
+  padding: 25px 20px;
+  font-family: "Public Sans", sans-serif;
+  font-size: 10px;
+  
+  line-height: 1.6;
+}
+
+.govco-footer-top-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+
+.govco-footer-top p {
+  margin: 6px 0;
+}
+
+.govco-footer-top a {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.govco-footer-top a:hover {
+  opacity: 0.85;
+}
