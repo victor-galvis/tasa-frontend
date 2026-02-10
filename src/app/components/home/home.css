@@ -371,6 +371,7 @@ body {
     left: 4vw !important;
     bottom: 0px !important;       /* lo subimos para que no tape el botón */
     border-radius: 18px;
+   
   }
 
   #abrir-talia {
@@ -384,4 +385,15 @@ body {
     max-width: 200px;
     font-size: 12px;
   }
+}
+
+
+#chat-talia {
+  display: none;   /* oculto por defecto en TODOS los dispositivos */
+}
+#chat-talia.activo {
+  display: block;
+  position: fixed;
+  opacity: 1;
+  pointer-events: auto;
 }
