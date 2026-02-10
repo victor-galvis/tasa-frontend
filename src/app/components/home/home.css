@@ -338,7 +338,9 @@
 .govco-footer-top a:hover {
   opacity: 0.85;
 }
- /* espacio a los lados */
+ 
+
+/* espacio a los lados */
 @media (max-width: 767px) {
   .banner {
     width: 92%;              /* deja espacio a los lados */
@@ -348,52 +350,6 @@
   }
 }
 
-/* evita scroll lateral */
-html {
-  height: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* ================= CHAT TALIA RESPONSIVE ================= */
-@media (max-width: 767px) {
-
-  #chat-talia {
-    width: 92vw !important;        /* ocupa casi todo el ancho del celular */
-    height: 75vh !important;       /* alto proporcional a la pantalla */
-    right: 4vw !important;         /* centrado horizontalmente */
-    left: 4vw !important;
-    bottom: 0px !important;       /* lo subimos para que no tape el botón */
-    border-radius: 18px;
-   
-  }
-
-  #abrir-talia {
-    right: 20px !important;
-    bottom: 20px !important;
-  }
-
-  #talia-pill {
-    right: 85px !important;
-    bottom: 15px !important;
-    max-width: 200px;
-    font-size: 12px;
-  }
-}
 
 
-#chat-talia {
-  display: none;   /* oculto por defecto en TODOS los dispositivos */
-}
-#chat-talia.activo {
-  display: block;
-  position: fixed;
-  opacity: 1;
-  pointer-events: auto;
-}
+
