@@ -34,8 +34,23 @@
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
-  aspect-ratio: 1920 / 861; /* Solo escritorio */
+  aspect-ratio: 1920 / 810; /* Solo escritorio */
 }
+/* 💻 Banner más contenido en escritorio */
+@media (min-width: 1200px) {
+  .banner {
+    width: 98%;              /* deja aire a los lados */
+    margin: 20px auto 0;     /* centrado y con espacio arriba */
+    border-radius: 2px;     /* bordes suaves modernos */
+    overflow: hidden;        /* respeta el borde redondeado */
+  }
+}
+@media (min-width: 1600px) {
+  .banner {
+    width: 80%;
+  }
+}
+/* fin delos lados banner principal home escritorio */
 
 /* ================= LOGO TASA ================= */
 
