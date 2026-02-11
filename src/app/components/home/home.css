@@ -13,7 +13,6 @@
     overflow-y: auto; /* Asegurarse de que el contenido pueda desplazarse */
 }
 
-
 .middle-logo-container {
   display: flex;
   justify-content: center;
