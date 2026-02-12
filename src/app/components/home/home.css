@@ -323,77 +323,82 @@
 
 
 
-/* REEMPLAZAR POR ESTE - Banner móvil sin aspect-ratio */
+/* ========== BANNER MÓVIL SIN ASPECT-RATIO ========== */
 @media (max-width: 767px) {
   .banner {
-    position: relative; /* Cambiar de relative explícito */
+    position: relative;
     width: 92%;
     margin: 20px auto 0;
     border-radius: 4px;
     overflow: hidden;
-    /* Usar padding-bottom para mantener proporción sin aspect-ratio */
-    height: 0;
-    padding-bottom: 56.25%; /* 16:9 aproximado, ajusta según tu imagen */
-    background-size: cover;
-    background-position: center;
-  }
-  
-  /* Si necesitas altura mínima específica */
-  .banner::before {
-    content: '';
-    display: block;
-    padding-top: 56.25%; /* Mantiene proporción */
+    /* Altura fija basada en viewport - más estable */
+    height: 50vw;
+    min-height: 280px;
+    max-height: 450px;
+    aspect-ratio: auto !important;
   }
 }
 
-/* ========== CHAT FLOTANTE - NO BLOQUEAR SCROLL ========== */
-/* Asegurar que el botón y la píldora no capturen eventos del body */
-#abrir-talia,
-#talia-pill,
-#chat-talia {
-  /* Ya tienen pointer-events, pero verificar que no haya overlay invisible */
-  touch-action: none; /* Permite que los toques pasen al body cuando corresponde */
+/* FIX iPhone - Usar height natural en lugar de auto */
+@media (max-width: 767px) {
+  .banner {
+    height: 56vw;
+    min-height: 300px;
+  }
 }
 
-/* Cuando el chat está cerrado, asegurar que no bloquea */
+/* ========== CHAT - ESTADOS CORRECTOS ========== */
+
+/* Chat cerrado: display:none (no bloquea nada) */
 #chat-talia {
-  pointer-events: none !important;
-  visibility: hidden; /* Ocultar completamente cuando cerrado */
+  display: none;
   opacity: 0;
+  pointer-events: none;
+  transform: scale(.95);
 }
 
-/* Cuando está abierto */
-#chat-talia.abierto,
-#chat-talia[aria-expanded="true"] {
-  pointer-events: auto !important;
-  visibility: visible;
+/* Chat abierto: display:block + visible */
+#chat-talia.abierto {
+  display: block;
   opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
 }
 
-/* ========== MAIN CONTENT - ASEGURAR FLUJO ========== */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  z-index: 1;
-  width: 100%;
+/* Botón siempre clickeable */
+#abrir-talia {
+  pointer-events: auto !important;
+  cursor: pointer;
 }
 
-/* ========== FIX PARA IOS SAFARI ========== */
-@supports (-webkit-touch-callout: none) {
-  /* CSS específico para iOS */
-  body {
-    min-height: -webkit-fill-available;
+/* Píldora no interfiere */
+#talia-pill {
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+/* ========== RESPONSIVE CHAT MÓVIL ========== */
+@media (max-width: 480px) {
+  #chat-talia {
+    width: 92vw;
+    height: 70vh;
+    right: 4vw;
+    bottom: 80px;
   }
   
-  .home-container {
-    min-height: -webkit-fill-available;
+  #abrir-talia {
+    right: 12px;
+    bottom: 22px;
+  }
+  
+  #talia-pill {
+    right: 70px;
+    bottom: 18px;
+    max-width: 180px;
+    font-size: 12px;
+    padding: 8px 10px;
   }
 }
-
-
-
 
 
 
@@ -454,13 +459,15 @@
 
  /* scroll movil */
 /* scroll movil corregido */
+/* CSS CORREGIDO - SCROLL + CHAT FUNCIONANDO */
+
+/* ========== SCROLL MÓVIL ========== */
 html {
   height: auto;
   min-height: 100%;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  /* IMPORTANTE: No aplicar overflow-y aquí */
 }
 
 body {
@@ -468,18 +475,17 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: auto !important; /* Forzar scroll vertical */
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  position: relative; /* Contexto de apilamiento */
+  position: relative;
 }
 
-/* Contenedor principal - eliminar posibles bloqueos */
 .home-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  position: relative; /* En lugar de static */
+  position: relative;
   z-index: 1;
 }
  /* chat nuevo icono */
@@ -541,5 +547,14 @@ body {
 }
 
 
-
+@media (max-width: 767px) {
+  .banner {
+    width: 92%;
+    margin: 20px auto;
+    height: 300px; /* Altura fija absoluta para prueba */
+    background-size: cover;
+    background-position: center;
+    /* Sin position: relative, sin aspect-ratio, sin nada extra */
+  }
+}
 
