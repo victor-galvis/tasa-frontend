@@ -10,7 +10,7 @@
 <button id="abrir-talia" aria-controls="chat-talia" aria-expanded="false" style="
   position: fixed;
   bottom: 20px;
-  right: 5px;
+  right: 30px;
   background: none;
   border: none;
   padding: 0;
@@ -21,26 +21,35 @@
   justify-content: center;
   box-shadow: none;
 ">
-  <img src="/images/icono-asistente-virtual.png" alt="Asistente TALIA" style="width:60px; height:60px;">
+<div class="talia-wrapper">
+  <picture>
+    <source srcset="/images/segurichatpc.svg" media="(min-width: 768px)">
+    <img src="/images/movilsegurichat.svg" alt="Asistente TALIA" class="talia-icon">
+  </picture>
+</div>
+
+
+
+  <!--<img src="/images/icono-asistente-virtual.png" alt="Asistente TALIA" style="width:60px; height:60px;">-->
 </button>
 
 <!-- PÍLDORA / PLACEHOLDER -->
 <span id="talia-pill" role="status" aria-live="polite" style="
-  position: fixed; bottom: 35px; right: 95px; z-index: 10000;
+  position: fixed; bottom: 20px; right: 130px; z-index: 10000;
   max-width: 320px; background:#ffffff; color:#0e4a39;
   border:1px solid rgba(0,0,0,.08); box-shadow:0 8px 20px rgba(0,0,0,.18);
-  padding: 10px 14px; border-radius: 999px; font: 500 13px/1.25 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  padding: 10px 12px; border-radius: 999px; font: 500 12px/1.25 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 ">
   Soy <strong>🤖 TALIA</strong>, asistente IA especializado en la TASA de seguridad y convivencia para el departamento
   de Antioquia.
 </span>
 
 <!-- IFRAME DEL CHAT (sin src hasta que se abra) -->
-<iframe id="chat-talia" src="" title="Chat TALIA — Agente IA TASA" width="380" height="600" frameborder="0"
+<iframe id="chat-talia" src="" title="Chat TALIA — Agente IA TASA" width="480" height="600" frameborder="0"
   allow="microphone; autoplay; encrypted-media" style="
     position: fixed; 
-    bottom: 10px;   
-    right: 35px;    
+    bottom: 20px;   
+    right: 10px;    
     border: none;
     border-radius: 16px; 
     background: #ffffff;

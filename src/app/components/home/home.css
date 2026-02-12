@@ -375,4 +375,64 @@ html, body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
+ /* chat nuevo icono */
+.talia-icon {
+  width: 60px;
+  height: 60px;
+}
+
+/* PC más grande */
+@media (min-width: 768px) {
+  .talia-icon {
+    width: 95px;
+    height: 85px;
+  }
+}
+
+/* Móvil más pequeño */
+@media (max-width: 480px) {
+  .talia-icon {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* Burbuja del mensaje */
+.talia-bubble {
+  position: fixed;
+  bottom: 95px; /* Distancia normal en PC */
+  right: 20px;
+  max-width: 260px;
+}
+
+/* 📱 En móvil acercamos TODO */
+/* Ajuste SOLO para móvil */
+@media (max-width: 480px) {
+  .talia-wrapper {
+    bottom: 25px !important;
+    right: 22px !important;
+  }
+}
+
+/* 📱 Ajuste SOLO para móviles */
+@media (max-width: 480px) {
+
+  /* Mover un poco el botón si hace falta */
+  #abrir-talia {
+    right: 12px !important;
+    bottom: 22px !important;
+  }
+
+  /* Acercar la burbuja al ícono */
+  #talia-pill {
+    right: 70px !important;   /* 🔥 antes 130px → demasiado lejos */
+    bottom: 18px !important;  /* alineado verticalmente con el botón */
+    max-width: 180px;
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+}
+
+
+
 
