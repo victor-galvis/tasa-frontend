@@ -312,17 +312,102 @@
 }
 
 /* FIX iPhone: evita que el banner se corte */
-@media (max-width: 767px) {
+/*@media (max-width: 767px) {
   .banner {
-    height: auto !important;        /* ← clave */
+    height: auto !important;        
     min-height: unset !important;
     max-height: unset !important;
-    aspect-ratio: 767 / 431;        /* proporción real del banner móvil */
+    aspect-ratio: 767 / 431;        
+  }
+}*/
+
+
+
+/* REEMPLAZAR POR ESTE - Banner móvil sin aspect-ratio */
+@media (max-width: 767px) {
+  .banner {
+    position: relative; /* Cambiar de relative explícito */
+    width: 92%;
+    margin: 20px auto 0;
+    border-radius: 4px;
+    overflow: hidden;
+    /* Usar padding-bottom para mantener proporción sin aspect-ratio */
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aproximado, ajusta según tu imagen */
+    background-size: cover;
+    background-position: center;
+  }
+  
+  /* Si necesitas altura mínima específica */
+  .banner::before {
+    content: '';
+    display: block;
+    padding-top: 56.25%; /* Mantiene proporción */
   }
 }
 
+/* ========== CHAT FLOTANTE - NO BLOQUEAR SCROLL ========== */
+/* Asegurar que el botón y la píldora no capturen eventos del body */
+#abrir-talia,
+#talia-pill,
+#chat-talia {
+  /* Ya tienen pointer-events, pero verificar que no haya overlay invisible */
+  touch-action: none; /* Permite que los toques pasen al body cuando corresponde */
+}
+
+/* Cuando el chat está cerrado, asegurar que no bloquea */
+#chat-talia {
+  pointer-events: none !important;
+  visibility: hidden; /* Ocultar completamente cuando cerrado */
+  opacity: 0;
+}
+
+/* Cuando está abierto */
+#chat-talia.abierto,
+#chat-talia[aria-expanded="true"] {
+  pointer-events: auto !important;
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ========== MAIN CONTENT - ASEGURAR FLUJO ========== */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* ========== FIX PARA IOS SAFARI ========== */
+@supports (-webkit-touch-callout: none) {
+  /* CSS específico para iOS */
+  body {
+    min-height: -webkit-fill-available;
+  }
+  
+  .home-container {
+    min-height: -webkit-fill-available;
+  }
+}
+
+
+
+
+
+
+
+
+
 /* footer nuevo */
 /* ================= FRANJA VERDE SUPERIOR FOOTER ================= */
+
+
+
+
+
+
 
 .govco-footer-top {
   width: 100%;
@@ -371,8 +456,11 @@
 /* scroll movil corregido */
 html {
   height: auto;
+  min-height: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
+  /* IMPORTANTE: No aplicar overflow-y aquí */
 }
 
 body {
@@ -380,15 +468,19 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: auto; /* Permite scroll vertical */
+  overflow-y: auto !important; /* Forzar scroll vertical */
   -webkit-overflow-scrolling: touch;
+  position: relative; /* Contexto de apilamiento */
 }
 
+/* Contenedor principal - eliminar posibles bloqueos */
 .home-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
+  position: relative; /* En lugar de static */
+  z-index: 1;
 }
  /* chat nuevo icono */
 .talia-icon {
