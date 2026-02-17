@@ -54,6 +54,45 @@
   }
 }
 
+/* ================= FLECHAS CON RECUADRO GRIS carrusel ================= */
+
+.banner-swiper .swiper-button-next,
+.banner-swiper .swiper-button-prev {
+  background-color: rgba(120, 120, 120, 0.7); /* gris */
+  width: 40px;
+  height: 40px;
+  border-radius: 8px; /* esquinas ligeramente redondeadas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff; /* flecha blanca */
+  transition: all 0.3s ease;
+}
+
+/* Tamaño del ícono */
+.banner-swiper .swiper-button-next::after,
+.banner-swiper .swiper-button-prev::after {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* ================= FLECHAS MÁS PEQUEÑAS EN MÓVIL ================= */
+@media (max-width: 480px) {
+
+  .banner-swiper .swiper-button-next,
+  .banner-swiper .swiper-button-prev {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+  }
+
+  .banner-swiper .swiper-button-next::after,
+  .banner-swiper .swiper-button-prev::after {
+    font-size: 14px;
+  }
+
+}
+
 /* ================= LOGO TASA ================= */
 .tasa-container {
   position: absolute;
@@ -442,3 +481,5 @@ html, body {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
+
+
