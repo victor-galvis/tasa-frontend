@@ -1,7 +1,7 @@
 <!--// TODO: extraer el header y Footer a un componente compartido (Shared/Header-Footer)-->
 <!--Chat en burbuja-->
 <style>
- #chat-talia {
+  #chat-talia {
     clip-path: inset(27px 8px 27px 8px round 16px);
   }
 </style>
@@ -21,12 +21,12 @@
   justify-content: center;
   box-shadow: none;
 ">
-<div class="talia-wrapper">
-  <picture>
-    <source srcset="/images/segurichatpc.svg" media="(min-width: 768px)">
-    <img src="/images/movilsegurichat.svg" alt="Asistente TALIA" class="talia-icon">
-  </picture>
-</div>
+  <div class="talia-wrapper">
+    <picture>
+      <source srcset="/images/segurichatpc.svg" media="(min-width: 768px)">
+      <img src="/images/movilsegurichat.svg" alt="Asistente TALIA" class="talia-icon">
+    </picture>
+  </div>
 
   <!--<img src="/images/icono-asistente-virtual.png" alt="Asistente TALIA" style="width:60px; height:60px;">-->
 </button>
@@ -75,32 +75,73 @@
     <div class="middle-logo-container">
       <img src="/images/Logo-gob-antioquia-ant.png" alt="Gobernación de Antioquia" class="middle-logo">
     </div>
-    <div class="banner">
-      <div class="tasa-container">
-        <img src="/images/tasa-text-home.png" alt="Tasa de Seguridad y Convivencia" class="tasa-logo">
+    <!-- ================= CARRUSEL BANNER ================= -->
+    <div class="swiper banner-swiper">
+      <div class="swiper-wrapper">
+        <!-- Slide 1 -->
+        <div class="swiper-slide">
+          <picture>
+            <!-- Pantallas mayores a 1366px (incluye 1920px) -->
+            <source media="(min-width: 1367px)" srcset="/images/banner1-1920x861.jpg">
+            <!-- Pantallas hasta 1366px -->
+            <source media="(max-width: 1366px)" srcset="/images/banner1-1366x330.jpg">
+            <img src="/images/banner1-1920x861.jpg" alt="Banner 1" class="banner-img">
+          </picture>
+        </div>
+        <!-- Slide 2 -->
+        <div class="swiper-slide">
+          <picture>
+            <source media="(min-width: 1367px)" srcset="/images/banner2-1920x861.jpg">
+            <source media="(max-width: 1366px)" srcset="/images/banner2-1366x330.jpg">
+            <img src="/images/banner2-1920x861.jpg" alt="Banner 2" class="banner-img">
+          </picture>
+        </div>
+        <!-- Slide 3 -->
+        <div class="swiper-slide">
+          <picture>
+            <source media="(min-width: 1367px)" srcset="/images/banner3-1920x861.jpg">
+            <source media="(max-width: 1366px)" srcset="/images/banner3-1366x330.jpg">
+            <img src="/images/banner3-1920x861.jpg" alt="Banner 3" class="banner-img">
+          </picture>
+        </div>
+        <!-- Slide 4 -->
+        <div class="swiper-slide">
+          <picture>
+            <source media="(min-width: 1367px)" srcset="/images/banner4-1920x861.jpg">
+            <source media="(max-width: 1366px)" srcset="/images/banner4-1366x330.jpg">
+            <img src="/images/banner4-1920x861.jpg" alt="Banner 4" class="banner-img">
+          </picture>
+        </div>
+      </div>
+      <!-- Paginación (puntos) -->
+      <div class="swiper-pagination"></div>
+
+      <!-- Botones de navegación -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    </div>
+    
+    <div class="menu">
+      <div class="menu-row menu-bottom">
+        <div class="menu-item">
+          <a href="https://sites.placetopay.com/tasa-seguridad-mp/login" target="_blank">
+            <img src="/images/facturas.png" alt="Facturas" width="160" />
+          </a>
+        </div>
+
+        <div class="menu-item">
+          <a routerLink="/login">
+            <img src="/images/descargar factura.png" alt="Descargar factura" width="160" />
+          </a>
+        </div>
+
+        <div class="menu-item">
+          <a href="https://sites.placetopay.com/tasa-de-seguridad-micrositio-de-/login" target="_blank">
+            <img src="/images/historial de pagos.png" alt="Historial de pagos" width="160" />
+          </a>
+        </div>
       </div>
     </div>
-    <div class="menu">
-  <div class="menu-row menu-bottom">
-    <div class="menu-item">
-      <a href="https://sites.placetopay.com/tasa-seguridad-mp/login" target="_blank">
-        <img src="/images/facturas.png" alt="Facturas" width="160" />
-      </a>
-    </div>
-
-    <div class="menu-item">
-      <a routerLink="/login">
-        <img src="/images/descargar factura.png" alt="Descargar factura" width="160" />
-      </a>
-    </div>
-
-    <div class="menu-item">
-      <a href="https://sites.placetopay.com/tasa-de-seguridad-micrositio-de-/login" target="_blank">
-        <img src="/images/historial de pagos.png" alt="Historial de pagos" width="160" />
-      </a>
-    </div>
-  </div>
-</div>
 
   </div>
   <div class="tasa-info-content">
@@ -113,27 +154,27 @@
 
       <div class="items">
         <div class="item">
-           <a target="_blank" 
-            href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/ABC-Tasa-de+Seguridad.pdf">
+          <a target="_blank" 
+          href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/ABC-Tasa-de+Seguridad.pdf">
             <img src="/images/boton-abc-tasa.png" />
           </a>
         </div>
         <div class="item">
-           <a target="_blank"
+          <a target="_blank"
             href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/Calendario+2026+Tasa+de+Seguridad+y+Convivencia+Ciudadana.pdf">
             <img src="/images/boton-calendario-tasa.png" />
           </a>
         </div>
         <div class="item">
-          <a target="_blank"
-            href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/Ordenanza-50-de-2024.pdf">
+          <a target="_blank" 
+          href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/Ordenanza-50-de-2024.pdf">
             <img src="/images/Botones-Ordenanza.png" />
           </a>
         </div>
         <div class="item">
           <a target="_blank"
             href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/Pago-Anticipado-de-la-Tasa-de-Seguridad.pdf">
-            
+
             <img src="/images/Botones-Pago-anticipado.png" />
           </a>
         </div>
@@ -147,163 +188,179 @@
     </div>
   </div>
 
- <!-- CONTENEDOR NOTICIAS TASA -->
-<div class="tasa-conten-noticias">
-  <h2 class="tasa-noticias-title">Noticias relacionadas con la Tasa de Seguridad</h2>
+  <!-- CONTENEDOR NOTICIAS TASA -->
+  <div class="tasa-conten-noticias">
+    <h2 class="tasa-noticias-title">Noticias relacionadas con la Tasa de Seguridad</h2>
 
-  <div class="tasa-noticias-grid">
+    <div class="tasa-noticias-grid">
       <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernacion-de-antioquia-entrego-seis-camionetas-blindadas-al-ejercito-nacional-con-recursos-de-la-tasa-de-seguridad"
-       target="_blank" class="tasa-noticia-card">
+        target="_blank" class="tasa-noticia-card">
 
-      <div class="tasa-noticia-img">
-        <img src="/images/noticia-9.jpeg" alt="nodo departamental">
-      </div>
+        <div class="tasa-noticia-img">
+          <img src="/images/noticia-9.jpeg" alt="nodo departamental">
+        </div>
 
-      <div class="tasa-noticia-content">
-        <h3>Gobernación de Antioquia entregó seis camionetas blindadas al Ejército Nacional con recursos de la Tasa de Seguridad</h3>
-        <p>Con una inversión por más de 2 mil 200 millones de pesos, los vehículos conformarán los Escuadrones Militares y Policiales Antioquia Segura.
-Gobernador Andrés Julián agradeció a los contribuyentes por el pago de la Tasa de Seguridad y recalcó que el tributo está firme.</p>
-        <span class="tasa-leer-mas">Leer más →</span>
-      </div>
-    </a>
-   <a href="https://antioquia.gov.co/index.php/antioquiacuenta/en-rionegro-el-gobernador-andres-julian-activo-frente-de-seguridad-ciudadano-y-camara-conectada-al-nodo-departamental-en-la-renovada-placa-polideportiva-de-alto-bonito"
-       target="_blank" class="tasa-noticia-card">
+        <div class="tasa-noticia-content">
+          <h3>Gobernación de Antioquia entregó seis camionetas blindadas al Ejército Nacional con recursos de la Tasa de Seguridad</h3>
+          <p>Con una inversión por más de 2 mil 200 millones de pesos, los vehículos conformarán los Escuadrones
+            Militares y Policiales Antioquia Segura.
+            Gobernador Andrés Julián agradeció a los contribuyentes por el pago de la Tasa de Seguridad y recalcó que el
+            tributo está firme.</p>
+          <span class="tasa-leer-mas">Leer más →</span>
+        </div>
+      </a>
+      <a href="https://antioquia.gov.co/index.php/antioquiacuenta/en-rionegro-el-gobernador-andres-julian-activo-frente-de-seguridad-ciudadano-y-camara-conectada-al-nodo-departamental-en-la-renovada-placa-polideportiva-de-alto-bonito"
+        target="_blank" class="tasa-noticia-card">
 
-      <div class="tasa-noticia-img">
-        <img src="/images/noticia-8.jpeg" alt="nodo departamental">
-      </div>
+        <div class="tasa-noticia-img">
+          <img src="/images/noticia-8.jpeg" alt="nodo departamental">
+        </div>
 
-      <div class="tasa-noticia-content">
-        <h3>En Rionegro, el Gobernador Andrés Julián activó frente de seguridad ciudadano y cámara conectada al Nodo Departamental en la renovada placa polideportiva de Alto Bonito</h3>
-        <p>La placa polideportiva de Alto Bonito, en Rionegro, fue intervenida y mejorada con recursos de la Tasa de Seguridad y Convivencia Ciudadana.
-Hay más de 7 mil 500 sistemas de participación ciudadana para la seguridad en 84 municipios vinculados a la Gobernación de Antioquia.</p>
-        <span class="tasa-leer-mas">Leer más →</span>
-      </div>
-    </a>
+        <div class="tasa-noticia-content">
+          <h3>En Rionegro, el Gobernador Andrés Julián activó frente de seguridad ciudadano y cámara conectada al Nodo
+            Departamental en la renovada placa polideportiva de Alto Bonito</h3>
+          <p>La placa polideportiva de Alto Bonito, en Rionegro, fue intervenida y mejorada con recursos de la Tasa de
+            Seguridad y Convivencia Ciudadana.
+            Hay más de 7 mil 500 sistemas de participación ciudadana para la seguridad en 84 municipios vinculados a la
+            Gobernación de Antioquia.</p>
+          <span class="tasa-leer-mas">Leer más →</span>
+        </div>
+      </a>
+      <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernador-andres-julian-destaco-inversion-en-placa-polideportiva-mejorada-con-recursos-de-la-tasa-de-seguridad-en-liborina"
+        target="_blank" class="tasa-noticia-card">
+
+        <div class="tasa-noticia-img">
+          <img src="/images/noticia-6.jpeg" alt="Placa polideportiva">
+        </div>
+
+        <div class="tasa-noticia-content">
+          <h3>Gobernador Andrés Julián destacó inversión en placa polideportiva mejorada con recursos de la Tasa de
+            Seguridad en Liborina</h3>
+          <p>En Consejo de Seguridad, reiteró la recompensa por cuatro criminales del Clan del Golfo y el frente 36 de
+            las disidencias de las FARC, que delinquen en el Occidente antioqueño.
+            El mandatario departamental resaltó inversiones por 145 mil millones de pesos en Liborina, Olaya,
+            Sabanalarga, San Jerónimo y Sopetrán.</p>
+          <span class="tasa-leer-mas">Leer más →</span>
+        </div>
+      </a>
+
+      <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernacion-de-antioquia-habilito-el-primer-escenario-deportivo-con-recursos-de-la-tasa-de-seguridad"
+        target="_blank" class="tasa-noticia-card">
+
+        <div class="tasa-noticia-img">
+          <img src="/images/noticia-3.jpeg" alt="Escenario deportivo Puerto Berrío">
+        </div>
+
+        <div class="tasa-noticia-content">
+          <h3>Gobernación de Antioquia habilitó el primer escenario deportivo con recursos de la Tasa de Seguridad</h3>
+          <p> En Puerto Berrío, el Gobernador Andrés Julián destacó la puesta en marcha de dos placas polideportivas de
+            un total de seis en este municipio.
+            La Gobernación de Antioquia avanza en el mejoramiento de 261 escenarios deportivos para la convivencia
+            ciudadana en 114 municipios del departamento.</p>
+          <span class="tasa-leer-mas">Leer más →</span>
+        </div>
+      </a>
+
+      <a href="https://antioquia.gov.co/index.php/antioquiacuenta/antioquia-amplia-la-red-de-videovigilancia-con-la-integracion-de-privados-al-nodo-departamental-de-seguridad"
+        target="_blank" class="tasa-noticia-card">
+
+        <div class="tasa-noticia-img">
+          <img src="/images/noticia-2.png" alt="Red de videovigilancia">
+        </div>
+
+        <div class="tasa-noticia-content">
+          <h3>Antioquia amplía la red de videovigilancia con la integración de privados al Nodo Departamental de
+            Seguridad</h3>
+          <p>La Gobernación de Antioquia fortalece la estrategia con el sector privado y actores estratégicos para
+            ampliar capacidad de monitoreo.
+            La iniciativa promueve la corresponsabilidad ciudadana y el trabajo articulado por la seguridad y la
+            convivencia.</p>
+          <span class="tasa-leer-mas">Leer más →</span>
+        </div>
+      </a>
+      <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernacion-de-antioquia-invierte-en-escenarios-deportivos-y-estaciones-de-policia-para-fortalecer-la-seguridad-y-la-convivencia"
+        target="_blank" class="tasa-noticia-card">
+
+        <div class="tasa-noticia-img">
+          <img src="/images/noticia-1.jpg" alt="Escenarios deportivos y seguridad">
+        </div>
+
+        <div class="tasa-noticia-content">
+          <h3>Gobernación de Antioquia invierte en escenarios deportivos y estaciones de Policía para fortalecer la
+            seguridad y la convivencia</h3>
+          <p>Este año se materializarán las adecuaciones de 261 escenarios deportivos para la convivencia ciudadana y 25
+            estaciones de Policía priorizadas.
+            Las obras, con recursos de la Tasa de Seguridad, ya comenzaron y se entregarán de manera progresiva en los
+            próximos meses.
+          </p>
+          <span class="tasa-leer-mas">Leer más →</span>
+        </div>
+      </a>
 
 
+      <a href="https://antioquia.gov.co/index.php/antioquiacuenta/con-la-tasa-de-seguridad-la-gobernacion-de-antioquia-cumple-con-inversion-para-la-dignidad-y-operatividad-de-soldados-y-policias"
+        target="_blank" class="tasa-noticia-card">
 
+        <div class="tasa-noticia-img">
+          <img src="/images/noticia-4.jpeg" alt="Dotación Fuerza Pública">
+        </div>
 
+        <div class="tasa-noticia-content">
+          <h3>Con la Tasa de Seguridad, la Gobernación de Antioquia cumple con inversión para la dignidad y operatividad
+            de Soldados y Policías</h3>
+          <p>Los recursos aportados por los contribuyentes se reflejan en entregas de dotación para la Fuerza Pública,
+            así como avances en tecnología, mejoramiento de estaciones de Policía e intervenciones en escenarios
+            deportivos.
+            A la fecha, la Gobernación de Antioquia ha destinado más de 280 mil millones de pesos en contratación de
+            bienes y servicios para la ejecución de los recursos. </p>
+          <span class="tasa-leer-mas">Leer más →</span>
+        </div>
+      </a>
 
-    <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernador-andres-julian-destaco-inversion-en-placa-polideportiva-mejorada-con-recursos-de-la-tasa-de-seguridad-en-liborina"
-       target="_blank" class="tasa-noticia-card">
+      <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernador-andres-julian-entrego-cascos-balisticos-chalecos-antibalas-botas-sobrecarpas-y-radios-al-ejercito-nacional"
+        target="_blank" class="tasa-noticia-card">
 
-      <div class="tasa-noticia-img">
-        <img src="/images/noticia-6.jpeg" alt="Placa polideportiva">
-      </div>
+        <div class="tasa-noticia-img">
+          <img src="/images/noticia-5.jpeg" alt="Entrega de dotación Ejército">
+        </div>
 
-      <div class="tasa-noticia-content">
-        <h3>Gobernador Andrés Julián destacó inversión en placa polideportiva mejorada con recursos de la Tasa de Seguridad en Liborina</h3>
-        <p>En Consejo de Seguridad, reiteró la recompensa por cuatro criminales del Clan del Golfo y el frente 36 de las disidencias de las FARC, que delinquen en el Occidente antioqueño.
-El mandatario departamental resaltó inversiones por 145 mil millones de pesos en Liborina, Olaya, Sabanalarga, San Jerónimo y Sopetrán.</p>
-        <span class="tasa-leer-mas">Leer más →</span>
-      </div>
-    </a>
-
-    <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernacion-de-antioquia-habilito-el-primer-escenario-deportivo-con-recursos-de-la-tasa-de-seguridad"
-       target="_blank" class="tasa-noticia-card">
-
-      <div class="tasa-noticia-img">
-        <img src="/images/noticia-3.jpeg" alt="Escenario deportivo Puerto Berrío">
-      </div>
-
-      <div class="tasa-noticia-content">
-        <h3>Gobernación de Antioquia habilitó el primer escenario deportivo con recursos de la Tasa de Seguridad</h3>
-        <p> En Puerto Berrío, el Gobernador Andrés Julián destacó la puesta en marcha de dos placas polideportivas de un total de seis en este municipio.
-         La Gobernación de Antioquia avanza en el mejoramiento de 261 escenarios deportivos para la convivencia ciudadana en 114 municipios del departamento.</p>
-        <span class="tasa-leer-mas">Leer más →</span>
-      </div>
-    </a>
-
-    <a href="https://antioquia.gov.co/index.php/antioquiacuenta/antioquia-amplia-la-red-de-videovigilancia-con-la-integracion-de-privados-al-nodo-departamental-de-seguridad"
-       target="_blank" class="tasa-noticia-card">
-
-      <div class="tasa-noticia-img">
-        <img src="/images/noticia-2.png" alt="Red de videovigilancia">
-      </div>
-
-      <div class="tasa-noticia-content">
-        <h3>Antioquia amplía la red de videovigilancia con la integración de privados al Nodo Departamental de Seguridad</h3>
-        <p>La Gobernación de Antioquia fortalece la estrategia con el sector privado y actores estratégicos para ampliar capacidad de monitoreo.
-La iniciativa promueve la corresponsabilidad ciudadana y el trabajo articulado por la seguridad y la convivencia.</p>
-        <span class="tasa-leer-mas">Leer más →</span>
-      </div>
-    </a>
-    <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernacion-de-antioquia-invierte-en-escenarios-deportivos-y-estaciones-de-policia-para-fortalecer-la-seguridad-y-la-convivencia"
-       target="_blank" class="tasa-noticia-card">
-
-      <div class="tasa-noticia-img">
-        <img src="/images/noticia-1.jpg" alt="Escenarios deportivos y seguridad">
-      </div>
-
-      <div class="tasa-noticia-content">
-        <h3>Gobernación de Antioquia invierte en escenarios deportivos y estaciones de Policía para fortalecer la seguridad y la convivencia</h3>
-            <p>Este año se materializarán las adecuaciones de 261 escenarios deportivos para la convivencia ciudadana y 25 estaciones de Policía priorizadas.
-        Las obras, con recursos de la Tasa de Seguridad, ya comenzaron y se entregarán de manera progresiva en los próximos meses.
+        <div class="tasa-noticia-content">
+          <h3>Gobernador Andrés Julián entregó cascos balísticos, chalecos antibalas, botas, sobrecarpas y radios al
+            Ejército Nacional</h3>
+          <p>El material de intendencia y comunicaciones se destinará a los Escuadrones Militares y Policiales Antioquia
+            Segura – EMPÁS.
+            El mandatario departamental anunció inversión en sistema antidrones por 4 mil millones de pesos.</p>
+          <span class="tasa-leer-mas">Leer más →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+  <!-- FIN CONTENEDOR NOTICIAS TASA -->
+  <!-- FRANJA VERDE INFORMACIÓN INSTITUCIONAL -->
+  <div class="govco-footer-top">
+    <div class="govco-footer-top-container">
+      <p><strong>Gobernación de Antioquia</strong></p>
+      <p>
+        Horario: lunes a jueves de 7:30 a. m. a 12:00 m. y de 1:30 p. m. a 5:30 p. m.
+        y los viernes de 7:30 a. m. a 12:00 m. y de 1:30 p. m. a 4:30 p. m.
       </p>
-        <span class="tasa-leer-mas">Leer más →</span>
-      </div>
-    </a>
-
-    
-    <a href="https://antioquia.gov.co/index.php/antioquiacuenta/con-la-tasa-de-seguridad-la-gobernacion-de-antioquia-cumple-con-inversion-para-la-dignidad-y-operatividad-de-soldados-y-policias"
-       target="_blank" class="tasa-noticia-card">
-
-      <div class="tasa-noticia-img">
-        <img src="/images/noticia-4.jpeg" alt="Dotación Fuerza Pública">
-      </div>
-
-      <div class="tasa-noticia-content">
-        <h3>Con la Tasa de Seguridad, la Gobernación de Antioquia cumple con inversión para la dignidad y operatividad de Soldados y Policías</h3>
-        <p>Los recursos aportados por los contribuyentes se reflejan en entregas de dotación para la Fuerza Pública, así como avances en tecnología, mejoramiento de estaciones de Policía e intervenciones en escenarios deportivos.
-A la fecha, la Gobernación de Antioquia ha destinado más de 280 mil millones de pesos en contratación de bienes y servicios para la ejecución de los recursos. </p>
-        <span class="tasa-leer-mas">Leer más →</span>
-      </div>
-    </a>
-
-    <a href="https://antioquia.gov.co/index.php/antioquiacuenta/gobernador-andres-julian-entrego-cascos-balisticos-chalecos-antibalas-botas-sobrecarpas-y-radios-al-ejercito-nacional"
-       target="_blank" class="tasa-noticia-card">
-
-      <div class="tasa-noticia-img">
-        <img src="/images/noticia-5.jpeg" alt="Entrega de dotación Ejército">
-      </div>
-
-      <div class="tasa-noticia-content">
-        <h3>Gobernador Andrés Julián entregó cascos balísticos, chalecos antibalas, botas, sobrecarpas y radios al Ejército Nacional</h3>
-        <p>El material de intendencia y comunicaciones se destinará a los Escuadrones Militares y Policiales Antioquia Segura – EMPÁS.
-El mandatario departamental anunció inversión en sistema antidrones por 4 mil millones de pesos.</p>
-        <span class="tasa-leer-mas">Leer más →</span>
-      </div>
-    </a>
+      <p>
+        Dirección: Calle 42B Número 52-106 Centro Administrativo Departamental
+        "José María Córdova" - La Alpujarra.
+      </p>
+      <p>
+        Línea de Atención a la ciudadanía: +57 604 409 90 00 - 01 8000 4 19000
+      </p>
+      <p>
+        Solicitudes de información:
+        <a href="mailto:gestiondocumental@antioquia.gov.co">gestiondocumental@antioquia.gov.co</a> |
+        Notificaciones judiciales:
+        <a href="mailto:notificacionesjudiciales@antioquia.gov.co">notificacionesjudiciales@antioquia.gov.co</a>
+      </p>
+    </div>
   </div>
-</div>
-
-<!-- FIN CONTENEDOR NOTICIAS TASA -->
-<!-- FRANJA VERDE INFORMACIÓN INSTITUCIONAL -->
-<div class="govco-footer-top">
-  <div class="govco-footer-top-container">
-    <p><strong>Gobernación de Antioquia</strong></p>
-    <p>
-      Horario: lunes a jueves de 7:30 a. m. a 12:00 m. y de 1:30 p. m. a 5:30 p. m. 
-      y los viernes de 7:30 a. m. a 12:00 m. y de 1:30 p. m. a 4:30 p. m.
-    </p>
-    <p>
-      Dirección: Calle 42B Número 52-106 Centro Administrativo Departamental 
-      "José María Córdova" - La Alpujarra.
-    </p>
-    <p>
-      Línea de Atención a la ciudadanía: +57 604 409 90 00 - 01 8000 4 19000
-    </p>
-    <p>
-      Solicitudes de información: 
-      <a href="mailto:gestiondocumental@antioquia.gov.co">gestiondocumental@antioquia.gov.co</a> | 
-      Notificaciones judiciales: 
-      <a href="mailto:notificacionesjudiciales@antioquia.gov.co">notificacionesjudiciales@antioquia.gov.co</a>
-    </p>
-  </div>
-</div>
   <!-- FOOTER GOVCO -->
-<footer class="govco-footer">
+  <footer class="govco-footer">
     <div class="footer-logos">
       <a href="https://www.colombia.co/" target="_blank">
         <img src="/images/co-colombia.png" alt="Colombia" class="logo-colombia">
@@ -317,5 +374,3 @@ El mandatario departamental anunció inversión en sistema antidrones por 4 mil 
 
 
 </div>
-
-

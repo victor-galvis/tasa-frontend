@@ -1,17 +1,16 @@
- .home-container {
+.home-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
-   
-}
- 
+  }
+
 .main-content {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
- 
+
 .middle-logo-container {
   display: flex;
   justify-content: center;
@@ -19,41 +18,125 @@
   padding: 10px 0;
   background-color: #fff;
 }
- 
+
 .middle-logo {
   max-width: 180px;
   height: auto;
 }
- 
-/* ================= BANNER PRINCIPAL ================= */
- 
-.banner {
-  position: relative;
-  background-image: url('/images/home.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+
+/* ================= CARRUSEL BANNER ================= */
+.banner-swiper {
   width: 100%;
-  aspect-ratio: 1920 / 810; /* Solo escritorio */
+  position: relative;
 }
-/* 💻 Banner más contenido en escritorio */
-@media (min-width: 1200px) {
-  .banner {
-    width: 98%;              /* deja aire a los lados */
-    margin: 20px auto 0;     /* centrado y con espacio arriba */
-    border-radius: 2px;     /* bordes suaves modernos */
-    overflow: hidden;        /* respeta el borde redondeado */
+
+.banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Pantallas grandes: 1920x861 */
+@media (min-width: 1367px) {
+  .banner-swiper {
+    height: 861px;
+  }
+  .banner-img {
+    height: 861px;
+    width: 100%;
   }
 }
+
+/* Pantallas medianas: 1366x330 */
+@media (max-width: 1366px) {
+  .banner-swiper {
+    height: 330px;
+  }
+  .banner-img {
+    height: 330px;
+    width: 100%;
+  }
+}
+
+/* Para móviles */
+@media (max-width: 768px) {
+  .banner-swiper {
+    height: auto;
+    aspect-ratio: 1366 / 330;
+  }
+  .banner-img {
+    height: auto;
+    width: 100%;
+  }
+}
+
+/* Ajuste para móviles muy pequeños */
+@media (max-width: 480px) {
+  .banner-swiper {
+    aspect-ratio: 1366 / 330;
+  }
+}
+
+/* 💻 Banner más contenido en escritorio */
+@media (min-width: 1200px) {
+  .banner-swiper {
+    width: 98%;
+    margin: 20px auto 0;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+}
+
 @media (min-width: 1600px) {
-  .banner {
+  .banner-swiper {
     width: 80%;
   }
 }
-/* fin delos lados banner principal home escritorio */
- 
+
+/* espacio a los lados en móvil */
+@media (max-width: 767px) {
+  .banner-swiper {
+    width: 92%;
+    margin: 20px auto 0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+}
+
+/* Estilos para los controles del carrusel */
+.banner-swiper .swiper-pagination-bullet {
+  background: white;
+  opacity: 0.7;
+}
+
+.banner-swiper .swiper-pagination-bullet-active {
+  background: #0e4a39;
+  opacity: 1;
+}
+
+.banner-swiper .swiper-button-prev,
+.banner-swiper .swiper-button-next {
+  color: white;
+  background: rgba(0,0,0,0.3);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.banner-swiper .swiper-button-prev:after,
+.banner-swiper .swiper-button-next:after {
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .banner-swiper .swiper-button-prev,
+  .banner-swiper .swiper-button-next {
+    display: none;
+  }
+}
+
 /* ================= LOGO TASA ================= */
- 
 .tasa-container {
   position: absolute;
   left: 0;
@@ -63,17 +146,17 @@
   border-top-right-radius: 120px;
   background-repeat: no-repeat;
   background-position: 0px 10px;
+  z-index: 20;
 }
- 
+
 .tasa-container img {
   margin-top: 10px;
   display: block;
   max-width: 100%;
   height: auto;
 }
- 
+
 /* ================= MENÚ ================= */
- 
 .menu {
   width: 100%;
   padding: 0 20px;
@@ -81,45 +164,42 @@
   display: flex;
   justify-content: center;
 }
- 
- 
+
 .menu-item {
   border-radius: 10px;
   margin: 10px;
   text-align: center;
 }
- 
+
 .menu-item img {
   border-radius: 10px;
 }
- 
+
 .menu-row {
   display: flex;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
 }
- 
- 
+
 .register-item img { width: 300px; height: auto; }
-.menu-bottom .menu-item img { width: 160px; height: auto; }
- 
+.menu-bottom .menu-item img { width: 240px; height: auto; }
+
 /* ================= HEADER / FOOTER GOV ================= */
- 
 .govco-header {
   width: 100%;
   background-color: #0B457F;
   padding: 5px 0;
 }
- 
+
 .govco-container {
   display: flex;
   justify-content: flex-start;
   padding-left: 20px;
 }
- 
+
 .govco-header-img { height: 28px; }
- 
+
 .govco-footer {
   width: 100%;
   background-color: #0B457F;
@@ -127,45 +207,44 @@
   display: flex;
   align-items: center;
 }
- 
+
 .footer-logos {
   display: flex;
   align-items: center;
   gap: 12px;
 }
- 
+
 .footer-logos img { height: 28px; }
- 
+
 /* ================= SECCIÓN TASA INFO ================= */
- 
 .tasa-info-content {
   width: 100%;
   margin: 20px 0;
   display: flex;
 }
- 
+
 .tasa-info-content .left {
   width: 70%;
   padding: 20px;
 }
- 
+
 .tasa-info-content .title {
   font-size: 40px;
   font-family: "Public Sans", sans-serif;
 }
- 
+
 .tasa-info-content .items {
   display: flex;
   justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
 }
- 
+
 .tasa-info-content .items img {
   width: 200px;
   height: 65px;
 }
- 
+
 .tasa-info-content .right {
   display: flex;
   align-items: center;
@@ -173,22 +252,21 @@
   height: 400px;
   flex-grow: 1;
 }
- 
+
 .video-iframe {
   width: 100%;
   max-width: 560px;
   height: 400px;
   border: none;
 }
- 
+
 /* ================= NOTICIAS ================= */
- 
 .tasa-conten-noticias {
   width: 100%;
   padding: 60px 20px;
   background-color: #f7f9f8;
 }
- 
+
 .tasa-noticias-title {
   text-align: center;
   color: #0e4a39;
@@ -197,7 +275,7 @@
   font-family: "Public Sans", sans-serif;
   font-weight: 700;
 }
- 
+
 .tasa-noticias-grid {
   max-width: 1200px;
   margin: 0 auto;
@@ -205,7 +283,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
- 
+
 .tasa-noticia-card {
   background: #ffffff;
   border-radius: 16px;
@@ -218,7 +296,7 @@
   flex-direction: column;
   min-height: 180px;
 }
- 
+
 .tasa-noticia-img {
   width: 100%;
   height: 160px;
@@ -226,148 +304,99 @@
   border-radius: 12px;
   margin-bottom: 16px;
 }
- 
+
 .tasa-noticia-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
- 
+
 .tasa-noticia-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 30px rgba(0,0,0,0.2);
 }
- 
+
 /* ================= RESPONSIVE ================= */
- 
 @media (max-width: 991px) {
-  .banner {
-    background-image: url('/images/Banner-tasa-de-seguridad-1400px-x-768px.jpg');
-    aspect-ratio: auto;
-    height: 60vw;
-    min-height: 420px;
-    max-height: 768px;
-  }
- 
   .tasa-noticias-grid { grid-template-columns: repeat(2, 1fr); }
 }
- 
+
 @media (max-width: 767px) {
-  .banner {
-    background-image: url('/images/Banner-tasa-de-seguridad-767px-x-431px.jpg');
-    height: 56vw;
-    min-height: 320px;
-    max-height: 500px;
-  }
- 
   .menu {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
- 
+
   .menu-row {
     flex-direction: column;
     padding: 0;
   }
- 
+
   .tasa-info-content {
     flex-direction: column;
   }
- 
+
   .tasa-info-content .left {
     width: 100%;
   }
- 
+
   .tasa-noticias-grid { grid-template-columns: 1fr; }
- 
+
   .tasa-container {
     width: 60%;
     max-width: 240px;
     height: auto;
   }
- 
+
   .tasa-container img {
     width: 100%;
     margin: 0;
   }
 }
- 
+
 @media (max-width: 480px) {
-  .banner {
-    background-image: url('/images/Banner-tasa-de-seguridad-480px-x-270px.jpg');
-    height: 58vw;
-    min-height: 260px;
-    max-height: 420px;
-  }
- 
   .tasa-container {
     width: 55%;
     max-width: 200px;
   }
- 
+
   .tasa-info-content .title {
     font-size: 30px;
   }
 }
- 
-/* FIX iPhone: evita que el banner se corte */
-@media (max-width: 767px) {
-  .banner {
-    height: auto !important;        /* ← clave */
-    min-height: unset !important;
-    max-height: unset !important;
-    aspect-ratio: 767 / 431;        /* proporción real del banner móvil */
-  }
-}
- 
-/* footer nuevo */
+
 /* ================= FRANJA VERDE SUPERIOR FOOTER ================= */
- 
 .govco-footer-top {
   width: 100%;
-  background-color: #0e4a39; /* Verde institucional */
+  background-color: #0e4a39;
   color: #ffffff;
   padding: 25px 20px;
   font-family: "Public Sans", sans-serif;
   font-size: 10px;
- 
   line-height: 1.6;
 }
- 
+
 .govco-footer-top-container {
   max-width: 1200px;
   margin: 0 auto;
   text-align: center;
 }
- 
- 
+
 .govco-footer-top p {
   margin: 6px 0;
 }
- 
+
 .govco-footer-top a {
   color: #ffffff;
   text-decoration: underline;
 }
- 
+
 .govco-footer-top a:hover {
   opacity: 0.85;
 }
- 
- 
-/* espacio a los lados */
-@media (max-width: 767px) {
-  .banner {
-    width: 92%;              /* deja espacio a los lados */
-    margin: 20px auto 0;     /* centrado y separación arriba */
-    border-radius: 4px;     /* opcional: bordes redondeados como el ejemplo */
-    overflow: hidden;        /* respeta el borde redondeado */
-  }
-}
- 
- 
- /* scroll movil */
+
+/* ================= SCROLL MÓVIL ================= */
 html, body {
   height: 100%;
   margin: 0;
@@ -375,12 +404,13 @@ html, body {
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
- /* chat nuevo icono */
+
+/* ================= CHAT TALIA ================= */
 .talia-icon {
   width: 60px;
   height: 60px;
 }
- 
+
 /* PC más grande */
 @media (min-width: 768px) {
   .talia-icon {
@@ -388,7 +418,7 @@ html, body {
     height: 85px;
   }
 }
- 
+
 /* Móvil más pequeño */
 @media (max-width: 480px) {
   .talia-icon {
@@ -396,16 +426,15 @@ html, body {
     height: 42px;
   }
 }
- 
+
 /* Burbuja del mensaje */
 .talia-bubble {
   position: fixed;
-  bottom: 95px; /* Distancia normal en PC */
+  bottom: 95px;
   right: 20px;
   max-width: 260px;
 }
- 
-/* 📱 En móvil acercamos TODO */
+
 /* Ajuste SOLO para móvil */
 @media (max-width: 480px) {
   .talia-wrapper {
@@ -413,31 +442,23 @@ html, body {
     right: 22px !important;
   }
 }
- 
-/* 📱 Ajuste SOLO para móviles */
+
+/* Ajuste SOLO para móviles */
 @media (max-width: 480px) {
- 
-  /* Mover un poco el botón si hace falta */
   #abrir-talia {
     right: 12px !important;
     bottom: 22px !important;
   }
- 
-  /* Acercar la burbuja al ícono */
+
   #talia-pill {
-    right: 70px !important;   /* 🔥 antes 130px → demasiado lejos */
-    bottom: 18px !important;  /* alineado verticalmente con el botón */
+    right: 70px !important;
+    bottom: 18px !important;
     max-width: 180px;
     font-size: 12px;
     padding: 8px 10px;
   }
 }
 
-
-/* ================= FIX CHAT MÓVIL ================= */
-/* ================= FIX CHAT MÓVIL ================= */
-/* ================= CHAT ESCRITORIO ================= */
-/* ================= CHAT ESCRITORIO ================= */
 @media (min-width: 481px) {
   #chat-talia {
     width: 400px !important;
@@ -449,17 +470,14 @@ html, body {
   }
 }
 
-/* ================= CHAT MÓVIL CORRECTO ================= */
 @media (max-width: 480px) {
   #chat-talia {
-    width: 92vw !important;      /* ocupa casi todo el ancho */
-    height: 80dvh !important;    /* alto real visible del móvil */
-    left: 50% !important;        /* centrado real */
-    right: auto !important;      /* 🔥 elimina conflicto */
+    width: 92vw !important;
+    height: 80dvh !important;
+    left: 50% !important;
+    right: auto !important;
     transform: translateX(-50%) !important;
     bottom: 15px !important;
     border-radius: 16px;
   }
 }
-
-
