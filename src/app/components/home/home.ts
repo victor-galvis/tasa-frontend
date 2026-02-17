@@ -10,6 +10,10 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
   styleUrl: './home.css'
 })
 export class Home implements AfterViewInit {
+
+  
+  mostrarPopupImagen: boolean = false;
+
   constructor(
     private ngZone: NgZone,
     @Inject(PLATFORM_ID) private platformId: Object
@@ -17,12 +21,24 @@ export class Home implements AfterViewInit {
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
+
+      
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {
           this.initSwiper();
         }, 100);
       });
+
+      
+      setTimeout(() => {
+        this.mostrarPopupImagen = true;
+      }, 1000);
     }
+  }
+
+  
+  cerrarPopupImagen() {
+    this.mostrarPopupImagen = false;
   }
 
   initSwiper() {
@@ -51,12 +67,12 @@ export class Home implements AfterViewInit {
           speed: 600,
           grabCursor: true,
         });
-        console.log('✅ Swiper inicializado correctamente fuera de la zona de Angular');
+        console.log('');
       } catch (error) {
-        console.error('❌ Error al inicializar Swiper:', error);
+        console.error('', error);
       }
     } else {
-      console.warn('⚠️ No se encontró el elemento .banner-swiper');
+      console.warn('');
     }
   }
 }
