@@ -38,12 +38,13 @@
   border:1px solid rgba(0,0,0,.08); box-shadow:0 8px 20px rgba(0,0,0,.18);
   padding: 10px 12px; border-radius: 999px; font: 500 12px/1.25 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 ">
-  Soy <strong>🤖SeguriChat</strong>, asistente IA especializado en la TASA de seguridad y convivencia para el departamento
+  Soy <strong>🤖SeguriChat</strong>, asistente IA especializado en la TASA de seguridad y convivencia para el
+  departamento
   de Antioquia.
 </span>
 
 <!-- IFRAME DEL CHAT (sin src hasta que se abra) -->
-<iframe id="chat-talia" src="" title="Chat TALIA — Agente IA TASA"  frameborder="0"
+<iframe id="chat-talia" src="" title="Chat TALIA — Agente IA TASA" frameborder="0"
   allow="microphone; autoplay; encrypted-media" style="
     position: fixed;
     bottom: 20px;  
@@ -75,52 +76,56 @@
     <div class="middle-logo-container">
       <img src="/images/Logo-gob-antioquia-ant.png" alt="Gobernación de Antioquia" class="middle-logo">
     </div>
+
     <!-- ================= CARRUSEL BANNER ================= -->
     <div class="swiper banner-swiper">
       <div class="swiper-wrapper">
+
         <!-- Slide 1 -->
         <div class="swiper-slide">
           <picture>
-            <!-- Pantallas mayores a 1366px (incluye 1920px) -->
-            <source media="(min-width: 1367px)" srcset="/images/banner1-1920x861.jpg">
-            <!-- Pantallas hasta 1366px -->
-            <source media="(max-width: 1366px)" srcset="/images/banner1-1366x330.jpg">
-            <img src="/images/banner1-1920x861.jpg" alt="Banner 1" class="banner-img">
+            <!-- MÓVIL -->
+            <source media="(max-width: 767px)" srcset="/images/banner1-1920x861.jpg">
+            <!-- ESCRITORIO -->
+            <source media="(min-width: 768px)" srcset="/images/banner1-1366x330.jpg">
+            <img src="/images/banner1-1366x330.jpg" alt="Banner 1" class="banner-img">
           </picture>
         </div>
+
         <!-- Slide 2 -->
         <div class="swiper-slide">
           <picture>
-            <source media="(min-width: 1367px)" srcset="/images/banner2-1920x861.jpg">
-            <source media="(max-width: 1366px)" srcset="/images/banner2-1366x330.jpg">
-            <img src="/images/banner2-1920x861.jpg" alt="Banner 2" class="banner-img">
+            <source media="(max-width: 767px)" srcset="/images/banner2-1920x861.jpg">
+            <source media="(min-width: 768px)" srcset="/images/banner2-1366x330.jpg">
+            <img src="/images/banner2-1366x330.jpg" alt="Banner 2" class="banner-img">
           </picture>
         </div>
+
         <!-- Slide 3 -->
         <div class="swiper-slide">
           <picture>
-            <source media="(min-width: 1367px)" srcset="/images/banner3-1920x861.jpg">
-            <source media="(max-width: 1366px)" srcset="/images/banner3-1366x330.jpg">
-            <img src="/images/banner3-1920x861.jpg" alt="Banner 3" class="banner-img">
+            <source media="(max-width: 767px)" srcset="/images/banner3-1920x861.jpg">
+            <source media="(min-width: 768px)" srcset="/images/banner3-1366x330.jpg">
+            <img src="/images/banner3-1366x330.jpg" alt="Banner 3" class="banner-img">
           </picture>
         </div>
+
         <!-- Slide 4 -->
         <div class="swiper-slide">
           <picture>
-            <source media="(min-width: 1367px)" srcset="/images/banner4-1920x861.jpg">
-            <source media="(max-width: 1366px)" srcset="/images/banner4-1366x330.jpg">
-            <img src="/images/banner4-1920x861.jpg" alt="Banner 4" class="banner-img">
+            <source media="(max-width: 767px)" srcset="/images/banner4-1920x861.jpg">
+            <source media="(min-width: 768px)" srcset="/images/banner4-1366x330.jpg">
+            <img src="/images/banner4-1366x330.jpg" alt="Banner 4" class="banner-img">
           </picture>
         </div>
-      </div>
-      <!-- Paginación (puntos) -->
-      <div class="swiper-pagination"></div>
 
-      <!-- Botones de navegación -->
+      </div>
+
+      <div class="swiper-pagination"></div>
       <div class="swiper-button-prev"></div>
       <div class="swiper-button-next"></div>
     </div>
-    
+
     <div class="menu">
       <div class="menu-row menu-bottom">
         <div class="menu-item">
@@ -154,8 +159,7 @@
 
       <div class="items">
         <div class="item">
-          <a target="_blank" 
-          href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/ABC-Tasa-de+Seguridad.pdf">
+          <a target="_blank" href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/ABC-Tasa-de+Seguridad.pdf">
             <img src="/images/boton-abc-tasa.png" />
           </a>
         </div>
@@ -166,8 +170,7 @@
           </a>
         </div>
         <div class="item">
-          <a target="_blank" 
-          href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/Ordenanza-50-de-2024.pdf">
+          <a target="_blank" href="https://backuppag.s3.us-east-1.amazonaws.com/tasa-seg/Ordenanza-50-de-2024.pdf">
             <img src="/images/Botones-Ordenanza.png" />
           </a>
         </div>
@@ -201,7 +204,8 @@
         </div>
 
         <div class="tasa-noticia-content">
-          <h3>Gobernación de Antioquia entregó seis camionetas blindadas al Ejército Nacional con recursos de la Tasa de Seguridad</h3>
+          <h3>Gobernación de Antioquia entregó seis camionetas blindadas al Ejército Nacional con recursos de la Tasa de
+            Seguridad</h3>
           <p>Con una inversión por más de 2 mil 200 millones de pesos, los vehículos conformarán los Escuadrones
             Militares y Policiales Antioquia Segura.
             Gobernador Andrés Julián agradeció a los contribuyentes por el pago de la Tasa de Seguridad y recalcó que el
@@ -376,18 +380,12 @@
 </div>
 
 <!-- POPUP IMAGEN -->
-<div class="image-modal-overlay"
-     *ngIf="mostrarPopupImagen"
-     (click)="cerrarPopupImagen()">
+<div class="image-modal-overlay" *ngIf="mostrarPopupImagen" (click)="cerrarPopupImagen()">
 
-  <div class="image-modal-content"
-       (click)="$event.stopPropagation()">
+  <div class="image-modal-content" (click)="$event.stopPropagation()">
 
-    <button class="image-close-btn"
-            (click)="cerrarPopupImagen()">✕</button>
+    <button class="image-close-btn" (click)="cerrarPopupImagen()">✕</button>
 
-    <img src="/images/Popup-Tasa.jpg"
-         alt="Información importante"
-         class="popup-image">
+    <img src="/images/Popup-Tasa.jpg" alt="Información importante" class="popup-image">
   </div>
 </div>

@@ -24,115 +24,33 @@
   height: auto;
 }
 
-/* ================= CARRUSEL BANNER ================= */
+/* ================= CARRUSEL RESPONSIVO CORREGIDO ================= */
+
 .banner-swiper {
   width: 100%;
   position: relative;
+  overflow: hidden;
 }
 
+/* Imagen siempre cubre */
 .banner-img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-/* Pantallas grandes: 1920x861 */
-@media (min-width: 1367px) {
-  .banner-swiper {
-    height: 861px;
-  }
-  .banner-img {
-    height: 861px;
-    width: 100%;
-  }
-}
-
-/* Pantallas medianas: 1366x330 */
-@media (max-width: 1366px) {
-  .banner-swiper {
-    height: 330px;
-  }
-  .banner-img {
-    height: 330px;
-    width: 100%;
-  }
-}
-
-/* Para móviles */
-@media (max-width: 768px) {
-  .banner-swiper {
-    height: auto;
-    aspect-ratio: 1366 / 330;
-  }
-  .banner-img {
-    height: auto;
-    width: 100%;
-  }
-}
-
-/* Ajuste para móviles muy pequeños */
-@media (max-width: 480px) {
+/* 🖥 Escritorio */
+@media (min-width: 768px) {
   .banner-swiper {
     aspect-ratio: 1366 / 330;
   }
 }
 
-/* 💻 Banner más contenido en escritorio */
-@media (min-width: 1200px) {
-  .banner-swiper {
-    width: 98%;
-    margin: 20px auto 0;
-    border-radius: 2px;
-    overflow: hidden;
-  }
-}
-
-@media (min-width: 1600px) {
-  .banner-swiper {
-    width: 80%;
-  }
-}
-
-/* espacio a los lados en móvil */
+/* 📱 Móvil */
 @media (max-width: 767px) {
   .banner-swiper {
-    width: 92%;
-    margin: 20px auto 0;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-}
-
-/* Estilos para los controles del carrusel */
-.banner-swiper .swiper-pagination-bullet {
-  background: white;
-  opacity: 0.7;
-}
-
-.banner-swiper .swiper-pagination-bullet-active {
-  background: #0e4a39;
-  opacity: 1;
-}
-
-.banner-swiper .swiper-button-prev,
-.banner-swiper .swiper-button-next {
-  color: white;
-  background: rgba(0,0,0,0.3);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-}
-
-.banner-swiper .swiper-button-prev:after,
-.banner-swiper .swiper-button-next:after {
-  font-size: 20px;
-}
-
-@media (max-width: 768px) {
-  .banner-swiper .swiper-button-prev,
-  .banner-swiper .swiper-button-next {
-    display: none;
+    aspect-ratio: 1920 / 861;
   }
 }
 
