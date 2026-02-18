@@ -483,3 +483,17 @@ html, body {
 }
 
 
+/* Chat cerrado completamente */
+#chat-talia.closed {
+  display: none !important;
+}
+
+#chat-talia.open {
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
+}
+
+#chat-talia {
+  transition: opacity .3s ease;
+}

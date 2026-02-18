@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   // ============================================
@@ -20,7 +20,7 @@
   let initialized = false;   // 👈 indica si ya se inició el chat
   let initializing = false;  // 👈 evita doble inicialización si hacen doble clic rápido
 
-  const btn  = document.getElementById('abrir-talia');
+  const btn = document.getElementById('abrir-talia');
   const chat = document.getElementById('chat-talia');
   const pill = document.getElementById('talia-pill');
 
@@ -98,7 +98,7 @@
   // ============================================
   // ESCUCHAR SOLICITUDES DEL CHAT
   // ============================================
-  window.addEventListener('message', async function(event) {
+  window.addEventListener('message', async function (event) {
     const data = event.data || {};
     if (data.type === 'TASA_CHAT_TOKEN_RENEWAL_REQUEST') {
       const newToken = await generateNewToken();
@@ -146,17 +146,15 @@
     }
 
     // 2️⃣ Alternar visibilidad
-    const open = chat.style.opacity === '1';
-    if (open) {
-      chat.style.opacity = '0';
-      chat.style.pointerEvents = 'none';
-      chat.style.transform = 'scale(.95)';
+    const isOpen = chat.classList.contains('open');
+    if (isOpen) {
+      chat.classList.remove('open');
+      chat.classList.add('closed');
       btn.setAttribute('aria-expanded', 'false');
       if (pill) pill.style.display = 'inline-block';
     } else {
-      chat.style.opacity = '1';
-      chat.style.pointerEvents = 'all';
-      chat.style.transform = 'scale(1)';
+      chat.classList.remove('closed');
+      chat.classList.add('open');
       btn.setAttribute('aria-expanded', 'true');
       if (pill) pill.style.display = 'none';
     }
@@ -168,27 +166,5 @@
       btn.click();
     }
   });
-
-  // ============================================
-  // RESPONSIVO
-  // ============================================
-  const mq = window.matchMedia('(max-width: 600px)');
-  const applyMobile = () => {
-    if (mq.matches) {
-      chat.style.right = '0';
-      chat.style.bottom = '0';
-      chat.width = '100%';
-      chat.height = '100%';
-      chat.style.borderRadius = '0';
-    } else {
-      chat.style.right = '83px';
-      chat.style.bottom = '2px';
-      chat.width = '380';
-      chat.height = '600';
-      chat.style.borderRadius = '16px';
-    }
-  };
-  mq.addEventListener?.('change', applyMobile);
-  applyMobile();
 
 })();
