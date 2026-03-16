@@ -11,7 +11,6 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 })
 export class Home implements AfterViewInit {
 
-  
   mostrarPopupImagen: boolean = false;
 
   constructor(
@@ -22,28 +21,27 @@ export class Home implements AfterViewInit {
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
 
-      
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {
           this.initSwiper();
         }, 100);
       });
 
-      
       setTimeout(() => {
         this.mostrarPopupImagen = true;
       }, 1000);
     }
   }
 
-  
   cerrarPopupImagen() {
     this.mostrarPopupImagen = false;
   }
 
   initSwiper() {
+
+    // SWIPER BANNER
     const swiperElement = document.querySelector('.banner-swiper');
-    
+
     if (swiperElement) {
       try {
         new Swiper('.banner-swiper', {
@@ -57,22 +55,42 @@ export class Home implements AfterViewInit {
             pauseOnMouseEnter: true,
           },
           pagination: {
-            el: '.swiper-pagination',
+            el: '.banner-swiper .swiper-pagination',
             clickable: true,
           },
           navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
+            nextEl: '.banner-swiper .swiper-button-next',
+            prevEl: '.banner-swiper .swiper-button-prev',
           },
           speed: 600,
           grabCursor: true,
         });
-        console.log('');
+
       } catch (error) {
-        console.error('', error);
+        console.error('Error iniciando banner swiper', error);
       }
-    } else {
-      console.warn('');
     }
+
+    // SWIPER VIDEOS
+    const videos = document.querySelector('.video-swiper');
+
+    if (videos) {
+      new Swiper('.video-swiper', {
+        modules: [Pagination, Navigation],
+        slidesPerView: 3,
+        spaceBetween: 30,
+        loop: true,
+        pagination: {
+          el: '.video-swiper .swiper-pagination',
+          clickable: true,
+        },
+        navigation: {
+          nextEl: '.video-swiper .swiper-button-next',
+          prevEl: '.video-swiper .swiper-button-prev',
+        },
+        speed: 600,
+      });
+    }
+
   }
 }
