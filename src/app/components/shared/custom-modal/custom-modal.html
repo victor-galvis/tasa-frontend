@@ -1,12 +1,12 @@
 <!-- custom-modal.html -->
 <div class="modal-overlay" *ngIf="visible" [ngClass]="{ 'fade-in': !fadeOut, 'fade-out': fadeOut }">
-  <!-- evita que cualquier click dentro de modal-container suba al padre -->
   <div class="modal-container" [ngClass]="type" (click)="$event.stopPropagation()">
     <button class="close-btn" (click)="closeModal($event)">×</button>
 
     <div class="icon" [ngClass]="type">
       <span *ngIf="type === 'success'">✔</span>
       <span *ngIf="type === 'error'">✖</span>
+      <span *ngIf="type === 'warning'">⏱</span>
     </div>
 
     <h4>{{ title }}</h4>

@@ -101,45 +101,76 @@ export class ContractModal implements OnInit, OnChanges {
   onCloseCustomModel() {
     this.showCustomModal = false;
   }
-  verificarContrato() {
-    this.contrato = this.form.get('number')?.value;
-    if (!this.contrato) {
-      this.errorMessage = 'Debe ingresar un número de contrato';
-      return;
-    }
-    this.errorMessage = '';
-
-    this.loading = true;
-
-    this.contractService
-      .validateContract({
-        company: this.form.get('companyId')?.value,
-        agreement: this.form.get('number')?.value,
-      })
-      .subscribe({
-        next: (response: any) => {
-          this.loading = false;
-          if (response.status === 'OK') {
-            if (response.addresses.length > 0) {
-
-              this.addressList = response.addresses;
-              this.showAddressModal = true;
-            } else {
-              this.customModalMessage = 'El contrato no existe o no está activo.';
-              this.customModalTitle = 'Contrato inválido';
-              this.customModalButtonText = 'Cerrar';
-              this.showCustomModal = true;
-            }
-          } else {
-            this.errorMessage = response.message
-          }
-        },
-        error: (err) => {
-          this.loading = false;
-          this.errorMessage = `Error en la petición: ${err.message}`;
-        },
-      });
+ verificarContrato() {
+  this.contrato = this.form.get('number')?.value;
+  if (!this.contrato) {
+    this.errorMessage = 'Debe ingresar un número de contrato';
+    return;
   }
+  this.errorMessage = '';
+  
+  this.loading = true;
+
+  this.contractService
+    .validateContract({
+      company: this.form.get('companyId')?.value,
+      agreement: this.form.get('number')?.value,
+    })
+    .subscribe({
+      next: (response: any) => {
+        this.loading = false;
+        if (response.status === 'OK') {
+          if (response.addresses && response.addresses.length > 0) {
+            this.addressList = response.addresses;
+            this.showAddressModal = true;
+          } else {
+            // OK pero sin direcciones (caso raro)
+            this.customModalTitle = 'Contrato inválido';
+            this.customModalMessage = 'El contrato no tiene direcciones asociadas.';
+            this.customModalType = 'error';
+            this.customModalButtonText = 'Cerrar';
+            this.showCustomModal = true;
+          }
+
+        } else if (response.status === 'NOT_FOUND') {
+          // ✅ Caso que antes quedaba en blanco
+          this.customModalTitle = 'Contrato no encontrado';
+          this.customModalMessage = 'El contrato ingresado no existe o no está activo. Verifique el número e intente nuevamente.';
+          this.customModalType = 'error';
+          this.customModalButtonText = 'Intentar de nuevo';
+          this.showCustomModal = true;
+
+        } else if (response.status === 'MAX_ATTEMPTS') {
+          // ✅ Bloqueado por intentos desde el servicio
+          this.customModalTitle = 'Acceso bloqueado';
+          this.customModalMessage = response.message ?? 'Ha superado el número máximo de intentos.';
+          this.customModalType = 'error';
+          this.customModalButtonText = 'Cerrar';
+          this.showCustomModal = true;
+
+        } else {
+          this.errorMessage = response.message ?? 'Error desconocido.';
+        }
+      },
+
+      error: (err) => {
+        this.loading = false;
+
+        // ✅ Error 429 del guard de rate limiting
+        if (err.status === 429) {
+          const msg = err.error?.message ?? 'Ha superado el límite de consultas permitidas.';
+          this.customModalTitle = '⏳ Límite de consultas alcanzado';
+          this.customModalMessage = msg;
+          this.customModalType = 'warning'; // o 'error' si tu modal solo soporta ese tipo
+          this.customModalButtonText = 'Entendido';
+          this.showCustomModal = true;
+        } else {
+          // Otros errores HTTP
+          this.errorMessage = err.error?.message ?? err.message ?? 'Error en la petición.';
+        }
+      },
+    });
+}
 
   onAddressSelected(address: string) {
     this.address = address;

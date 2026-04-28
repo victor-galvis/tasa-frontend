@@ -1,6 +1,5 @@
 /* Overlay */
 .modal-overlay {
-
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
@@ -55,12 +54,27 @@
   border: 2px solid #0a8754;
 }
 
+/* ✅ Ícono de bloqueo temporal */
+.icon.warning {
+  border: 2px solid #e65100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+
 .icon.success span {
   color: #0a8754;
 }
 
 .icon.error span {
   color: #e53935;
+}
+
+.icon.warning span {
+  color: #e65100;
+  font-size: 34px;
+  line-height: 1;
 }
 
 /* Texto */
@@ -118,6 +132,14 @@ p {
 
 .action-btn.error:hover {
   background: #c62828;
+}
+
+.action-btn.warning {
+  background: #e65100;
+}
+
+.action-btn.warning:hover {
+  background: #bf360c;
 }
 
 /* Animación de entrada */

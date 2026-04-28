@@ -1,4 +1,7 @@
 (function () {
+  if (typeof window === 'undefined' || typeof document === 'undefined') {
+    return;
+  }
   'use strict';
 
   // ============================================
