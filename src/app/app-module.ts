@@ -53,7 +53,7 @@ export function playerFactory() {
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, LottieComponent],
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideClientHydration(),
+    provideClientHydration(withEventReplay()),
     provideHttpClient(withInterceptorsFromDi()),
     provideLottieOptions({
       player: playerFactory,
