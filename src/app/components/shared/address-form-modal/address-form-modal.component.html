@@ -1,0 +1,144 @@
+<div *ngIf="visible" class="afm-overlay" (click)="onBackdropClick()">
+  <div class="afm-modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="afmTitle">
+
+    <div class="afm-header">
+      <h3 id="afmTitle">Ingresar dirección</h3>
+      <button type="button" class="afm-close" (click)="close()" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="afm-body" [formGroup]="form">
+
+      <!-- Departamento y Municipio -->
+      <div class="afm-row">
+        <div class="afm-field">
+          <label class="afm-label">Departamento *</label>
+          <select formControlName="provinceId" (change)="onProvinceChange()">
+            <option value="">Selecciona...</option>
+            <option *ngFor="let p of provinces" [value]="p.id">{{ p.name }}</option>
+          </select>
+          <span class="afm-error" *ngIf="form.get('provinceId')?.invalid && form.get('provinceId')?.touched">
+            Requerido
+          </span>
+        </div>
+
+        <div class="afm-field">
+          <label class="afm-label">Municipio *</label>
+          <select formControlName="cityId">
+            <option value="">Selecciona...</option>
+            <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
+          </select>
+          <span class="afm-error" *ngIf="form.get('cityId')?.invalid && form.get('cityId')?.touched">
+            Requerido
+          </span>
+        </div>
+      </div>
+
+      <div class="afm-divider">
+        <span>Estructura de la dirección</span>
+      </div>
+
+      <!-- Fila 1: Tipo de vía + Número + Letra + Bis + Cuadrante -->
+      <div class="afm-row afm-row-address">
+        <div class="afm-field afm-field-sm">
+          <label class="afm-label">Tipo de vía *</label>
+          <select formControlName="streetType">
+            <option value="">--</option>
+            <option *ngFor="let t of streetTypes" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+
+        <div class="afm-field afm-field-xs">
+          <label class="afm-label">Número *</label>
+          <input type="text" formControlName="streetNumber" placeholder="45" maxlength="4" />
+        </div>
+
+        <div class="afm-field afm-field-xs">
+          <label class="afm-label">Letra</label>
+          <input type="text" formControlName="streetLetter" placeholder="A" maxlength="2" />
+        </div>
+
+        <div class="afm-field afm-field-check">
+          <label class="afm-label">Bis</label>
+          <label class="afm-checkbox">
+            <input type="checkbox" formControlName="bis" />
+            <span class="afm-check-mark"></span>
+          </label>
+        </div>
+
+        <div class="afm-field afm-field-xs">
+          <label class="afm-label">Cuadrante</label>
+          <select formControlName="quadrant1">
+            <option value="">--</option>
+            <option *ngFor="let q of quadrants" [value]="q">{{ q }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Separador # -->
+      <div class="afm-hash-row">
+        <span class="afm-hash">#</span>
+      </div>
+
+      <!-- Fila 2: Cruce + Letra + Cuadrante + - + Puerta + Interior -->
+      <div class="afm-row afm-row-address">
+        <div class="afm-field afm-field-xs">
+          <label class="afm-label">Número *</label>
+          <input type="text" formControlName="crossNumber" placeholder="23" maxlength="4" />
+        </div>
+
+        <div class="afm-field afm-field-xs">
+          <label class="afm-label">Letra</label>
+          <input type="text" formControlName="crossLetter" placeholder="B" maxlength="2" />
+        </div>
+
+        <div class="afm-field afm-field-xs">
+          <label class="afm-label">Cuadrante</label>
+          <select formControlName="quadrant2">
+            <option value="">--</option>
+            <option *ngFor="let q of quadrants" [value]="q">{{ q }}</option>
+          </select>
+        </div>
+
+        <span class="afm-dash">-</span>
+
+        <div class="afm-field afm-field-xs">
+          <label class="afm-label">Número *</label>
+          <input type="text" formControlName="doorNumber" placeholder="67" maxlength="4" />
+        </div>
+
+        <div class="afm-field afm-field-xs">
+          <label class="afm-label">Interior</label>
+          <input type="text" formControlName="interior" placeholder="101" maxlength="6" />
+        </div>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="afm-field afm-field-full" style="margin-top: 8px;">
+        <label class="afm-label">Información adicional</label>
+        <input type="text" formControlName="additionalInfo" placeholder="Torre 2, Apto 301..." maxlength="60" />
+      </div>
+
+      <!-- Preview SIEMPRE visible — se actualiza campo por campo -->
+      <div class="afm-preview">
+        <div class="afm-preview-header">
+          <span class="afm-preview-icon">📍</span>
+          <span class="afm-preview-label">Tu dirección quedará así</span>
+        </div>
+        <span
+          class="afm-preview-value"
+          [class.afm-preview-placeholder]="!addressPreview">
+          {{ addressPreview || 'Completa los campos para ver la dirección...' }}
+        </span>
+      </div>
+
+      <div class="afm-error-global" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    </div>
+
+    <div class="afm-footer">
+      <button type="button" class="afm-btn-ghost" (click)="close()">Cancelar</button>
+      <button type="button" class="afm-btn-primary" (click)="onConfirm()">Confirmar dirección</button>
+    </div>
+
+  </div>
+</div>

@@ -26,6 +26,7 @@ import { PendingPayments } from './components/pending-payments/pending-payments'
 import { AuthInterceptor } from './interceptors/uth.interceptor';
 import { ForgotPassword } from './components/forgot-password/forgot-password';
 import { OtpInputComponent } from './components/otp-input-component/otp-input-component';
+import { AddressFormModalComponent } from './components/shared/address-form-modal/address-form-modal.component';
 
 export function playerFactory() {
   return player;
@@ -49,6 +50,7 @@ export function playerFactory() {
     PendingPayments,
     ForgotPassword,
     OtpInputComponent,
+    AddressFormModalComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, LottieComponent],
   providers: [

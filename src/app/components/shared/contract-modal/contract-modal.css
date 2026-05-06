@@ -222,6 +222,11 @@
   margin-top: 50px;
   gap: 10px;
 }
+
+.input-group{
+
+  font-size: 18px;
+}
 .modal-footer {
   display: flex;
   justify-content: flex-end;
@@ -327,4 +332,30 @@
 }
 .info-text-gray {
   color: gray;
+}
+/* nuevo  */
+
+.email-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f0f7f4;
+  border: 1px solid #c8e6c9;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #2e7d32;
+}
+
+.email-display .info-text-gray {
+  color: #555;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.email-display strong {
+  color: #1b5e20;
+  font-size: 14px;
+  word-break: break-all;
 }

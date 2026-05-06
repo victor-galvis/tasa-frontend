@@ -79,8 +79,12 @@
       </div>
 
       <div class="verify-wrapper">
-        <button type="button" class="outline-button font-12" (click)="verificarContrato()">
-          Verificar contrato
+        <button 
+          type="button" 
+          class="outline-button font-12" 
+          (click)="verificarContrato()"
+          [disabled]="loading || verifying">
+          {{ loading ? 'Verificando...' : 'Verificar contrato' }}
         </button>
       </div>
       <!-- TODO: Ajustar campos de Departamento y Ciudad en el siguiente módulo Actualizador. -->
@@ -104,45 +108,99 @@
         </div>
       </div>
 
-      <div class="down">
-        <div class="text-retrieve-info">
-          <span>¿Como deseas recibir la factura?</span>
-        </div>
-        <div class="radios-container">
-          <div class="radio-container">
-            <label class="custom-radio">
-              <input type="radio" formControlName="deliveryMethod" value="digital" />
-              <span class="radio-mark"></span>
-              <span class="radio-label">Correo electrónico</span>
-            </label>
+<div class="down">
+  <div class="text-retrieve-info">
+    <span>¿Cómo deseas recibir la factura?</span>
+  </div>
 
-            <div class="info-text">
-              <span class="info-text-gray">*Si selecciona esta opción, la factura 
-              </span><strong>solo llegará de forma digital al correo registrado en esta plataforma</strong>.
-            </div>
-          </div>
+  <div class="radios-container">
 
-          <div class="radio-container">
-            <label class="custom-radio">
-              <input type="radio" formControlName="deliveryMethod" value="physical" />
-              <span class="radio-mark"></span>
-              <span class="radio-label">Física</span>
-            </label>
-            <div class="info-text">
-              <span class="info-text-gray">*Si selecciona esta opción, la factura </span>
-              <strong>sólo se entregará de forma física</strong> en la dirección correspondiente al servicio de energía eléctrica
-            </div>
-          </div>
-        </div>
+    <!-- Opción: Correo electrónico -->
+    <div class="radio-container">
+      <label class="custom-radio">
+        <input type="radio" formControlName="deliveryMethod" value="digital" />
+        <span class="radio-mark"></span>
+        <span class="radio-label">Correo electrónico</span>
+      </label>
+      <div class="info-text">
+        <span class="info-text-gray">*Si selecciona esta opción, la factura
+        </span><strong>solo llegará de forma digital al correo registrado en esta plataforma</strong>.
       </div>
+
+      <!-- ← NUEVO: muestra el correo registrado cuando está seleccionado -->
+      @if (deliveryMethod === 'digital') {
+        <div class="email-display">
+          <span class="info-text-gray">Correo registrado: </span>
+          <strong>{{ userEmail }}</strong>
+        </div>
+      }
     </div>
+
+    <!-- Opción: Física -->
+    <div class="radio-container">
+      <label class="custom-radio">
+        <input type="radio" formControlName="deliveryMethod" value="physical" />
+        <span class="radio-mark"></span>
+        <span class="radio-label">Física</span>
+      </label>
+      <div class="info-text">
+        <span class="info-text-gray">*Si selecciona esta opción, la factura </span>
+        <strong>sólo se entregará de forma física</strong> en la dirección correspondiente al servicio de energía eléctrica.
+      </div>
+
+      <!-- ← NUEVO: muestra departamento/ciudad SOLO cuando está seleccionado físico -->
+      @if (deliveryMethod === 'physical') {
+      <!--<div class="location-wrapper" style="margin-top: 8px;">
+        <div class="select-wrapper" [class.open]="openSelect">
+         <label for="province" class="md-label">Departamento</label>
+          <select id="province" formControlName="provinceId" (focus)="onFocus()" (blur)="onBlur()">
+            <option *ngFor="let o of provinces" [value]="o.id">{{ o.name }}</option>
+          </select>
+           <span class="arrow" aria-hidden="true"></span>
+        </div>
+
+        <div class="select-wrapper" [class.open]="openSelect">
+        <label for="city" class="md-label">Ciudad</label>
+        <select id="city" formControlName="cityId" (focus)="onFocus()" (blur)="onBlur()">
+          <option *ngFor="let o of cities" [value]="o.id">{{ o.name }}</option>
+        </select>
+           <span class="arrow" aria-hidden="true"></span>
+        </div>
+      </div>-->
+
+  <!-- ← CAMPO DE DIRECCIÓN -->
+  <!-- ← CAMPO DE DIRECCIÓN — abre modal al hacer clic -->
+    <div class="input-group" style="margin-top: 10px;" (click)="onOpenAddressForm()">
+      <input placeholder=" " type="text" id="physicalAddress" formControlName="address"
+             autocomplete="off" readonly style="cursor: pointer;" />
+      <label for="physicalAddress">Dirección *</label>
+      <span class="bar"></span>
+    </div>
+  }
+
+  <!-- Modal de dirección estructurada -->
+  <app-address-form-modal
+    [(visible)]="showAddressFormModal"
+    (confirmed)="onAddressConfirmed($event)">
+  </app-address-form-modal>
+    </div>
+
+  </div>
+</div>
+    </div>
+
+    <!-- Modal dirección estructurada --> 
+    <app-address-form-modal
+      [(visible)]="showAddressFormModal"
+      (confirmed)="onAddressConfirmed($event)">
+    </app-address-form-modal>
 
     <div class="modal-footer">
       <div class="input-group center">
         <button type="button" class="btn ghost" (click)="close()">Cerrar</button>
       </div>
       <div class="input-group center">
-        <button type="submit" class="btn-continuar">Inscribir contracto</button>
+        <button type="submit" class="btn-continuar">Inscribir contracto.</button>
       </div>
     </div>
   </form>

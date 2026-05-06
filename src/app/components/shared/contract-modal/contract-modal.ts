@@ -5,10 +5,13 @@ import {
   EventEmitter,
   OnInit,
   OnChanges,
+  OnDestroy,
   SimpleChanges,
   HostListener,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 import { ContractService } from '../../../services/contracts/contract.service';
 import { AuthService } from '../../../services/auth/auth.service';
 import { CityModel } from '../../../models/city.model';
@@ -24,7 +27,7 @@ import { AddressValidateService } from '../../../services/address-validate';
   templateUrl: './contract-modal.html',
   styleUrl: './contract-modal.css',
 })
-export class ContractModal implements OnInit, OnChanges {
+export class ContractModal implements OnInit, OnChanges, OnDestroy {
   @Input() visible = false;
   @Output() visibleChange = new EventEmitter<boolean>();
   @Output() saved = new EventEmitter<any>();
@@ -48,12 +51,22 @@ export class ContractModal implements OnInit, OnChanges {
   companies: Company[] = [];
   openSelect = false;
 
-
   showCustomModal = false;
   customModalTitle = '';
   customModalMessage = '';
   customModalType = 'error';
   customModalButtonText = '';
+  userEmail = '';
+  showAddressFormModal = false; 
+
+  // FIX #2 — Subject para switchMap (cancela llamadas en vuelo)
+  private verifySubject = new Subject<{ company: any; agreement: any }>();
+  // FIX #3 — Subject para desuscribirse al destruir el componente
+  private destroy$ = new Subject<void>();
+
+  get deliveryMethod(): string {
+    return this.form?.get('deliveryMethod')?.value ?? 'digital';
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -63,9 +76,12 @@ export class ContractModal implements OnInit, OnChanges {
     private cityService: CityService,
     private companyService: CompanyService,
     private addressValidateService: AddressValidateService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
+    const user = this.authService.getUser();
+    this.userEmail = user?.email ?? '';
+
     this.form = this.fb.group({
       number: ['', Validators.required],
       name: ['', Validators.required],
@@ -75,25 +91,89 @@ export class ContractModal implements OnInit, OnChanges {
       deliveryMethod: ['digital', Validators.required],
       address: [this.correctAddress],
     });
-    this.form.get('name')?.valueChanges.subscribe((value) => {
-    });
+
+    // Cuando cambia el departamento, recargar ciudades
+    this.form.get('provinceId')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((provinceId) => {
+        this.form.get('cityId')?.setValue(null);
+        this.cities = [];
+        if (provinceId) {
+          this.loadCities(provinceId);
+        }
+      });
+
+    // Validación dinámica según método de entrega
+    this.form.get('deliveryMethod')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((method) => {
+        const addressControl = this.form.get('address');
+        if (method === 'physical') {
+          addressControl?.setValidators([Validators.required]);
+        } else {
+          addressControl?.clearValidators();
+          addressControl?.setValue('');
+        }
+        addressControl?.updateValueAndValidity();
+      });
+
+    // FIX #2 — Pipeline con switchMap: si llega una nueva petición cancela la anterior
+    this.verifySubject
+      .pipe(
+        switchMap((filters) => this.contractService.validateContract(filters)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.loading = false;
+          if (response.status === 'OK') {
+            if (response.addresses && response.addresses.length > 0) {
+              this.addressList = response.addresses;
+              this.showAddressModal = true;
+            } else {
+              this.customModalMessage = 'El contrato no existe o no está activo.';
+              this.customModalTitle = 'Contrato inválido';
+              this.customModalButtonText = 'Cerrar';
+              this.showCustomModal = true;
+            }
+          } else {
+            this.errorMessage = response.message;
+          }
+        },
+        error: (err) => {
+          this.loading = false;
+          this.errorMessage = `Error en la petición: ${err.message}`;
+        },
+      });
+
     this.loadProvinces();
     this.loadCities(1);
     this.loadCompanies();
   }
+
+  // FIX #3 — Limpiar suscripciones al destruir el componente
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   onFocus() {
     this.openSelect = true;
   }
+
   onBlur() {
     setTimeout(() => (this.openSelect = false), 0);
   }
+
   onCloseModal() {
     this.showValidationModal = false;
     this.contractVerified = false;
   }
+
   onValidate(contract: string) {
     this.onSaveContract();
   }
+
   onRetry() {
     this.showCustomModal = false;
   }
@@ -101,126 +181,74 @@ export class ContractModal implements OnInit, OnChanges {
   onCloseCustomModel() {
     this.showCustomModal = false;
   }
- verificarContrato() {
-  this.contrato = this.form.get('number')?.value;
-  if (!this.contrato) {
-    this.errorMessage = 'Debe ingresar un número de contrato';
-    return;
-  }
-  this.errorMessage = '';
-  
-  this.loading = true;
 
-  this.contractService
-    .validateContract({
+  verificarContrato() {
+    this.contrato = this.form.get('number')?.value;
+
+    if (!this.contrato) {
+      this.errorMessage = 'Debe ingresar un número de contrato';
+      return;
+    }
+
+    // FIX #1 — Guard: si ya hay una petición en curso, no lanzar otra
+    if (this.loading) return;
+
+    this.errorMessage = '';
+    this.loading = true;
+
+    // FIX #2 — Emite al subject en lugar de llamar directamente al servicio
+    this.verifySubject.next({
       company: this.form.get('companyId')?.value,
       agreement: this.form.get('number')?.value,
-    })
-    .subscribe({
-      next: (response: any) => {
-        this.loading = false;
-        if (response.status === 'OK') {
-          if (response.addresses && response.addresses.length > 0) {
-            this.addressList = response.addresses;
-            this.showAddressModal = true;
-          } else {
-            // OK pero sin direcciones (caso raro)
-            this.customModalTitle = 'Contrato inválido';
-            this.customModalMessage = 'El contrato no tiene direcciones asociadas.';
-            this.customModalType = 'error';
-            this.customModalButtonText = 'Cerrar';
-            this.showCustomModal = true;
-          }
-
-        } else if (response.status === 'NOT_FOUND') {
-          // ✅ Caso que antes quedaba en blanco
-          this.customModalTitle = 'Contrato no encontrado';
-          this.customModalMessage = 'El contrato ingresado no existe o no está activo. Verifique el número e intente nuevamente.';
-          this.customModalType = 'error';
-          this.customModalButtonText = 'Intentar de nuevo';
-          this.showCustomModal = true;
-
-        } else if (response.status === 'MAX_ATTEMPTS') {
-          // ✅ Bloqueado por intentos desde el servicio
-          this.customModalTitle = 'Acceso bloqueado';
-          this.customModalMessage = response.message ?? 'Ha superado el número máximo de intentos.';
-          this.customModalType = 'error';
-          this.customModalButtonText = 'Cerrar';
-          this.showCustomModal = true;
-
-        } else {
-          this.errorMessage = response.message ?? 'Error desconocido.';
-        }
-      },
-
-      error: (err) => {
-        this.loading = false;
-
-        // ✅ Error 429 del guard de rate limiting
-        if (err.status === 429) {
-          const msg = err.error?.message ?? 'Ha superado el límite de consultas permitidas.';
-          this.customModalTitle = '⏳ Límite de consultas alcanzado';
-          this.customModalMessage = msg;
-          this.customModalType = 'warning'; // o 'error' si tu modal solo soporta ese tipo
-          this.customModalButtonText = 'Entendido';
-          this.showCustomModal = true;
-        } else {
-          // Otros errores HTTP
-          this.errorMessage = err.error?.message ?? err.message ?? 'Error en la petición.';
-        }
-      },
     });
-}
+  }
 
   onAddressSelected(address: string) {
     this.address = address;
-    let company = this.form.get('companyId')?.value
-    let agreement = this.form.get('number')?.value
-    console.log('Dirección seleccionada:', address);
-    console.log('Compañía:', company);
-    console.log('Contrato:', agreement);
-    this.addressValidateService.validateAddress({
-      company: company,
-      agreement: agreement,
-      address: address
-    }).subscribe({
-      next: (data) => {
-        console.log('Respuesta de validación de dirección:', data);
-        if (data.isValid) {
-          this.contractVerified = true;
-          this.form.patchValue({
-            address: data.correctedAddress,
-          });
-          this.showAddressModal = false;
-        } else {
+    const company = this.form.get('companyId')?.value;
+    const agreement = this.form.get('number')?.value;
+
+    this.addressValidateService
+      .validateAddress({ company, agreement, address })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          if (data.isValid) {
+            this.contractVerified = true;
+            this.form.patchValue({ address: data.correctedAddress });
+            this.showAddressModal = false;
+          } else {
+            this.contractVerified = false;
+            this.errorMessage = data.message;
+            this.showAddressModal = false;
+          }
+        },
+        error: (err) => {
+          console.error('Error al validar la dirección:', err);
           this.contractVerified = false;
-          this.errorMessage = data.message;
+          this.errorMessage = '❌ Error al validar la dirección.';
           this.showAddressModal = false;
-        }
-      },
-      error: (err) => {
-        console.error('Error al validar la dirección:', err);
-        this.contractVerified = false;
-        this.errorMessage = '❌ Error al validar la dirección.';
-        this.showAddressModal = false;
-      }
-    });
+        },
+      });
   }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
-      // foco en el input del contrato cuando se abra
       setTimeout(() => {
         const el = document.querySelector<HTMLInputElement>('input[formControlName="number"]');
         el?.focus();
       }, 0);
     }
   }
+
   close() {
     this.visibleChange.emit(false);
   }
+
   backdropClick() {
     this.close();
   }
+
   onVerifyAddress() {
     if (this.form.get('number')?.invalid) {
       this.form.get('number')?.markAsTouched();
@@ -229,28 +257,15 @@ export class ContractModal implements OnInit, OnChanges {
     this.verifying = true;
     this.contractVerified = false;
 
-    // Simulación de verificación remota (reemplaza con petición real)
     setTimeout(() => {
-      // respuesta simulada
       this.address = 'CR 45 CL 86 - 25';
-
       this.form.get('address')?.setValue(this.address);
-
       this.verifying = false;
       this.contractVerified = true;
     }, 1200);
   }
+
   onSubmit() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-
-      Object.keys(this.form.controls).forEach((key) => {
-        const control = this.form.get(key);
-        if (control && control.invalid) {
-        }
-      });
-    }
-
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -263,8 +278,8 @@ export class ContractModal implements OnInit, OnChanges {
 
     this.showValidationModal = true;
   }
-  onSaveContract() {
 
+  onSaveContract() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -279,67 +294,74 @@ export class ContractModal implements OnInit, OnChanges {
     this.errorMessage = '';
 
     const payload = this.form.value;
-
-    let user = this.authService.getUser();
+    const user = this.authService.getUser();
     payload.user_id = user.id;
 
-    this.contractService.create(payload).subscribe({
-      next: (data) => {
-        this.loading = false;
-        this.contractVerified = false;
-        this.form.reset();
-        this.showValidationModal = false;
+    this.contractService
+      .create(payload)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.loading = false;
+          this.contractVerified = false;
+          this.form.reset();
+          this.showValidationModal = false;
 
-        this.form.get('provinceId')?.setValue(1);
-        this.form.get('cityId')?.setValue(1);
-        this.form.get('companyId')?.setValue(14);
+          this.form.get('provinceId')?.setValue(1);
+          this.form.get('cityId')?.setValue(1);
+          this.form.get('companyId')?.setValue(14);
 
-        if (data) {
-          this.saved.emit({
-            status: 'success',
-            data,
-          });
-          this.close();
-        }
-      },
-      error: (err) => {
-        this.loading = false;
-
-        this.contractVerified = false;
-        this.errorMessage = err.error.message;
-        this.saved.emit({
-          status: 'error',
-          err,
-        });
-      },
-    });
+          if (data) {
+            this.saved.emit({ status: 'success', data });
+            this.close();
+          }
+        },
+        error: (err) => {
+          this.loading = false;
+          this.contractVerified = false;
+          this.errorMessage = err.error.message;
+          this.saved.emit({ status: 'error', err });
+        },
+      });
   }
+
   loadProvinces(): void {
-    this.provinceService.getProvinces().subscribe({
-      next: (data) => {
-        this.provinces = data;
-      },
-      error: (err) => {
-      },
-    });
+    this.provinceService
+      .getProvinces()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => (this.provinces = data),
+        error: () => {},
+      });
   }
+
   loadCities(provinceId: number): void {
-    this.cityService.getCities(provinceId).subscribe({
-      next: (data) => {
-        this.cities = data;
-      },
-      error: (err) => {
-      },
-    });
+    this.cityService
+      .getCities(provinceId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => (this.cities = data),
+        error: () => {},
+      });
   }
+
   loadCompanies(): void {
-    this.companyService.getCompanies().subscribe({
-      next: (data) => {
-        this.companies = data;
-      },
-      error: (err) => {
-      },
-    });
+    this.companyService
+      .getCompanies()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => (this.companies = data),
+        error: () => {},
+      });
+  }
+
+  onOpenAddressForm(): void {
+    this.showAddressFormModal = true;
+  }
+
+  onAddressConfirmed(address: any): void {
+    this.form.get('address')?.setValue(address.fullAddress);
+    this.showAddressFormModal = false;
   }
 
   @HostListener('document:keydown.escape', ['$event'])
