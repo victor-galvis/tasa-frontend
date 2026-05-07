@@ -18,4 +18,8 @@ export class CityService {
       .get<CityModel[]>(`${this.base}/cities/province/${provinceId}`)
       .pipe(tap((res) => {}));
   }
+
+  getCitiesByCodePrefix(prefix: string): Observable<CityModel[]> {
+    return this.http.get<CityModel[]>(`${this.base}/cities/by-code-prefix/${prefix}`);
+  }
 }

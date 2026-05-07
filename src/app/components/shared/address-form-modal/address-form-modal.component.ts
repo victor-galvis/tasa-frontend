@@ -11,9 +11,7 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { ProvinceService } from '../../../services/province/province.service';
 import { CityService } from '../../../services/city/city.service';
-import { ProvinceModel } from '../../../models/provice.model';
 import { CityModel } from '../../../models/city.model';
 
 export interface StructuredAddress {
@@ -23,6 +21,9 @@ export interface StructuredAddress {
   cityName: string;
   fullAddress: string;
 }
+
+// FIX #1 — Antioquia siempre fija, no necesitamos ProvinceService ni ProvinceModel
+const ANTIOQUIA_NAME = 'ANTIOQUIA';
 
 @Component({
   selector: 'app-address-form-modal',
@@ -36,11 +37,8 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
   @Output() confirmed = new EventEmitter<StructuredAddress>();
 
   form!: FormGroup;
-  provinces: ProvinceModel[] = [];
   cities: CityModel[] = [];
   errorMessage = '';
-
-  // Propiedad reactiva — se actualiza con valueChanges
   addressPreview = '';
 
   readonly streetTypes = [
@@ -52,15 +50,16 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
+  // FIX #1 — Ya no necesita ProvinceService
   constructor(
     private fb: FormBuilder,
-    private provinceService: ProvinceService,
     private cityService: CityService,
   ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      provinceId:   ['', Validators.required],
+      // FIX #2 — provinceId fijo, sin Validators.required porque no lo elige el usuario
+      provinceId:   [null],
       cityId:       ['', Validators.required],
       streetType:   ['', Validators.required],
       streetNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -75,36 +74,37 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
       additionalInfo: [''],
     });
 
-    // Preview reactivo: se recalcula con cada cambio en el formulario
+    // Preview reactivo: se recalcula con cada cambio
     this.form.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.addressPreview = this.buildPreview();
       });
 
-    this.loadProvinces();
+    this.loadCitiesAntioquia();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible && this.form) {
+      // FIX #2 — provinceId se resetea a null (no es editable)
       this.form.reset({
-        provinceId: '',
-        cityId: '',
-        streetType: '',
-        streetNumber: '',
-        streetLetter: '',
-        bis: false,
-        quadrant1: '',
-        crossNumber: '',
-        crossLetter: '',
-        quadrant2: '',
-        doorNumber: '',
-        interior: '',
+        provinceId:     null,
+        cityId:         '',
+        streetType:     '',
+        streetNumber:   '',
+        streetLetter:   '',
+        bis:            false,
+        quadrant1:      '',
+        crossNumber:    '',
+        crossLetter:    '',
+        quadrant2:      '',
+        doorNumber:     '',
+        interior:       '',
         additionalInfo: '',
       });
-      this.cities = [];
-      this.errorMessage = '';
+      this.errorMessage  = '';
       this.addressPreview = '';
+      // No vaciamos this.cities porque Antioquia no cambia
     }
   }
 
@@ -115,42 +115,32 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
 
   /** Construye la dirección ensamblada campo por campo */
   private buildPreview(): string {
-  const v = this.form.value;
-  if (!v.streetType || !v.streetNumber) return '';
+    const v = this.form.value;
+    if (!v.streetType || !v.streetNumber) return '';
 
-  // Nombres de departamento y municipio
-  const province = this.provinces.find(p => p.id == v.provinceId);
-  const city     = this.cities.find(c => c.id == v.cityId);
+    // FIX #3 — ciudad buscada en el array; departamento siempre ANTIOQUIA
+    const city = this.cities.find(c => c.id == v.cityId);
 
-  let addr = `${v.streetType} ${v.streetNumber}`;
-  if (v.streetLetter)  addr += ` ${v.streetLetter.toUpperCase()}`;
-  if (v.bis)           addr += ' Bis';
-  if (v.quadrant1)     addr += ` ${v.quadrant1}`;
+    let addr = `${v.streetType} ${v.streetNumber}`;
+    if (v.streetLetter)  addr += ` ${v.streetLetter.toUpperCase()}`;
+    if (v.bis)           addr += ' Bis';
+    if (v.quadrant1)     addr += ` ${v.quadrant1}`;
 
-  if (v.crossNumber) {
-    addr += ` # ${v.crossNumber}`;
-    if (v.crossLetter) addr += ` ${v.crossLetter.toUpperCase()}`;
-    if (v.quadrant2)   addr += ` ${v.quadrant2}`;
-  }
-
-  if (v.doorNumber)     addr += ` - ${v.doorNumber}`;
-  if (v.interior)       addr += ` ${v.interior}`;
-  if (v.additionalInfo) addr += `, ${v.additionalInfo}`;
-
-  // Agrega municipio y departamento al final
-  if (city?.name)     addr += `, ${city.name}`;
-  if (province?.name) addr += `, ${province.name}`;
-
-  return addr;
-}
-
-  onProvinceChange(): void {
-    const provinceId = this.form.get('provinceId')?.value;
-    this.form.get('cityId')?.setValue('');
-    this.cities = [];
-    if (provinceId) {
-      this.loadCities(provinceId);
+    if (v.crossNumber) {
+      addr += ` # ${v.crossNumber}`;
+      if (v.crossLetter) addr += ` ${v.crossLetter.toUpperCase()}`;
+      if (v.quadrant2)   addr += ` ${v.quadrant2}`;
     }
+
+    if (v.doorNumber)     addr += ` - ${v.doorNumber}`;
+    if (v.interior)       addr += ` ${v.interior}`;
+    if (v.additionalInfo) addr += `, ${v.additionalInfo}`;
+
+    // FIX #3 — municipio dinámico, departamento siempre fijo
+    if (city?.name)  addr += `, ${city.name}`;
+    addr += `, ${ANTIOQUIA_NAME}`;
+
+    return addr;
   }
 
   onConfirm(): void {
@@ -162,14 +152,14 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    const v = this.form.value;
-    const province = this.provinces.find(p => p.id == v.provinceId);
-    const city     = this.cities.find(c => c.id == v.cityId);
+    const v    = this.form.value;
+    const city = this.cities.find(c => c.id == v.cityId);
 
+    // FIX #3 — provinceName siempre ANTIOQUIA
     this.confirmed.emit({
-      provinceId:   v.provinceId,
+      provinceId:   0,
       cityId:       v.cityId,
-      provinceName: province?.name ?? '',
+      provinceName: ANTIOQUIA_NAME,
       cityName:     city?.name ?? '',
       fullAddress:  this.addressPreview,
     });
@@ -185,19 +175,9 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
     this.close();
   }
 
-  private loadProvinces(): void {
-    this.provinceService
-      .getProvinces()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (data) => (this.provinces = data),
-        error: () => {},
-      });
-  }
-
-  private loadCities(provinceId: number): void {
+  private loadCitiesAntioquia(): void {
     this.cityService
-      .getCities(provinceId)
+      .getCitiesByCodePrefix('05')
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => (this.cities = data),

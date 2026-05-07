@@ -9,29 +9,26 @@
     <div class="afm-body" [formGroup]="form">
 
       <!-- Departamento y Municipio -->
-      <div class="afm-row">
-        <div class="afm-field">
-          <label class="afm-label">Departamento *</label>
-          <select formControlName="provinceId" (change)="onProvinceChange()">
-            <option value="">Selecciona...</option>
-            <option *ngFor="let p of provinces" [value]="p.id">{{ p.name }}</option>
-          </select>
-          <span class="afm-error" *ngIf="form.get('provinceId')?.invalid && form.get('provinceId')?.touched">
-            Requerido
-          </span>
-        </div>
+      <!-- DESPUÉS — departamento fijo + solo municipios de Antioquia -->
+<div class="afm-row">
+  <div class="afm-field">
+    <label class="afm-label">Departamento</label>
+    <div class="afm-static-value">ANTIOQUIA</div>
+  </div>
 
-        <div class="afm-field">
-          <label class="afm-label">Municipio *</label>
-          <select formControlName="cityId">
-            <option value="">Selecciona...</option>
-            <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
-          </select>
-          <span class="afm-error" *ngIf="form.get('cityId')?.invalid && form.get('cityId')?.touched">
-            Requerido
-          </span>
-        </div>
-      </div>
+  <div class="afm-field">
+    <label class="afm-label">Municipio *</label>
+    <select formControlName="cityId">
+      <option value="">Selecciona...</option>
+      <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
+    </select>
+    <span class="afm-error" *ngIf="form.get('cityId')?.invalid && form.get('cityId')?.touched">
+      Requerido
+    </span>
+  </div>
+</div>
+
+
 
       <div class="afm-divider">
         <span>Estructura de la dirección</span>
