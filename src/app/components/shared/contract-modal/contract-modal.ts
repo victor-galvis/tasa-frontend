@@ -65,28 +65,28 @@ export class ContractModal implements OnInit, OnChanges {
     private cityService: CityService,
     private companyService: CompanyService,
     private addressValidateService: AddressValidateService,
-    @Inject(PLATFORM_ID) private platformId: Object  // ✅ agregado
-  ) { }
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
 
   ngOnInit(): void {
-    this.form = this.fb.group({
-      number: ['', Validators.required],
-      name: ['', Validators.required],
-      provinceId: [1, Validators.required],
-      cityId: [1, Validators.required],
-      companyId: [14, Validators.required],
-      deliveryMethod: ['digital', Validators.required],
-      address: [this.correctAddress],
-    });
-    this.form.get('name')?.valueChanges.subscribe((value) => {});
+  this.form = this.fb.group({
+    number: ['', Validators.required],
+    name: ['', Validators.required],
+    provinceId: [1, Validators.required],
+    cityId: [1, Validators.required],
+    companyId: [14, Validators.required],
+    deliveryMethod: ['digital', Validators.required],
+    address: [this.correctAddress],
+  });
+
+  if (isPlatformBrowser(this.platformId)) {
     this.loadProvinces();
     this.loadCities(1);
     this.loadCompanies();
   }
-
+}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
-      // ✅ Guard SSR: solo corre en el navegador
       if (isPlatformBrowser(this.platformId)) {
         setTimeout(() => {
           const el = document.querySelector<HTMLInputElement>('input[formControlName="number"]');
