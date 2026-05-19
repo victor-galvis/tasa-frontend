@@ -26,6 +26,7 @@ import { PendingPayments } from './components/pending-payments/pending-payments'
 import { AuthInterceptor } from './interceptors/uth.interceptor';
 import { ForgotPassword } from './components/forgot-password/forgot-password';
 import { OtpInputComponent } from './components/otp-input-component/otp-input-component';
+import { RecaptchaInterceptor } from './interceptors/recaptcha.interceptor';
 
 export function playerFactory() {
   return player;
@@ -58,7 +59,8 @@ export function playerFactory() {
     provideLottieOptions({
       player: playerFactory,
     }),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: RecaptchaInterceptor, multi: true }
   ],
   bootstrap: [App],
 })
