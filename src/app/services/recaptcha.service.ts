@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 declare var grecaptcha: any;
 
@@ -7,7 +8,7 @@ declare var grecaptcha: any;
 })
 export class RecaptchaService {
 
-  siteKey = '6LdBTfIsAAAAAE1Gmgp-fQS_0Hev3mdbzNsLXCpS';
+  siteKey = environment.recaptchaSiteKey;
 
   execute(action: string): Promise<string> {
 
