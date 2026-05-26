@@ -21,6 +21,20 @@ export class RecaptchaInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
 
+    const protectedRoutes = [
+      '/auth/login',
+      '/users/register',
+      '/users/reset-password',
+      '/otp/generate-otp',
+      '/otp/generate-otp-forgot-password',
+      '/otp/verify-otp'
+    ];
+    const shouldIntercept = protectedRoutes.some(route => req.url.includes(route));
+
+    if (!shouldIntercept) {
+      return next.handle(req);
+    }
+
     return from(this.recaptchaService.execute('api_request'))
       .pipe(
 
