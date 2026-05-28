@@ -8,26 +8,30 @@ declare var grecaptcha: any;
 })
 export class RecaptchaService {
 
-  siteKey = environment.recaptchaSiteKey;
+  private siteKey = environment.recaptchaSiteKey;
+  private loaded = false;
 
-  execute(action: string): Promise<string> {
-
-    return new Promise((resolve, reject) => {
-
-      grecaptcha.ready(() => {
-
-        grecaptcha.execute(this.siteKey, { action })
-          .then((token: string) => {
-            resolve(token);
-          })
-          .catch((error: any) => {
-            reject(error);
-          });
-
-      });
-
+  private loadScript(): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.loaded) return resolve();
+      const script = document.createElement('script');
+      script.src = `https://www.google.com/recaptcha/api.js?render=${this.siteKey}`;
+      script.onload = () => {
+        this.loaded = true;
+        resolve();
+      };
+      document.head.appendChild(script);
     });
-
   }
 
+  async execute(action: string): Promise<string> {
+    await this.loadScript();
+    return new Promise((resolve, reject) => {
+      grecaptcha.ready(() => {
+        grecaptcha.execute(this.siteKey, { action })
+          .then((token: string) => resolve(token))
+          .catch((error: any) => reject(error));
+      });
+    });
+  }
 }

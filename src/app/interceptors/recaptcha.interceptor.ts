@@ -16,42 +16,34 @@ export class RecaptchaInterceptor implements HttpInterceptor {
 
   constructor(private recaptchaService: RecaptchaService) {}
 
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  // ✅ Mapeo ruta → acción (debe coincidir exactamente con el backend)
+  private readonly protectedRoutes: Record<string, string> = {
+    '/auth/login':                        'login',
+    '/users/register':                    'register',
+    '/users/reset-password':              'reset_password',
+    '/otp/generate-otp-forgot-password':  'otp_forgot_password', // ← va antes
+    '/otp/generate-otp':                  'generate_otp',
+    '/otp/verify-otp':                    'verify_otp',
+  };
 
-    const protectedRoutes = [
-      '/auth/login',
-      '/users/register',
-      '/users/reset-password',
-      '/otp/generate-otp',
-      '/otp/generate-otp-forgot-password',
-      '/otp/verify-otp'
-    ];
-    const shouldIntercept = protectedRoutes.some(route => req.url.includes(route));
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (!shouldIntercept) {
+    const matchedRoute = Object.keys(this.protectedRoutes)
+      .find(route => req.url.includes(route));
+
+    if (!matchedRoute) {
       return next.handle(req);
     }
 
-    return from(this.recaptchaService.execute('api_request'))
-      .pipe(
+    const action = this.protectedRoutes[matchedRoute]; // ✅ acción específica
 
-        switchMap((token: string) => {
-
-          const clonedRequest = req.clone({
-            setHeaders: {
-              recaptcha: token
-            }
-          });
-
-          return next.handle(clonedRequest);
-
-        })
-
-      );
-
+    return from(this.recaptchaService.execute(action)).pipe(
+      switchMap((token: string) => {
+        const clonedRequest = req.clone({
+          setHeaders: { recaptcha: token }
+        });
+        return next.handle(clonedRequest);
+      })
+    );
   }
-
 }
