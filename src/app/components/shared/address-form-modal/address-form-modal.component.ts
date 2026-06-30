@@ -14,12 +14,17 @@ import { takeUntil } from 'rxjs/operators';
 import { CityService } from '../../../services/city/city.service';
 import { CityModel } from '../../../models/city.model';
 
+export type AddressKind = 'urban' | 'rural';
+
 export interface StructuredAddress {
   provinceId: number;
   cityId: number;
   provinceName: string;
   cityName: string;
   fullAddress: string;
+  // NUEVO — el backend necesita saber si la dirección viene estructurada
+  // o como texto libre, para decidir cómo mapearla al payload de SAP.
+  addressKind: AddressKind;
 }
 
 // FIX #1 — Antioquia siempre fija, no necesitamos ProvinceService ni ProvinceModel
@@ -58,9 +63,14 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      // NUEVO — tipo de dirección: 'urban' (estructurada) | 'rural' (texto libre)
+      addressKind:  ['urban', Validators.required],
+
       // FIX #2 — provinceId fijo, sin Validators.required porque no lo elige el usuario
       provinceId:   [null],
       cityId:       ['', Validators.required],
+
+      // Campos de la estructura urbana
       streetType:   ['', Validators.required],
       streetNumber: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       streetLetter: [''],
@@ -71,8 +81,22 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
       quadrant2:    [''],
       doorNumber:   ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       interior:     [''],
+
+      // NUEVO — dirección rural / vereda en texto libre
+      ruralAddress: [''],
+
       additionalInfo: [''],
     });
+
+    this.applyAddressKindValidators('urban');
+
+    // Cambia los validadores activos según urbano/rural
+    this.form.get('addressKind')!.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((kind: AddressKind) => {
+        this.applyAddressKindValidators(kind);
+        this.addressPreview = this.buildPreview();
+      });
 
     // Preview reactivo: se recalcula con cada cambio
     this.form.valueChanges
@@ -88,6 +112,7 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
     if (changes['visible'] && this.visible && this.form) {
       // FIX #2 — provinceId se resetea a null (no es editable)
       this.form.reset({
+        addressKind:    'urban',
         provinceId:     null,
         cityId:         '',
         streetType:     '',
@@ -100,8 +125,10 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
         quadrant2:      '',
         doorNumber:     '',
         interior:       '',
+        ruralAddress:   '',
         additionalInfo: '',
       });
+      this.applyAddressKindValidators('urban');
       this.errorMessage  = '';
       this.addressPreview = '';
       // No vaciamos this.cities porque Antioquia no cambia
@@ -113,13 +140,56 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
     this.destroy$.complete();
   }
 
-  /** Construye la dirección ensamblada campo por campo */
+  get isRural(): boolean {
+    return this.form?.get('addressKind')?.value === 'rural';
+  }
+
+  /**
+   * NUEVO — activa/desactiva validadores requeridos según el tipo de
+   * dirección elegido, para no exigir campos estructurados en rural
+   * ni el textarea libre en urbano.
+   */
+  private applyAddressKindValidators(kind: AddressKind): void {
+    const structuredControls = [
+      'streetType', 'streetNumber', 'crossNumber', 'doorNumber',
+    ];
+
+    if (kind === 'rural') {
+      structuredControls.forEach((name) => {
+        const ctrl = this.form.get(name);
+        ctrl?.clearValidators();
+        ctrl?.updateValueAndValidity({ emitEvent: false });
+      });
+      const rural = this.form.get('ruralAddress');
+      rural?.setValidators([Validators.required, Validators.minLength(10)]);
+      rural?.updateValueAndValidity({ emitEvent: false });
+    } else {
+      structuredControls.forEach((name) => {
+        const ctrl = this.form.get(name);
+        ctrl?.setValidators([Validators.required, ...(name !== 'streetType' ? [Validators.pattern(/^\d+$/)] : [])]);
+        ctrl?.updateValueAndValidity({ emitEvent: false });
+      });
+      const rural = this.form.get('ruralAddress');
+      rural?.clearValidators();
+      rural?.updateValueAndValidity({ emitEvent: false });
+    }
+  }
+
+  /** Construye la dirección ensamblada campo por campo (urbana) o el texto libre (rural) */
   private buildPreview(): string {
     const v = this.form.value;
-    if (!v.streetType || !v.streetNumber) return '';
-
-    // FIX #3 — ciudad buscada en el array; departamento siempre ANTIOQUIA
     const city = this.cities.find(c => c.id == v.cityId);
+
+    if (v.addressKind === 'rural') {
+      if (!v.ruralAddress) return '';
+      let addr = v.ruralAddress.trim();
+      if (v.additionalInfo) addr += `, ${v.additionalInfo}`;
+      if (city?.name) addr += `, ${city.name}`;
+      addr += `, ${ANTIOQUIA_NAME}`;
+      return addr;
+    }
+
+    if (!v.streetType || !v.streetNumber) return '';
 
     let addr = `${v.streetType} ${v.streetNumber}`;
     if (v.streetLetter)  addr += ` ${v.streetLetter.toUpperCase()}`;
@@ -162,6 +232,7 @@ export class AddressFormModalComponent implements OnInit, OnChanges, OnDestroy {
       provinceName: ANTIOQUIA_NAME,
       cityName:     city?.name ?? '',
       fullAddress:  this.addressPreview,
+      addressKind:  v.addressKind,
     });
 
     this.close();

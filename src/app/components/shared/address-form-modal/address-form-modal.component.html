@@ -9,107 +9,146 @@
     <div class="afm-body" [formGroup]="form">
 
       <!-- Departamento y Municipio -->
-      <!-- DESPUÉS — departamento fijo + solo municipios de Antioquia -->
-<div class="afm-row">
-  <div class="afm-field">
-    <label class="afm-label">Departamento</label>
-    <div class="afm-static-value">ANTIOQUIA</div>
-  </div>
+      <div class="afm-row">
+        <div class="afm-field">
+          <label class="afm-label">Departamento</label>
+          <div class="afm-static-value">ANTIOQUIA</div>
+        </div>
 
-  <div class="afm-field">
-    <label class="afm-label">Municipio *</label>
-    <select formControlName="cityId">
-      <option value="">Selecciona...</option>
-      <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
-    </select>
-    <span class="afm-error" *ngIf="form.get('cityId')?.invalid && form.get('cityId')?.touched">
-      Requerido
-    </span>
-  </div>
-</div>
-
-
-
-      <div class="afm-divider">
-        <span>Estructura de la dirección</span>
+        <div class="afm-field">
+          <label class="afm-label">Municipio *</label>
+          <select formControlName="cityId">
+            <option value="">Selecciona...</option>
+            <option *ngFor="let c of cities" [value]="c.id">{{ c.name }}</option>
+          </select>
+          <span class="afm-error" *ngIf="form.get('cityId')?.invalid && form.get('cityId')?.touched">
+            Requerido
+          </span>
+        </div>
       </div>
 
-      <!-- Fila 1: Tipo de vía + Número + Letra + Bis + Cuadrante -->
-      <div class="afm-row afm-row-address">
-        <div class="afm-field afm-field-sm">
-          <label class="afm-label">Tipo de vía *</label>
-          <select formControlName="streetType">
-            <option value="">--</option>
-            <option *ngFor="let t of streetTypes" [value]="t">{{ t }}</option>
-          </select>
-        </div>
-
-        <div class="afm-field afm-field-xs">
-          <label class="afm-label">Número *</label>
-          <input type="text" formControlName="streetNumber" placeholder="45" maxlength="4" />
-        </div>
-
-        <div class="afm-field afm-field-xs">
-          <label class="afm-label">Letra</label>
-          <input type="text" formControlName="streetLetter" placeholder="A" maxlength="2" />
-        </div>
-
-        <div class="afm-field afm-field-check">
-          <label class="afm-label">Bis</label>
-          <label class="afm-checkbox">
-            <input type="checkbox" formControlName="bis" />
-            <span class="afm-check-mark"></span>
+      <!-- NUEVO — selector urbano / rural -->
+      <div class="afm-field afm-field-full">
+        <label class="afm-label">¿Tu dirección es urbana o rural/vereda?</label>
+        <div class="afm-kind-toggle">
+          <label class="afm-kind-option" [class.afm-kind-active]="!isRural">
+            <input type="radio" formControlName="addressKind" value="urban" />
+            <span>Urbana</span>
+          </label>
+          <label class="afm-kind-option" [class.afm-kind-active]="isRural">
+            <input type="radio" formControlName="addressKind" value="rural" />
+            <span>Rural / Vereda</span>
           </label>
         </div>
-
-        <div class="afm-field afm-field-xs">
-          <label class="afm-label">Cuadrante</label>
-          <select formControlName="quadrant1">
-            <option value="">--</option>
-            <option *ngFor="let q of quadrants" [value]="q">{{ q }}</option>
-          </select>
-        </div>
       </div>
 
-      <!-- Separador # -->
-      <div class="afm-hash-row">
-        <span class="afm-hash">#</span>
-      </div>
+      <!-- ───────────── BLOQUE URBANO ───────────── -->
+      <ng-container *ngIf="!isRural">
 
-      <!-- Fila 2: Cruce + Letra + Cuadrante + - + Puerta + Interior -->
-      <div class="afm-row afm-row-address">
-        <div class="afm-field afm-field-xs">
-          <label class="afm-label">Número *</label>
-          <input type="text" formControlName="crossNumber" placeholder="23" maxlength="4" />
+        <div class="afm-divider">
+          <span>Estructura de la dirección</span>
         </div>
 
-        <div class="afm-field afm-field-xs">
-          <label class="afm-label">Letra</label>
-          <input type="text" formControlName="crossLetter" placeholder="B" maxlength="2" />
+        <!-- Fila 1: Tipo de vía + Número + Letra + Bis + Cuadrante -->
+        <div class="afm-row afm-row-address">
+          <div class="afm-field afm-field-sm">
+            <label class="afm-label">Tipo de vía *</label>
+            <select formControlName="streetType">
+              <option value="">--</option>
+              <option *ngFor="let t of streetTypes" [value]="t">{{ t }}</option>
+            </select>
+          </div>
+
+          <div class="afm-field afm-field-xs">
+            <label class="afm-label">Número *</label>
+            <input type="text" formControlName="streetNumber" placeholder="45" maxlength="4" />
+          </div>
+
+          <div class="afm-field afm-field-xs">
+            <label class="afm-label">Letra</label>
+            <input type="text" formControlName="streetLetter" placeholder="A" maxlength="2" />
+          </div>
+
+          <div class="afm-field afm-field-check">
+            <label class="afm-label">Bis</label>
+            <label class="afm-checkbox">
+              <input type="checkbox" formControlName="bis" />
+              <span class="afm-check-mark"></span>
+            </label>
+          </div>
+
+          <div class="afm-field afm-field-xs">
+            <label class="afm-label">Cuadrante</label>
+            <select formControlName="quadrant1">
+              <option value="">--</option>
+              <option *ngFor="let q of quadrants" [value]="q">{{ q }}</option>
+            </select>
+          </div>
         </div>
 
-        <div class="afm-field afm-field-xs">
-          <label class="afm-label">Cuadrante</label>
-          <select formControlName="quadrant2">
-            <option value="">--</option>
-            <option *ngFor="let q of quadrants" [value]="q">{{ q }}</option>
-          </select>
+        <!-- Separador # -->
+        <div class="afm-hash-row">
+          <span class="afm-hash">#</span>
         </div>
 
-        <span class="afm-dash">-</span>
+        <!-- Fila 2: Cruce + Letra + Cuadrante + - + Puerta + Interior -->
+        <div class="afm-row afm-row-address">
+          <div class="afm-field afm-field-xs">
+            <label class="afm-label">Número *</label>
+            <input type="text" formControlName="crossNumber" placeholder="23" maxlength="4" />
+          </div>
 
-        <div class="afm-field afm-field-xs">
-          <label class="afm-label">Número *</label>
-          <input type="text" formControlName="doorNumber" placeholder="67" maxlength="4" />
+          <div class="afm-field afm-field-xs">
+            <label class="afm-label">Letra</label>
+            <input type="text" formControlName="crossLetter" placeholder="B" maxlength="2" />
+          </div>
+
+          <div class="afm-field afm-field-xs">
+            <label class="afm-label">Cuadrante</label>
+            <select formControlName="quadrant2">
+              <option value="">--</option>
+              <option *ngFor="let q of quadrants" [value]="q">{{ q }}</option>
+            </select>
+          </div>
+
+          <span class="afm-dash">-</span>
+
+          <div class="afm-field afm-field-xs">
+            <label class="afm-label">Número *</label>
+            <input type="text" formControlName="doorNumber" placeholder="67" maxlength="4" />
+          </div>
+
+          <div class="afm-field afm-field-xs">
+            <label class="afm-label">Interior</label>
+            <input type="text" formControlName="interior" placeholder="101" maxlength="6" />
+          </div>
         </div>
 
-        <div class="afm-field afm-field-xs">
-          <label class="afm-label">Interior</label>
-          <input type="text" formControlName="interior" placeholder="101" maxlength="6" />
-        </div>
-      </div>
+      </ng-container>
 
-      <!-- Información adicional -->
+      <!-- ───────────── BLOQUE RURAL / VEREDA ───────────── -->
+      <ng-container *ngIf="isRural">
+
+        <div class="afm-divider">
+          <span>Dirección rural / vereda</span>
+        </div>
+
+        <div class="afm-field afm-field-full">
+          <label class="afm-label">Dirección completa *</label>
+          <textarea
+            formControlName="ruralAddress"
+            rows="3"
+            placeholder="Ej: Vereda La Esperanza, finca El Recreo, km 3 vía Medellín - Santa Elena"
+            maxlength="200">
+          </textarea>
+          <span class="afm-error" *ngIf="form.get('ruralAddress')?.invalid && form.get('ruralAddress')?.touched">
+            Ingresa la dirección completa (mínimo 10 caracteres)
+          </span>
+        </div>
+
+      </ng-container>
+
+      <!-- Información adicional — igual para ambos casos -->
       <div class="afm-field afm-field-full" style="margin-top: 8px;">
         <label class="afm-label">Información adicional</label>
         <input type="text" formControlName="additionalInfo" placeholder="Torre 2, Apto 301..." maxlength="60" />

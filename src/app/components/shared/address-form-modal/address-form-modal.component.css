@@ -103,8 +103,8 @@
 }
 
 .afm-body input[type="text"],
-.afm-body select {
-  height: 36px;
+.afm-body select,
+.afm-body textarea {
   border: 1px solid #c5d9d4;
   border-radius: 6px;
   padding: 0 10px;
@@ -117,8 +117,21 @@
   box-sizing: border-box;
 }
 
+.afm-body input[type="text"],
+.afm-body select {
+  height: 36px;
+}
+
+.afm-body textarea {
+  padding: 8px 10px;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 64px;
+}
+
 .afm-body input[type="text"]:focus,
-.afm-body select:focus {
+.afm-body select:focus,
+.afm-body textarea:focus {
   border-color: #075c48;
   box-shadow: 0 0 0 2px rgba(7, 92, 72, 0.12);
 }
@@ -153,6 +166,37 @@
   color: #fff;
   font-size: 13px;
   font-weight: bold;
+}
+
+/* ── Urbano / Rural toggle ───────────────────────── */
+.afm-kind-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.afm-kind-option {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  border: 1.5px solid #c5d9d4;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+  background: #fff;
+}
+
+.afm-kind-option input { display: none; }
+
+.afm-kind-option.afm-kind-active {
+  border-color: #075c48;
+  background: #e8f5f1;
+  color: #075c48;
 }
 
 /* ── Separadores ─────────────────────────────────── */
@@ -319,4 +363,5 @@
   .afm-row-address { flex-direction: column; }
   .afm-field-xs,
   .afm-field-sm { min-width: unset; width: 100%; }
+  .afm-kind-toggle { flex-direction: column; }
 }
