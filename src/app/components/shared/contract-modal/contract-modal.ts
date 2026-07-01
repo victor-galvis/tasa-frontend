@@ -57,7 +57,7 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
   customModalType = 'error';
   customModalButtonText = '';
   userEmail = '';
-  showAddressFormModal = false; 
+  showAddressFormModal = false;
 
   // FIX #2 — Subject para switchMap (cancela llamadas en vuelo)
   private verifySubject = new Subject<{ company: any; agreement: any }>();
@@ -76,7 +76,7 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
     private cityService: CityService,
     private companyService: CompanyService,
     private addressValidateService: AddressValidateService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const user = this.authService.getUser();
@@ -176,10 +176,12 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
 
   onRetry() {
     this.showCustomModal = false;
+    this.close();
   }
 
   onCloseCustomModel() {
     this.showCustomModal = false;
+    this.close();
   }
 
   verificarContrato() {
@@ -301,7 +303,7 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
       .create(payload)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (data) => {
+        next: (data: any) => {
           this.loading = false;
           this.contractVerified = false;
           this.form.reset();
@@ -312,8 +314,21 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
           this.form.get('companyId')?.setValue(14);
 
           if (data) {
-            this.saved.emit({ status: 'success', data });
-            this.close();
+            if (data.notificationSyncError) {
+              this.customModalTitle = 'Contrato inscrito con novedad';
+              this.customModalMessage =
+                'Tu contrato fue inscrito correctamente. Sin embargo, no fue posible ' +
+                'actualizar el método de recepción de factura (correo o dirección física) ' +
+                'porque ya alcanzaste el máximo de actualizaciones permitidas para este contrato. ' +
+                'Contacta al administrador si necesitas hacer más cambios.';
+              this.customModalType = 'warning';
+              this.customModalButtonText = 'Entendido';
+              this.showCustomModal = true;
+              this.saved.emit({ status: 'warning', data });
+            } else {
+              this.saved.emit({ status: 'success', data });
+              this.close();
+            }
           }
         },
         error: (err) => {
@@ -331,7 +346,7 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => (this.provinces = data),
-        error: () => {},
+        error: () => { },
       });
   }
 
@@ -341,7 +356,7 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => (this.cities = data),
-        error: () => {},
+        error: () => { },
       });
   }
 
@@ -351,7 +366,7 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => (this.companies = data),
-        error: () => {},
+        error: () => { },
       });
   }
 
