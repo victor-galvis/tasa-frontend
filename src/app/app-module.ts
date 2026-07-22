@@ -1,5 +1,6 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common'; // ← agregar
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
@@ -27,6 +28,8 @@ import { AuthInterceptor } from './interceptors/uth.interceptor';
 import { ForgotPassword } from './components/forgot-password/forgot-password';
 import { OtpInputComponent } from './components/otp-input-component/otp-input-component';
 import { AddressFormModalComponent } from './components/shared/address-form-modal/address-form-modal.component';
+import { RecaptchaInterceptor } from './interceptors/recaptcha.interceptor';
+import { DesbloquearComponent } from './components/desbloquear/desbloquear.component'; // ← agregar
 
 export function playerFactory() {
   return player;
@@ -51,8 +54,9 @@ export function playerFactory() {
     ForgotPassword,
     OtpInputComponent,
     AddressFormModalComponent,
+    DesbloquearComponent, 
   ],
-  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, LottieComponent],
+  imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, LottieComponent,CommonModule,],
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideClientHydration(withEventReplay()),
@@ -60,7 +64,8 @@ export function playerFactory() {
     provideLottieOptions({
       player: playerFactory,
     }),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: RecaptchaInterceptor, multi: true }
   ],
   bootstrap: [App],
 })

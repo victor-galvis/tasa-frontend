@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnimationOptions } from 'ngx-lottie';
 import { UserService } from '../../services/user/user.service';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,7 +20,8 @@ export class ForgotPassword {
     private otpService: OtpService,
     private userService: UserService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
 
   ) {
     this.forgotPasswordForm = this.fb.group({
@@ -59,12 +62,14 @@ export class ForgotPassword {
   codigoFinal: string = '';
   step = 1;
   loading = false;
+  isBrowser = false;
   forgotPasswordForm!: FormGroup
   changePasswordForm!: FormGroup
   loadingOptions: AnimationOptions = {
     path: '/loading.json',
     loop: true,
     autoplay: true,
+    
   };
 
   continuar() {

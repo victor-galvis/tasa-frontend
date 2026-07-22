@@ -8,7 +8,10 @@ import {
   OnDestroy,
   SimpleChanges,
   HostListener,
+  PLATFORM_ID,
+  Inject,
 } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
@@ -75,10 +78,10 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
     private provinceService: ProvinceService,
     private cityService: CityService,
     private companyService: CompanyService,
-    private addressValidateService: AddressValidateService
-  ) { }
-
-  ngOnInit(): void {
+    private addressValidateService: AddressValidateService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+ngOnInit(): void {
     const user = this.authService.getUser();
     this.userEmail = user?.email ?? '';
 
@@ -131,24 +134,48 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
               this.addressList = response.addresses;
               this.showAddressModal = true;
             } else {
-              this.customModalMessage = 'El contrato no existe o no está activo.';
               this.customModalTitle = 'Contrato inválido';
+              this.customModalMessage = 'El contrato no tiene direcciones asociadas.';
+              this.customModalType = 'error';
               this.customModalButtonText = 'Cerrar';
               this.showCustomModal = true;
             }
+          } else if (response.status === 'NOT_FOUND') {
+            this.customModalTitle = 'Contrato no encontrado';
+            this.customModalMessage = 'El contrato ingresado no existe o no está activo. Verifique el número e intente nuevamente.';
+            this.customModalType = 'error';
+            this.customModalButtonText = 'Intentar de nuevo';
+            this.showCustomModal = true;
+          } else if (response.status === 'MAX_ATTEMPTS') {
+            this.customModalTitle = 'Acceso bloqueado';
+            this.customModalMessage = response.message ?? 'Ha superado el número máximo de intentos.';
+            this.customModalType = 'error';
+            this.customModalButtonText = 'Cerrar';
+            this.showCustomModal = true;
           } else {
-            this.errorMessage = response.message;
+            this.errorMessage = response.message ?? 'Error desconocido.';
           }
         },
         error: (err) => {
           this.loading = false;
-          this.errorMessage = `Error en la petición: ${err.message}`;
+          if (err.status === 429) {
+            const msg = err.error?.message ?? 'Ha superado el límite de consultas permitidas.';
+            this.customModalTitle = '⏳ Límite de consultas alcanzado';
+            this.customModalMessage = msg;
+            this.customModalType = 'warning';
+            this.customModalButtonText = 'Entendido';
+            this.showCustomModal = true;
+          } else {
+            this.errorMessage = err.error?.message ?? err.message ?? 'Error en la petición.';
+          }
         },
       });
 
-    this.loadProvinces();
-    this.loadCities(1);
-    this.loadCompanies();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadProvinces();
+      this.loadCities(1);
+      this.loadCompanies();
+    }
   }
 
   // FIX #3 — Limpiar suscripciones al destruir el componente
@@ -176,12 +203,10 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
 
   onRetry() {
     this.showCustomModal = false;
-    this.close();
   }
 
   onCloseCustomModel() {
     this.showCustomModal = false;
-    this.close();
   }
 
   verificarContrato() {
@@ -221,7 +246,7 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
             this.showAddressModal = false;
           } else {
             this.contractVerified = false;
-            this.errorMessage = data.message;
+            this.errorMessage = data.message ?? '❌ Error al validar la dirección.';
             this.showAddressModal = false;
           }
         },
@@ -236,10 +261,12 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
-      setTimeout(() => {
-        const el = document.querySelector<HTMLInputElement>('input[formControlName="number"]');
-        el?.focus();
-      }, 0);
+      if (isPlatformBrowser(this.platformId)) {
+        setTimeout(() => {
+          const el = document.querySelector<HTMLInputElement>('input[formControlName="number"]');
+          el?.focus();
+        }, 0);
+      }
     }
   }
 
@@ -260,7 +287,7 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
     this.contractVerified = false;
 
     setTimeout(() => {
-      this.address = 'CR 45 CL 86 - 25';
+      this.address = 'CR 10 CL 30 - 25';
       this.form.get('address')?.setValue(this.address);
       this.verifying = false;
       this.contractVerified = true;
@@ -272,12 +299,10 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
       this.form.markAllAsTouched();
       return;
     }
-
     if (!this.contractVerified) {
       this.errorMessage = 'Por favor verifica la dirección antes de inscribir el contrato.';
       return;
     }
-
     this.showValidationModal = true;
   }
 
@@ -286,15 +311,12 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
       this.form.markAllAsTouched();
       return;
     }
-
     if (!this.contractVerified) {
       this.errorMessage = 'Por favor verifica la dirección antes de inscribir el contrato.';
       return;
     }
-
     this.loading = true;
     this.errorMessage = '';
-
     const payload = this.form.value;
     const user = this.authService.getUser();
     payload.user_id = user.id;
@@ -382,8 +404,6 @@ export class ContractModal implements OnInit, OnChanges, OnDestroy {
   @HostListener('document:keydown.escape', ['$event'])
   handleEsc(event: Event) {
     const keyboardEvent = event as KeyboardEvent;
-    if (this.visible && keyboardEvent.key === 'Escape') {
-      this.close();
-    }
+    if (this.visible && keyboardEvent.key === 'Escape') { this.close(); }
   }
 }

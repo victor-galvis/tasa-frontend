@@ -20,7 +20,6 @@ export class Home implements AfterViewInit {
 
   ngAfterViewInit() {
     if (isPlatformBrowser(this.platformId)) {
-
       this.ngZone.runOutsideAngular(() => {
         setTimeout(() => {
           this.initSwiper();
@@ -38,11 +37,7 @@ export class Home implements AfterViewInit {
   }
 
   initSwiper() {
-
-    // SWIPER BANNER
-    const swiperElement = document.querySelector('.banner-swiper');
-
-    if (swiperElement) {
+    if (document.querySelector('.banner-swiper')) {
       try {
         new Swiper('.banner-swiper', {
           modules: [Autoplay, Pagination, Navigation],
@@ -65,16 +60,12 @@ export class Home implements AfterViewInit {
           speed: 600,
           grabCursor: true,
         });
-
       } catch (error) {
         console.error('Error iniciando banner swiper', error);
       }
     }
 
-    // SWIPER VIDEOS
-    const videos = document.querySelector('.video-swiper');
-
-    if (videos) {
+    if (document.querySelector('.video-swiper')) {
       new Swiper('.video-swiper', {
         modules: [Pagination, Navigation],
         slidesPerView: 3,
@@ -91,6 +82,5 @@ export class Home implements AfterViewInit {
         speed: 600,
       });
     }
-
   }
 }
