@@ -24,7 +24,7 @@ import { SuccessModal } from './components/shared/success-modal/success-modal';
 import { CustomModal } from './components/shared/custom-modal/custom-modal';
 import { ConfirmContractModal } from './components/shared/confirm-contract-modal/confirm-contract-modal';
 import { PendingPayments } from './components/pending-payments/pending-payments';
-import { AuthInterceptor } from './interceptors/uth.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ForgotPassword } from './components/forgot-password/forgot-password';
 import { OtpInputComponent } from './components/otp-input-component/otp-input-component';
 import { AddressFormModalComponent } from './components/shared/address-form-modal/address-form-modal.component';
