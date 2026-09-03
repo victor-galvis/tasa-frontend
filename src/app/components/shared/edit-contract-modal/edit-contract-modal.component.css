@@ -1,0 +1,265 @@
+.ecm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 20px;
+}
+
+.ecm-modal {
+  width: 520px;
+  max-width: calc(100% - 40px);
+  max-height: calc(100vh - 40px);
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Header ─────────────────────────────────────── */
+.ecm-header {
+  background: #075c48;
+  color: #fff;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.ecm-header h3 { margin: 0; font-size: 17px; font-weight: 700; }
+
+.ecm-close {
+  background: #fff;
+  color: #075c48;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Body ────────────────────────────────────────── */
+.ecm-body {
+  padding: 18px;
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Info (solo lectura) ─────────────────────────── */
+.ecm-info-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  background: #f4f9f7;
+  border: 1px solid #d4e8e2;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.ecm-info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.ecm-info-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #075c48;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ecm-info-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0a3d2e;
+}
+
+/* ── Divider ─────────────────────────────────────── */
+.ecm-divider {
+  height: 1px;
+  background: #e8f0ee;
+  margin: -4px 0;
+}
+
+/* ── Fields ──────────────────────────────────────── */
+.ecm-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ecm-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.ecm-attempts {
+  font-weight: 400;
+  color: #075c48;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.ecm-body input[type="text"],
+.ecm-body input[type="email"] {
+  height: 36px;
+  border: 1px solid #c5d9d4;
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 13px;
+  color: #222;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ecm-body input:focus {
+  border-color: #075c48;
+  box-shadow: 0 0 0 2px rgba(7, 92, 72, 0.12);
+}
+
+/* ── Notificación info ───────────────────────────── */
+.ecm-notif-info {
+  background: #e8f5f1;
+  border: 1px solid #a8d5c5;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #0a3d2e;
+}
+
+/* ── Toggle row ──────────────────────────────────── */
+.ecm-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ecm-toggle-label {
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* ── Botón dirección ─────────────────────────────── */
+.ecm-btn-address {
+  height: 36px;
+  padding: 0 16px;
+  background: #e8f5f1;
+  color: #075c48;
+  border: 1.5px solid #a8d5c5;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  align-self: flex-start;
+}
+.ecm-btn-address:hover { background: #d0ece4; }
+
+/* ── Preview dirección ───────────────────────────── */
+.ecm-address-preview {
+  background: #f4f9f7;
+  border: 1px solid #d4e8e2;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0a3d2e;
+  word-break: break-word;
+}
+
+/* ── Intentos agotados ───────────────────────────── */
+.ecm-attempts-exhausted {
+  background: #fff8e8;
+  border: 1px solid #f0d98a;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #7a5c00;
+  font-weight: 600;
+}
+
+/* ── Errores ─────────────────────────────────────── */
+.ecm-error {
+  font-size: 10px;
+  color: #e53935;
+  font-weight: 600;
+}
+
+.ecm-error-global {
+  background: #fde8e8;
+  border: 1px solid #f5b7b7;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #c62828;
+  font-weight: 600;
+}
+
+/* ── Footer ──────────────────────────────────────── */
+.ecm-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 14px 18px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  flex-shrink: 0;
+}
+
+.ecm-btn-ghost {
+  height: 38px;
+  padding: 0 20px;
+  border: 1.5px solid #075c48;
+  background: transparent;
+  color: #075c48;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ecm-btn-ghost:hover { background: #f0faf6; }
+
+.ecm-btn-primary {
+  height: 38px;
+  padding: 0 20px;
+  background: #075c48;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.ecm-btn-primary:hover:not(:disabled) { background: #054f3d; }
+.ecm-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 480px) {
+  .ecm-info-row { flex-direction: column; }
+}

@@ -29,7 +29,9 @@ import { ForgotPassword } from './components/forgot-password/forgot-password';
 import { OtpInputComponent } from './components/otp-input-component/otp-input-component';
 import { AddressFormModalComponent } from './components/shared/address-form-modal/address-form-modal.component';
 import { RecaptchaInterceptor } from './interceptors/recaptcha.interceptor';
-import { DesbloquearComponent } from './components/desbloquear/desbloquear.component'; // ← agregar
+import { DesbloquearComponent } from './components/desbloquear/desbloquear.component';
+import { ManageContracts } from './components/manage-contracts/manage-contracts';
+import { EditContractModalComponent } from './components/shared/edit-contract-modal/edit-contract-modal.component';
 
 export function playerFactory() {
   return player;
@@ -54,7 +56,9 @@ export function playerFactory() {
     ForgotPassword,
     OtpInputComponent,
     AddressFormModalComponent,
-    DesbloquearComponent, 
+    DesbloquearComponent,
+    ManageContracts,
+    EditContractModalComponent, 
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, LottieComponent,CommonModule,],
   providers: [

@@ -10,6 +10,7 @@ import { AuthGuard } from './guards/auth-guard';
 import { ForgotPassword } from './components/forgot-password/forgot-password';
 import { DesbloquearComponent } from './components/desbloquear/desbloquear.component';
 import { AdminGuard } from './guards/admin.guard';
+import { ManageContracts } from './components/manage-contracts/manage-contracts';
 
 const routes: Routes = [
   { path: '', component: Home, pathMatch: 'full' },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'view-invoices', component: ViewInvoices, canActivate: [AuthGuard] },
   { path: 'pending-payments', component: PendingPayments, canActivate: [AuthGuard] },
   { path: 'desbloquear', component: DesbloquearComponent, canActivate: [AuthGuard] },
+  { path: 'manage-contracts', component: ManageContracts },
   { path: '**', redirectTo: 'login' },
 ];
 

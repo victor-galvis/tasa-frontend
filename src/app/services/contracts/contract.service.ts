@@ -20,7 +20,6 @@ export class ContractService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
-
   getAll(): Observable<Contract[]> {
     return this.http.get<Contract[]>(this.base);
   }
@@ -34,7 +33,30 @@ export class ContractService {
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.base}/${id}`);
+    return this.http.delete<void>(`${this.base}/contract/${id}`);
+  }
+
+  //alias semántico usado en manage-contracts
+  deleteContract(id: number): Observable<void> {
+    return this.delete(id);
+  }
+
+  // actualiza nombre personalizado y/o dirección de notificación
+  updateContract(id: number, payload: {
+    name: string;
+    newAddress?: any;
+  }): Observable<Contract> {
+    return this.http.patch<Contract>(`${this.base}/contract/${id}`, payload);
+  }
+
+  // consulta cuántos intentos de cambio de notificación se han usado
+  getNotificationAttempts(companyId: string | number, agreement: string): Observable<{
+    emailAttempts: number;
+    addressAttempts: number;
+  }> {
+    return this.http.get<{ emailAttempts: number; addressAttempts: number }>(
+      `${this.base}/notification-update/attempts/${companyId}/${agreement}`
+    );
   }
 
   getInvoices(filters: InvoiceFilter): Observable<InvoiceResponse> {
@@ -45,11 +67,7 @@ export class ContractService {
 
   validateContract(filters: ContractFilter): Observable<ContractResponse> {
     const token = this.authService.getToken();
-
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-
+    const headers = { Authorization: `Bearer ${token}` };
     return this.http.post<ContractResponse>(
       `${this.base}/contract/validate`,
       { filters },

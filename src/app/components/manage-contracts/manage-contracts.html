@@ -1,0 +1,115 @@
+<app-header></app-header>
+
+<app-edit-contract-modal
+  [(visible)]="showEditModal"
+  [contract]="selectedContract"
+  (saved)="onContractUpdated($event)"
+></app-edit-contract-modal>
+
+<app-custom-modal
+  [visible]="showCustomModal"
+  title="{{ customModalTitle }}"
+  message="{{ customModalMessage }}"
+  type="{{ customModalType }}"
+  buttonText="{{ customModalButtonText }}"
+  (confirmed)="onModalConfirmed()"
+  (closed)="onModalClosed()"
+></app-custom-modal>
+
+<div class="mc-container">
+  <a href="/dashboard" class="volver">Volver a la página principal</a>
+  <h2>Administrar contratos</h2>
+
+  <!-- Barra de acciones -->
+  <div class="mc-actions">
+    <a href="/dashboard" class="mc-action" title="Inscribir contrato">
+      <span class="mc-action-icon">＋</span>
+      <span>Inscribir<br><strong>Contrato</strong></span>
+    </a>
+    <a routerLink="/view-invoices" class="mc-action" title="Ver facturas">
+      <span class="mc-action-icon">◉</span>
+      <span>Ver<br><strong>Facturas</strong></span>
+    </a>
+    <button class="mc-action" (click)="toggleView()" title="Cambiar vista">
+      <span class="mc-action-icon">⊞</span>
+      <span>Vista<br><strong>{{ viewMode === 'cards' ? 'Tabla' : 'Tarjetas' }}</strong></span>
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div class="mc-loading" *ngIf="loading">Cargando contratos...</div>
+
+  <!-- Empty state -->
+  <div class="mc-empty" *ngIf="!loading && contracts.length === 0">
+    <p>No tienes contratos inscritos aún.</p>
+    <a href="/dashboard" class="mc-btn-primary">Inscribir un contrato</a>
+  </div>
+
+  <!-- Vista TARJETAS -->
+  <div class="mc-cards" *ngIf="!loading && contracts.length > 0 && viewMode === 'cards'">
+    <div class="mc-card" *ngFor="let contract of contracts">
+      <div class="mc-card-header">
+        <span class="mc-card-name">{{ contract.name }}</span>
+        <div class="mc-card-btns">
+          <button class="mc-icon-btn" title="Editar" (click)="onEdit(contract)">✏️</button>
+          <button class="mc-icon-btn mc-icon-btn--delete" title="Eliminar" (click)="onDeleteConfirm(contract)">🗑</button>
+        </div>
+      </div>
+      <div class="mc-card-body">
+        <div class="mc-card-row">
+          <span class="mc-card-label">Contrato:</span>
+          <span class="mc-card-value">{{ contract.number }}</span>
+        </div>
+        <div class="mc-card-row">
+          <span class="mc-card-label">Comercializadora:</span>
+          <span class="mc-card-value">{{ contract.companyName }}</span>
+        </div>
+        <div class="mc-card-row">
+          <span class="mc-card-label">Notificación:</span>
+          <span class="mc-card-value">
+            <span class="mc-badge" [class.mc-badge--digital]="contract.deliveryMethod === 'digital'" [class.mc-badge--physical]="contract.deliveryMethod === 'physical'">
+              {{ contract.deliveryMethod === 'digital' ? '✉ Correo' : '📍 Dirección' }}
+            </span>
+          </span>
+        </div>
+        <div class="mc-card-row" *ngIf="contract.deliveryMethod === 'physical' && contract.notificationAddress">
+          <span class="mc-card-label">Dirección:</span>
+          <span class="mc-card-value">{{ contract.notificationAddress }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista TABLA -->
+  <div class="mc-table-wrap" *ngIf="!loading && contracts.length > 0 && viewMode === 'table'">
+    <table class="mc-table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Contrato</th>
+          <th>Notificación</th>
+          <th>Dirección / Correo</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let contract of contracts">
+          <td class="mc-td-name">{{ contract.name }}</td>
+          <td>{{ contract.number }}</td>
+          <td>
+            <span class="mc-badge" [class.mc-badge--digital]="contract.deliveryMethod === 'digital'" [class.mc-badge--physical]="contract.deliveryMethod === 'physical'">
+              {{ contract.deliveryMethod === 'digital' ? '✉ Correo' : '📍 Dirección' }}
+            </span>
+          </td>
+          <td class="mc-td-addr">
+            {{ contract.deliveryMethod === 'physical' ? (contract.notificationAddress || '—') : '—' }}
+          </td>
+          <td class="mc-td-actions">
+            <button class="mc-icon-btn" title="Editar" (click)="onEdit(contract)">✏️</button>
+            <button class="mc-icon-btn mc-icon-btn--delete" title="Eliminar" (click)="onDeleteConfirm(contract)">🗑</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

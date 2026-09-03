@@ -1,0 +1,97 @@
+<div *ngIf="visible" class="ecm-overlay" (click)="onBackdropClick()">
+  <div class="ecm-modal" (click)="$event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="ecmTitle">
+
+    <div class="ecm-header">
+      <h3 id="ecmTitle">Editar contrato</h3>
+      <button type="button" class="ecm-close" (click)="close()" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="ecm-body" [formGroup]="form">
+
+      <!-- Datos de solo lectura -->
+      <div class="ecm-readonly-row">
+        <div class="ecm-readonly-field">
+          <label class="ecm-label">Contrato</label>
+          <div class="ecm-static">{{ contract?.number }}</div>
+        </div>
+        <div class="ecm-readonly-field" *ngIf="contract?.deliveryMethod === 'physical' && contract?.notificationAddress">
+          <label class="ecm-label">Dirección actual</label>
+          <div class="ecm-static">{{ contract?.notificationAddress }}</div>
+        </div>
+      </div>
+
+      <!-- Nombre personalizado -->
+      <div class="ecm-field">
+        <label class="ecm-label">Nombre personalizado *</label>
+        <input type="text" formControlName="name" placeholder="Ej: Casa principal" maxlength="60" />
+        <span class="ecm-error" *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+          El nombre es requerido.
+        </span>
+      </div>
+
+      <!-- Método de notificación (solo lectura informativo) -->
+      <div class="ecm-notif-info">
+        <span *ngIf="contract?.deliveryMethod === 'digital'">
+          ✉ Tu factura llega por <strong>correo electrónico</strong> al correo registrado en la plataforma.
+        </span>
+        <span *ngIf="contract?.deliveryMethod === 'physical'">
+          📍 Tu factura llega a una <strong>dirección física</strong>.
+        </span>
+      </div>
+
+      <!-- Actualizar dirección (solo si es físico y tiene intentos) -->
+      <ng-container *ngIf="contract?.deliveryMethod === 'physical'">
+
+        <div class="ecm-field" *ngIf="addressAttemptsLeft > 0">
+          <label class="ecm-label">
+            Actualizar dirección de notificación
+            <span class="ecm-attempts">
+              — {{ addressAttemptsLeft }} cambio{{ addressAttemptsLeft === 1 ? '' : 's' }} disponible{{ addressAttemptsLeft === 1 ? '' : 's' }}
+            </span>
+          </label>
+
+          <div class="ecm-toggle-row">
+            <input type="checkbox" formControlName="updateAddress" id="updateAddressCheck" />
+            <label for="updateAddressCheck" class="ecm-toggle-label">
+              Quiero actualizar la dirección de entrega
+            </label>
+          </div>
+
+          <ng-container *ngIf="form.get('updateAddress')?.value">
+            <button type="button" class="ecm-btn-address" (click)="showAddressModal = true">
+              📍 {{ newAddress ? 'Cambiar dirección' : 'Ingresar nueva dirección' }}
+            </button>
+            <div class="ecm-address-preview" *ngIf="newAddress">
+              {{ newAddress }}
+            </div>
+            <span class="ecm-error" *ngIf="addressRequired">
+              Debes ingresar la nueva dirección de notificación.
+            </span>
+          </ng-container>
+        </div>
+
+        <div class="ecm-attempts-exhausted" *ngIf="addressAttemptsLeft === 0">
+          ⚠️ Ya se alcanzó el máximo de 2 cambios de dirección para este contrato.
+        </div>
+
+      </ng-container>
+
+      <div class="ecm-error-global" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    </div>
+
+    <div class="ecm-footer">
+      <button type="button" class="ecm-btn-ghost" (click)="close()">Cancelar</button>
+      <button type="button" class="ecm-btn-primary" (click)="onConfirm()" [disabled]="saving">
+        {{ saving ? 'Guardando...' : 'Guardar' }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Address modal — fuera del overlay para no tener z-index anidado -->
+<app-address-form-modal
+  [(visible)]="showAddressModal"
+  (confirmed)="onAddressConfirmed($event)">
+</app-address-form-modal>
