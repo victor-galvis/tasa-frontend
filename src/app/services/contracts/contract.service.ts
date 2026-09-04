@@ -80,4 +80,9 @@ export class ContractService {
       filters: filters,
     });
   }
+  
+  adminGetInvoices(company: string | number, agreement: string): Observable<any> {
+    return this.http.post(`${this.base}/contract/admin/invoices`, { company, agreement });
+  }
+
 }

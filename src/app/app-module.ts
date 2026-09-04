@@ -32,6 +32,7 @@ import { RecaptchaInterceptor } from './interceptors/recaptcha.interceptor';
 import { DesbloquearComponent } from './components/desbloquear/desbloquear.component';
 import { ManageContracts } from './components/manage-contracts/manage-contracts';
 import { EditContractModalComponent } from './components/shared/edit-contract-modal/edit-contract-modal.component';
+import { AdminInvoicesComponent } from './components/admin-invoices/admin-invoices.component';
 
 export function playerFactory() {
   return player;
@@ -58,7 +59,8 @@ export function playerFactory() {
     AddressFormModalComponent,
     DesbloquearComponent,
     ManageContracts,
-    EditContractModalComponent, 
+    EditContractModalComponent,
+    AdminInvoicesComponent 
   ],
   imports: [BrowserModule, AppRoutingModule, ReactiveFormsModule, FormsModule, LottieComponent,CommonModule,],
   providers: [

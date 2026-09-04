@@ -1,0 +1,108 @@
+<app-header></app-header>
+
+<app-custom-modal
+  [visible]="showCustomModal"
+  title="{{ customModalTitle }}"
+  message="{{ customModalMessage }}"
+  type="{{ customModalType }}"
+  buttonText="Aceptar"
+  (confirmed)="onModalClose()"
+  (closed)="onModalClose()">
+</app-custom-modal>
+
+<div class="container">
+  <a href="/dashboard" class="volver">Volver a la página principal</a>
+  <h2>Consulta de facturas — Administrador</h2>
+
+  <!-- Formulario de búsqueda -->
+  <div class="filtros-container">
+    <div class="filtro-box">
+
+      <div class="ai-form-row">
+        <!-- Comercializadora -->
+        <div class="ai-field">
+          <label class="ai-label">Comercializadora</label>
+          <div class="select-wrapper" [class.open]="openCompany">
+            <select [(ngModel)]="selectedCompany" (focus)="openCompany = true" (blur)="openCompany = false">
+              <option value="">Selecciona...</option>
+              <option *ngFor="let c of companies" [value]="c.id">{{ c.name }}</option>
+            </select>
+            <span class="arrow" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- Número de contrato -->
+        <div class="ai-field">
+          <label class="ai-label">Número de contrato</label>
+          <input
+            type="text"
+            [(ngModel)]="contractNumber"
+            placeholder="Ej: 1234567"
+            class="ai-input"
+            (keyup.enter)="onConsultar()" />
+        </div>
+
+        <!-- Botón consultar -->
+        <div class="ai-field ai-field-btn">
+          <button class="btn-consultar" (click)="onConsultar()" [disabled]="loading">
+            {{ loading ? 'Consultando...' : 'Consultar' }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tabla de facturas -->
+  <div class="table-responsive" *ngIf="invoices.length > 0">
+    <p class="ai-result-info">
+      Se encontraron <strong>{{ invoices.length }}</strong> factura(s) para el contrato <strong>{{ lastQueried }}</strong>.
+    </p>
+    <table class="facturas-table">
+      <thead>
+        <tr>
+          <th>Estado</th>
+          <th>Número de contrato</th>
+          <th>Fecha de facturación</th>
+          <th>Número de factura</th>
+          <th>Valor</th>
+          <th>Dirección</th>
+          <th>Fecha de vencimiento</th>
+          <th>Descargar PDF</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of paginatedInvoices">
+          <td>{{ translateStatus(invoice.status) }}</td>
+          <td>{{ invoice.agreement }}</td>
+          <td>{{ formatDate(invoice.createdAt) }}</td>
+          <td>{{ invoice.reference }}</td>
+          <td>{{ invoice.total | currency: 'COP ' }}</td>
+          <td>{{ invoice.address }}</td>
+          <td>{{ formatDate(invoice.expirationDate) }}</td>
+          <td style="text-align: center">
+            <img
+              src="/images/descargar.png"
+              alt="Descargar"
+              style="cursor: pointer"
+              (click)="downloadInvoice(invoice)" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Paginación -->
+    <div class="paginacion">
+      <a href="#" [class.disabled]="currentPage === 1" (click)="goToFirst($event)">← Ir al primero</a>
+      <a href="#" [class.disabled]="currentPage === 1" (click)="prevPage($event)">Anterior</a>
+      <span class="page-number">{{ currentPage }} / {{ totalPages }}</span>
+      <a href="#" [class.disabled]="currentPage === totalPages" (click)="nextPage($event)">Siguiente</a>
+      <a href="#" [class.disabled]="currentPage === totalPages" (click)="goToLast($event)">Ir al último →</a>
+    </div>
+  </div>
+
+  <!-- Estado vacío tras consulta -->
+  <div class="ai-empty" *ngIf="consulted && invoices.length === 0 && !loading">
+    No se encontraron facturas para el contrato <strong>{{ lastQueried }}</strong>.
+  </div>
+</div>
