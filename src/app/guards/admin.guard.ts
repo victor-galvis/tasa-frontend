@@ -1,31 +1,23 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
 import { AuthService } from '../services/auth/auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class AdminGuard implements CanActivate {
-  private readonly ADMIN_EMAIL = '{process.env.ADMIN_EMAIL}';
-
   constructor(
     private router: Router,
     private authService: AuthService,
   ) {}
 
   canActivate(): boolean {
-    const token = this.authService.getToken();
-
-    if (!token) {
-      this.router.navigate(['/login']);
-      return false;
+    // Evitar localStorage en el servidor
+    if (typeof window === 'undefined') {
+      return true;
     }
 
-    try {
-      const payload = jwtDecode<{ email: string }>(token);
-      if (payload.email === this.ADMIN_EMAIL) return true;
-    } catch {}
+    if (this.authService.isAdmin()) return true;
 
-    this.router.navigate(['/']);
+    this.router.navigate(['/dashboard']);
     return false;
   }
 }

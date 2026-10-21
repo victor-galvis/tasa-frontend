@@ -48,6 +48,11 @@ export class AuthService {
  isLoggedIn(): boolean {
   return typeof window !== 'undefined' && !!this.getToken();
 }
+  /** El backend define quién es admin (ADMIN_EMAIL) y lo devuelve en el login */
+  isAdmin(): boolean {
+    return this.getUser()?.isAdmin === true;
+  }
+
   getUser() {
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       const raw = localStorage.getItem('user');

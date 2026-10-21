@@ -21,9 +21,9 @@ const routes: Routes = [
   { path: 'dashboard', component: Dashboard, canActivate: [AuthGuard] },
   { path: 'view-invoices', component: ViewInvoices, canActivate: [AuthGuard] },
   { path: 'pending-payments', component: PendingPayments, canActivate: [AuthGuard] },
-  { path: 'desbloquear', component: DesbloquearComponent, canActivate: [AuthGuard] },
+  { path: 'desbloquear', component: DesbloquearComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'manage-contracts', component: ManageContracts },
-  { path: 'admin/facturas', component: AdminInvoicesComponent, canActivate: [AuthGuard] },
+  { path: 'admin/facturas', component: AdminInvoicesComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: '**', redirectTo: 'login' },
 ];
 

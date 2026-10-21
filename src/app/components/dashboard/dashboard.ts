@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HomeService } from '../../services/home/home.service';
 import { ContractService } from '../../services/contracts/contract.service';
+import { AuthService } from '../../services/auth/auth.service';
 @Component({
   selector: 'app-home',
   standalone: false,
@@ -9,6 +10,7 @@ import { ContractService } from '../../services/contracts/contract.service';
 })
 export class Dashboard {
   user: any;
+  isAdmin = false;
   showNoContracts = false;
   showContractModal = false;
   showCustomModal = false;
@@ -35,9 +37,14 @@ export class Dashboard {
     this.showNoContracts = false;
   }
 
-  constructor(private homeService: HomeService, private contractService: ContractService) { }
+  constructor(
+    private homeService: HomeService,
+    private contractService: ContractService,
+    private authService: AuthService,
+  ) { }
   ngOnInit(): void {
     this.user = this.homeService.getUser();
+    this.isAdmin = this.authService.isAdmin();
   }
 
   openContractModal() {

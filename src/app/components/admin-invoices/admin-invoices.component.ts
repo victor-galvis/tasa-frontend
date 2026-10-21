@@ -5,7 +5,6 @@ import { ContractService } from '../../services/contracts/contract.service';
 import { CompanyService } from '../../services/company/company.service';
 import { S3Service } from '../../services/s3/s3.service';
 import { AuthService } from '../../services/auth/auth.service';
-import { environment } from '../../../environments/environment';
 import { Invoice } from '../../models/invoice/invoice.response';
 
 @Component({
@@ -48,8 +47,7 @@ export class AdminInvoicesComponent implements OnInit {
     if (!isPlatformBrowser(this.platformId)) return;
 
     // Protección frontend: solo el admin puede ver esta página
-    const user = this.authService.getUser();
-    if (!user || !environment.adminEmail.includes(user.email)) {
+    if (!this.authService.isAdmin()) {
       this.router.navigate(['/dashboard']);
       return;
     }

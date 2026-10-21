@@ -51,7 +51,31 @@
     </div>
     <div class="item" (click)="openContractModal(); $event.preventDefault()">
       <img src="/images/inscribir-contratos.png" alt="Inscribir contratos" />
-    </div> 
+    </div>
+    <!-- Opciones de administrador (correos en ADMIN_EMAIL del backend) -->
+    <ng-container *ngIf="isAdmin">
+      <a class="item admin-item" routerLink="/admin/facturas">
+        <span class="admin-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+            <path d="M14 3v5h5" />
+            <path d="M12 11v6" />
+            <path d="m9 14 3 3 3-3" />
+          </svg>
+        </span>
+        <span class="admin-label">Descargar facturas admin</span>
+      </a>
+      <a class="item admin-item" routerLink="/desbloquear">
+        <span class="admin-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <path d="M8 11V7a4 4 0 0 1 7.5-2" />
+            <path d="M12 15v2" />
+          </svg>
+        </span>
+        <span class="admin-label">Desbloquear contratos</span>
+      </a>
+    </ng-container>
     <!-- ***Se comenta mientras se implementa funcionalidad***  
     <div class="item">
       <a routerLink="/manage-contracts">
