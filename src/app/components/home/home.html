@@ -840,10 +840,14 @@
     </div>
   </footer>
 </div>
-<!-- POPUP IMAGEN
+<!-- POPUP IMAGEN -->
 <div class="image-modal-overlay" *ngIf="mostrarPopupImagen" (click)="cerrarPopupImagen()">
   <div class="image-modal-content" (click)="$event.stopPropagation()">
-    <button class="image-close-btn" (click)="cerrarPopupImagen()">✕</button>
-    <img src="/images/Popup_14_08_26.png" alt="Información importante" class="popup-image">
+    <button class="image-close-btn" (click)="cerrarPopupImagen()" aria-label="Cerrar aviso">✕</button>
+    <picture>
+      <source type="image/webp" srcset="/images/Popup-mantenimiento-nov.webp">
+      <img src="/images/Popup-mantenimiento-nov.webp" class="popup-image"
+           alt="Aviso importante: por facturación de la Tasa de Seguridad el portal de pagos estará inhabilitado entre las 10:00 p. m. del 13 de noviembre y las 12:00 m. del 16 de noviembre">
+    </picture>
   </div>
-</div>-->
+</div>

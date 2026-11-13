@@ -27,7 +27,7 @@ export class Home implements AfterViewInit {
       });
 
       setTimeout(() => {
-        this.mostrarPopupImagen = true;
+        this.mostrarPopupImagen = new Date() < new Date('2026-11-16T12:00:00-05:00');
       }, 1000);
     }
   }
